@@ -1,0 +1,37 @@
+CREATE SCHEMA `banner` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE `banner`.`Users` (
+  `id` INT NOT NULL,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(120) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC));
+
+CREATE TABLE `banner`.`Banners` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `imgSrc` VARCHAR(120) NOT NULL,
+  `width` INT NULL,
+  `height` INT NULL,
+  `targetUrl` VARCHAR(45) NULL,
+  `langId` INT NULL,
+  `priority` INT NULL,
+  `activity` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`));
+
+
+
+
+
+insert into banner.Users values (1, 'admin', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi')
+
+
+
+
+
+                imgSrc
+                width
+                height
+                targetUrl
+                langId
+                priority
+                activity

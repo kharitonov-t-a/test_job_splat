@@ -39,6 +39,16 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- JdbcTemplate -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
@@ -54,6 +64,13 @@
             <!--<artifactId>spring-security-test</artifactId>-->
             <!--<scope>test</scope>-->
         <!--</dependency>-->
+
+
+
+
+
+
+
     </dependencies>
 
     <build>
