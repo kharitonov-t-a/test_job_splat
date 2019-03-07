@@ -2,6 +2,7 @@ package banner.controller;
 
 import banner.service.interfaces.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @Autowired
-    BannerService bannerService;
+    @Value("${spring_profile_active}")
+    private String profile;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -20,7 +21,7 @@ public class MainController {
 
     @GetMapping("/banners")
     public String banners(Model model) {
-//        model.addAttribute("bannerList", bannerService.findAll());
+        model.addAttribute("isDevMode", "dev".equals(profile));
         return "banners";
     }
 

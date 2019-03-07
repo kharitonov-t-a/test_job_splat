@@ -2,6 +2,9 @@
 *.iml
 .idea
 target
+node_modules
+dist
+out
 
 # Compiled class file
 *.class

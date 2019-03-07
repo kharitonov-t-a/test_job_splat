@@ -1,7 +1,18 @@
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+import App from 'pages/App.vue'
 
+Vue.use(VueResource);
+
+new Vue({
+    el: '#app',
+    render: a => a(App)
+});
+
+/*
 function getIndex(list, id) {
-    for(var i = 0; i < list.length; i++ ){
-        if(list[i].id === id){
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id === id) {
             return i;
         }
     }
@@ -10,7 +21,7 @@ function getIndex(list, id) {
 
 var bannerApi = Vue.resource('/banner{/id}');
 
-/*--------------------------------BANNER_CREATE_FORM--------------------------------*/
+/!*--------------------------------BANNER_CREATE_FORM--------------------------------*!/
 Vue.component('banner-form', {
     props: ['banners', 'bannerAttr'],
     data: function () {
@@ -26,7 +37,7 @@ Vue.component('banner-form', {
         }
     },
     watch: {
-        bannerAttr: function(newVal, oldVal){
+        bannerAttr: function (newVal, oldVal) {
             this.id = newVal.id;
             this.imgSrc = newVal.imgSrc;
             this.width = newVal.width;
@@ -49,7 +60,7 @@ Vue.component('banner-form', {
             '<input type="button" value="Save" @click="save"/>' +
         '</div>',
     methods: {
-        save: function(){
+        save: function () {
             var banner = {
                 imgSrc: this.imgSrc,
                 width: this.width,
@@ -60,7 +71,7 @@ Vue.component('banner-form', {
                 activity: this.activity
             };
 
-            if(this.id){
+            if (this.id) {
                 bannerApi.update({id: this.id}, banner).then(result =>
                     result.json().then(data => {
                         var index = getIndex(this.banners, data.id);
@@ -75,7 +86,7 @@ Vue.component('banner-form', {
                         this.activity = '';
                     })
                 );
-            }else{
+            } else {
                 bannerApi.save({}, banner).then(result =>
                     result.json().then(data => {
                         this.banners.push(data);
@@ -94,14 +105,16 @@ Vue.component('banner-form', {
 });
 
 
-
-
-
-/*--------------------------------BANNER_LIST--------------------------------*/
+/!*--------------------------------BANNER_LIST--------------------------------*!/
 Vue.component('banner-row', {
     props: ['banner', 'editMethod', 'banners'],
     template:
-        '<tr>' +
+        '<tr class="list-group-item">' +
+            '<td>' +
+                '<span class="handle" >' +
+                    '<i class="glyphicon glyphicon-menu-hamburger"></i>' +
+                '</span>' +
+            '</td>' +
             '<td>{{ banner.id }}</td>' +
             '<td>{{ banner.imgSrc }}</td>' +
             '<td>{{ banner.width }}</td>' +
@@ -112,7 +125,7 @@ Vue.component('banner-row', {
             '<td>{{ banner.activity }}</td>' +
             '<td>' +
                 '<span>' +
-                    '<input type="button" value="Edit" @click="edit"/>' +
+                   '<input type="button" value="Edit" @click="edit"/>' +
                 '</span>' +
             '</td>' +
             '<td>' +
@@ -120,20 +133,20 @@ Vue.component('banner-row', {
                     '<input type="button" value="Delete" @click="del"/>' +
                 '</span>' +
             '</td>' +
-       '</tr>',
+        '</tr>',
     methods: {
         edit: function () {
             this.editMethod(this.banner);
         },
         del: function () {
 
-            if(this.banner.activity === false){
+            if (this.banner.activity === false) {
                 bannerApi.remove({id: this.banner.id}).then(result => {
-                    if(result.ok){
+                    if (result.ok) {
                         this.banners.splice(this.banners.indexOf(this.banner), 1);
                     }
                 });
-            }else{
+            } else {
                 var dataBanner = {
                     imgSrc: this.banner.imgSrc,
                     width: this.banner.width,
@@ -151,23 +164,20 @@ Vue.component('banner-row', {
             }
 
 
-
-
-
         }
     }
 });
 
 Vue.component('banners-list', {
     props: ['banners'],
-    data: function(){
+    data: function () {
         return {
             banner: null
         }
     },
     template:
         '<div>' +
-            '<banner-form :banners="banners" :bannerAttr="banner"/>' +
+            '<banner-form :banners="banners" :bannerAttr="banner" />' +
             '<table>' +
                 '<thead>' +
                     '<tr>' +
@@ -183,17 +193,19 @@ Vue.component('banners-list', {
                         '<th></th>' +
                     '</tr>' +
                 '</thead>' +
-                '<tbody>' +
-                    '<banner-row v-for="banner in banners" :key="banner.id" :banner="banner" ' +
-                        ':editMethod="editMethod" :banners="banners" />' +
+                '<tbody class="list-group drag">' +
+                    '<draggable :list="banners" class="dragArea" :options="{handle:\'.handle\'}">' +
+                        '<banner-row v-for="banner in banners" :key="banner.id" :banner="banner" ' +
+                           ':editMethod="editMethod" :banners="banners" />' +
+                    '</draggable>' +
                 '</tbody>' +
             '</table>' +
         '</div>',
     created: function () {
         bannerApi.get().then(result =>
-         result.json().then(data =>
-            data.forEach(banner => this.banners.push(banner))
-         )
+            result.json().then(data =>
+                data.forEach(banner => this.banners.push(banner))
+            )
         )
     },
     methods: {
@@ -209,4 +221,4 @@ var app = new Vue({
     data: {
         banners: []
     }
-});
+});*/
