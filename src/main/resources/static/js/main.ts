@@ -8,7 +8,6 @@ new Vue({
     el: '#app',
     render: a => a(App)
 });
-
 /*
 function getIndex(list, id) {
     for (var i = 0; i < list.length; i++) {

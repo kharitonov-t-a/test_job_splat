@@ -10,7 +10,9 @@
     "build": "cross-env NODE_ENV=production webpack"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.6.8",
+    "vue-property-decorator": "^8.0.0",
     "vue-resource": "^1.5.1"
   },
   "devDependencies": {

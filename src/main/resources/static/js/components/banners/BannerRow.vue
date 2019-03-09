@@ -15,32 +15,52 @@
         <td>{{ banner.activity }}</td>
         <td>
             <span>
-               <input type="button" value="Edit" @click="edit"/>
+               <input type="button" value="Edit" @click="editB"/>
             </span>
         </td>
         <td>
             <span>
-                <input type="button" value="Delete" @click="del"/>
+                <input type="button" value="Delete" @click="deleteB"/>
             </span>
         </td>
     </tr>
 </template>
 
-<script>
-    export default {
-        name: "BannerRow",
-        props: ['banner', 'editBanner', 'deleteBanner', 'banners'],
-        methods: {
-            edit() {
-                this.editBanner(this.banner);
-            },
-            del() {
-                this.deleteBanner(this.banner);
-            }
+<script lang="ts">
+    import {Vue, Component, Prop} from "vue-property-decorator";
+    import BannerList from 'BannerList.vue'
+
+    @Component
+    export default class BannerRow extends Vue{
+
+        @Prop() readonly banner!: BannerRow;
+        @Prop() readonly banners!: BannerList;
+        @Prop() readonly bannerObj!: Vue;
+
+
+        constructor(){
+            super();
+        }
+
+        id : Number = 0;
+        imgSrc : String = '';
+        width : Number = 0;
+        height : Number = 0;
+        targetUrl : String = '';
+        langId : Number = 0;
+        priority : Number = 0;
+        activity : Boolean = true;
+
+        editB() {
+            this.bannerObj.$emit('banner-edit', this.banner)
+        }
+        deleteB() {
+            this.bannerObj.$emit('banner-delete', this.banner)
         }
     }
+
+
 </script>
 
 <style scoped>
-
 </style>

@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue'
-    import Component from "vue-class-component";
+    import { Vue, Component, Prop } from "vue-property-decorator";
+
     import BannersList from 'components/banners/BannerList.vue'
 
     @Component({
@@ -13,9 +13,8 @@
         }
     })
     export default class App extends Vue{
-        banners: any[] = [];
+        banners: BannersList = new BannersList;
     }
-
     // export default{
     //     name: "App",
     //     components:{
@@ -30,5 +29,4 @@
 </script>
 
 <style>
-
 </style>
