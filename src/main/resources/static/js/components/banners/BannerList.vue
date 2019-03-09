@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!--<banner-form :banners="banners" :bannerAttr="bannerAttr"/>-->
+        <banner-form :bannerList="bannerList" :bannerAttr="bannerAttr"/>
         <table>
             <thead>
             <tr>
@@ -22,8 +22,7 @@
             <banner-row v-for="banner in bannerList"
                         :key="banner.id"
                         :banner="banner"
-                        :bannerObj="bannerObj"
-                        :banners="banners"/>
+                        :changeableBanner="changeableBanner"/>
             <!--</draggable>-->
             </tbody>
         </table>
@@ -37,7 +36,6 @@
     import BannerForm from 'components/banners/BannerForm.vue'
 
     @Component({
-        // props: ['banners', 'editBanner', 'deleteBanner'],
         components:{
             BannerRow,
             BannerForm
@@ -47,8 +45,8 @@
 
         bannerList: Array<BannerRow> = new Array<BannerRow>();
         @Prop() readonly banners!: BannerList;
-        // changeBanner: BannerRow = new BannerRow();
-        bannerObj: Vue = new Vue();
+        changeableBanner: Vue = new Vue();
+        bannerAttr: BannerRow = new BannerRow();
 
         constructor(){
             super();
@@ -59,23 +57,16 @@
                 )
             )
 
-            this.bannerObj.$on('banner-edit', (bannerEdit : BannerRow) => {
+            this.changeableBanner.$on('banner-edit', (bannerEdit : BannerRow) => {
                 this.editBanner(bannerEdit);
             });
-            this.bannerObj.$on('banner-delete', (bannerEdit : BannerRow) => {
+            this.changeableBanner.$on('banner-delete', (bannerEdit : BannerRow) => {
                 this.deleteBanner(bannerEdit);
             });
-            // this.$resource('/banner{/id}').get().then(result =>
-            //     result.json().then(data =>
-            //         data.forEach(banner => this.banners.push(banner))
-            //     )
-            // )
         }
 
         private editBanner(banner: BannerRow) {
-            alert(banner.id);
-            // this.changeBanner = new BannerRow();
-            // this.ba = banner;
+            this.bannerAttr = banner;
         }
 
         private deleteBanner(banner : BannerRow){
@@ -104,62 +95,6 @@
         }
 
     }
-
-    // export default {
-    //     name: "BannerList",
-    //     props: ['banners'],
-    //     components:{
-    //         BannerRow,
-    //         BannerForm
-    //     },
-    //     data() {
-    //         return {
-    //             banner: null
-    //         }
-    //     },
-    //     created() {
-    //
-    //         var ss;
-    //         ss = axios.get('/banner{/id}').then(response => {
-    //             (<BannerList>response.data)
-    //         })
-    //
-    //             .then(result =>
-    //             result.json().then(data =>
-    //                 data.forEach(banner => this.banners.push(banner))
-    //             )
-    //         )
-    //     },
-    //     methods: {
-    //         editBanner(banner) {
-    //             this.banner = banner;
-    //         },
-    //         deleteBanner(banner){
-    //             if (banner.activity === false) {
-    //                 this.$resource('/banner{/id}').remove({id: banner.id}).then(result => {
-    //                     if (result.ok) {
-    //                         this.banners.splice(this.banners.indexOf(banner), 1);
-    //                     }
-    //                 });
-    //             } else {
-    //                 var dataBanner = {
-    //                     imgSrc: banner.imgSrc,
-    //                     width: banner.width,
-    //                     height: banner.height,
-    //                     targetUrl: banner.targetUrl,
-    //                     langId: banner.langId,
-    //                     priority: banner.priority,
-    //                     activity: false
-    //                 };
-    //                 this.$resource('/banner{/id}').update({id: banner.id}, dataBanner).then(result =>
-    //                     result.json().then(data => {
-    //                         banner.activity = false;
-    //                     })
-    //                 );
-    //             }
-    //         }
-    //     }
-    // }
 </script>
 
 <style>
