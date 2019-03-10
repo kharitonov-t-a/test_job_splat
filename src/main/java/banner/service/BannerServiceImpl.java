@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BannerServiceImpl implements BannerService {
@@ -32,5 +33,15 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public List<Banner> findAll() {
         return bannerDao.findAll();
+    }
+
+    @Override
+    public boolean updateSorting(List<Banner> bannerList) {
+        List<Banner> bannerBDList = bannerDao.findAll();
+        bannerList = bannerList.stream().filter(banner ->
+                bannerBDList.stream().allMatch(bannerBD ->
+                        !(banner.getId() == bannerBD.getId() && banner.getPriority() == bannerBD.getPriority()))).collect(Collectors.toList());
+        bannerList.forEach(banner -> bannerDao.updatePriority(banner));
+        return true;
     }
 }

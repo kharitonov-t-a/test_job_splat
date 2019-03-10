@@ -30,6 +30,11 @@ public class MainRestController {
         return bannerService.update(banner);
     }
 
+    @PutMapping
+    public boolean updateSorting(@RequestBody List<Banner> bannerList){
+        return bannerService.updateSorting(bannerList);
+    }
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable Integer id){
         bannerService.delete(id);

@@ -21,8 +21,11 @@ public class BannerDaoImpl implements BannerDao {
             " SET" +
             " imgSrc = ?, width = ?, height = ?, targetUrl = ?, langId = ?, priority = ?, activity = ?" +
             " WHERE id = ?";
-    private final String SELECT_ALL_SQL = "select * from Banners";
-    private final String DELETE_SQL = "UPDATE Banners SET activity = 0 WHERE id = ?";
+    private final String UPDATE_PRIORITY_SQL = "UPDATE Banners " +
+            " SET" +
+            " priority = ?" +
+            " WHERE id = ?";
+    private final String SELECT_ALL_SQL = "select * from Banners ORDER BY priority";
     private final String TOTAL_DELETE_SQL = "DELETE from Banners WHERE id = ?";
 
     @Autowired
@@ -57,7 +60,7 @@ public class BannerDaoImpl implements BannerDao {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(UPDATE_SQL, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = connection.prepareStatement(UPDATE_SQL, Statement.SUCCESS_NO_INFO);
                 ps.setString(1, banner.getImgSrc());
                 ps.setInt(2, banner.getWidth());
                 ps.setInt(3, banner.getHeight());
@@ -86,7 +89,7 @@ public class BannerDaoImpl implements BannerDao {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(TOTAL_DELETE_SQL, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = connection.prepareStatement(TOTAL_DELETE_SQL, Statement.SUCCESS_NO_INFO);
                 ps.setInt(1, id);
                 return ps;
             }
@@ -101,6 +104,19 @@ public class BannerDaoImpl implements BannerDao {
     @Override
     public List<Banner> findAll() {
         return jdbcTemplate.query(SELECT_ALL_SQL, new BannerMapper());
+    }
+
+    @Override
+    public void updatePriority(Banner banner) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(UPDATE_PRIORITY_SQL, Statement.SUCCESS_NO_INFO);
+                ps.setInt(1, banner.getPriority());
+                ps.setInt(2, banner.getId());
+                return ps;
+            }
+        });
     }
 }
 class BannerMapper implements RowMapper {
