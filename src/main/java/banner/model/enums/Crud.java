@@ -5,7 +5,8 @@ public enum Crud {
     CREATE(1),
     READ(2),
     UPDATE(3),
-    DELETE(4);
+    DELETE(4),
+    SORT(5);
 
     private int action;
 

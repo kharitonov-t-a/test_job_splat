@@ -6,12 +6,11 @@
             </span>
         </div>
         <div style="display:table-cell">{{ banner.id }}</div>
-        <div style="display:table-cell">{{ banner.imgSrc }}</div>
+        <div style="display:table-cell"><img :src="banner.imgSrc" width="100"/></div>
         <div style="display:table-cell">{{ banner.width }}</div>
         <div style="display:table-cell">{{ banner.height }}</div>
         <div style="display:table-cell">{{ banner.targetUrl }}</div>
         <div style="display:table-cell">{{ banner.langId }}</div>
-        <div style="display:table-cell">{{ banner.priority }}</div>
         <div style="display:table-cell">{{ banner.activity }}</div>
         <div style="display:table-cell">
             <template v-if="!isSortBanners">
@@ -82,6 +81,7 @@
 
         id : number | null = null;
         imgSrc : string | null = null;
+        imgFile : any | null = null;
         width : number | null = null;
         height : number| null = null;
         targetUrl : string | null = null;

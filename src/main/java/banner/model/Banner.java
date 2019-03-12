@@ -9,7 +9,7 @@ public class Banner {
     private String targetUrl;
     private Integer langId;
     private Integer priority;
-    private boolean activity;
+    private Boolean activity;
 
     public Integer getId() {
         return id;
@@ -67,11 +67,11 @@ public class Banner {
         this.priority = priority;
     }
 
-    public boolean isActivity() {
+    public Boolean isActivity() {
         return activity;
     }
 
-    public void setActivity(boolean activity) {
+    public void setActivity(Boolean activity) {
         this.activity = activity;
     }
 }

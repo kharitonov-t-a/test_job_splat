@@ -18,11 +18,17 @@ CREATE TABLE `banner`.`Banners` (
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 
-
+CREATE TABLE `banner`.`Local` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`));
 
 
 
 insert into banner.Users values (1, 'admin', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi')
+INSERT INTO `banner`.`Local` (`id`, `name`) VALUES ('1', 'RU');
+INSERT INTO `banner`.`Local` (`id`, `name`) VALUES ('2', 'US');
+INSERT INTO `banner`.`Local` (`id`, `name`) VALUES ('3', 'DE');
 
 
 
