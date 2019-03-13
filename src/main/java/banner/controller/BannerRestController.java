@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("banner")
-public class MainRestController {
+public class BannerRestController {
 
     @Autowired
     BannerService bannerService;
 
-    @GetMapping
+    @GetMapping("list")
     public List<Banner> list() {
         return bannerService.findAll();
     }
@@ -48,13 +48,14 @@ public class MainRestController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Integer id){
+    public ResponseEntity delete(@PathVariable Integer id){
         bannerService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("delete/{id}")
-    public boolean activityDelete(@PathVariable Integer id){
-        return bannerService.activityDelete(id);
+    public boolean disable(@PathVariable Integer id){
+        return bannerService.disable(id);
     }
 
 }

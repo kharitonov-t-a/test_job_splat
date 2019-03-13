@@ -1,9 +1,7 @@
 package banner.service.interfaces;
 
-import banner.dao.interfaces.BannerDao;
 import banner.model.Banner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
+import banner.service.GenericService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,5 +14,4 @@ public interface BannerService extends GenericService<Banner, Integer> {
 
     boolean updateSorting(List<Banner> bannerList);
 
-    boolean activityDelete(Integer id);
 }

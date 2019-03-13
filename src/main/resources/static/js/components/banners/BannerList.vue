@@ -1,10 +1,18 @@
+<!--suppress ALL -->
 <template>
     <div>
-        <banner-form :bannerList="bannerList"
-                     :bannerAttr="bannerAttr"
+        <banner-form :bannerAttr="bannerAttr"
+                     :bannerAttrChange="bannerAttrChange"
                      :isSortBanners="isSortBanners"
-                     :changeableBanner="changeableBanner"/>
+                     :localeList="localeList"
+                     v-on:saveBanner="saveBanner($event)"/>
         <input type="button" v-bind:value="isSortBannersButtonText" @click="sortBanner"/>
+        <select v-model="selectedLocaleId" @change="filterBanner" :disabled="isSortBanners">
+            <option v-bind:value="0">All</option>
+            <option v-for="locale in localeList" v-bind:value="locale.id">
+                {{ locale.name }}
+            </option>
+        </select>
         <div class="drop list" style="display:table"> <!--v-drag-and-drop:options="options"-->
             <div style="display:table-row">
                 <div style="display:table-cell"></div>
@@ -18,8 +26,6 @@
                 <div style="display:table-cell">activity</div>
                 <div style="display:table-cell"></div>
                 <div style="display:table-cell"></div>
-                <div style="display:table-cell"></div>
-                <div style="display:table-cell"></div>
             </div>
             <div class="table-row-group" style="display:table-row-group">
                 <banner-row v-for="banner in bannerList"
@@ -30,8 +36,7 @@
                             v-on:editBanner="editBanner(banner)"
                             v-on:deleteBanner="deleteBanner(banner)"
                             v-on:upBanner="upBanner(banner)"
-                            v-on:downBanner="downBanner(banner)
-">
+                            v-on:downBanner="downBanner(banner)">
                 </banner-row>
             </div>
         </div>
@@ -42,8 +47,11 @@
     import {Vue, Component, Prop} from "vue-property-decorator";
     import BannerRow from 'components/banners/BannerRow.vue';
     import BannerForm from 'components/banners/BannerForm.vue';
+    import Banner from 'components/banners/Banner.ts';
+    import Locale from "components/locales/Locale.ts";
 
     @Component({
+        name: 'BannerList',
         components:{
             BannerRow,
             BannerForm
@@ -66,27 +74,35 @@
     })
     export default class BannerList extends Vue {
 
-        bannerList: Array<BannerRow> = new Array<BannerRow>();
-        @Prop() readonly banners!: BannerList;
-        changeableBanner: Vue = new Vue();
-        bannerAttr: BannerRow = new BannerRow();
+        bannerList: Array<Banner> = new Array<Banner>();
+        @Prop() totalBannerList: Array<Banner>;
+        @Prop() readonly localeList!: Array<Locale>;
+        bannerAttr: Banner = new Banner();
+        bannerAttrChange: Boolean = true;
         isSortBanners : boolean = false;
         isSortBannersButtonText : string = "Sort banners!";
-
+        selectedLocaleId : number = 0;
 
         constructor(){
             super();
-            this.$http.get('/banner{/id}').then(result =>
-                result.json().then((data : BannerRow[]) =>
-                    data.forEach((banner : BannerRow)=> this.bannerList.push(banner))
-                )
-            );
-            this.changeableBanner.$on('saveBanner', (banner : BannerRow) => {
-                this.saveBanner(banner);
-            });
+        }
+        mounted(){
+            this.filterBanner();
+        }
+        
+        filterBanner(){
+            let selectedLocaleId = this.selectedLocaleId;
+            this.bannerList = this.totalBannerList.filter(function (banner) {
+
+                if(selectedLocaleId===0)
+                    return true;
+                else
+                    return banner.langId === selectedLocaleId;
+
+            }).sort((a, b) => a.priority>b.priority?1:-1);
         }
 
-        static getIndex(list : Array<BannerRow>, id : Number) {
+        static getIndex(list : Array<Banner>, id : Number) {
             for (var i = 0; i < list.length; i++) {
                 if (list[i].id === id) {
                     return i;
@@ -95,33 +111,38 @@
             return -1;
         }
 
-        public editBanner(banner: BannerRow) {
+        public editBanner(banner: Banner) {
             this.clearForm();
-            this.$nextTick(() =>{
-                this.bannerAttr = banner;
-            });
+            this.bannerAttr = banner;
         }
 
-        public deleteBanner(banner : BannerRow){
+        clearForm(){
+            this.bannerAttr = null;
+            this.bannerAttrChange = !this.bannerAttrChange;
+        }
+
+        public deleteBanner(banner : Banner){
             this.clearForm();
             if (banner.activity === false) {
                 this.$resource('/banner{/id}').remove({id: banner.id}).then(result => {
                     if (result.ok) {
-                        this.bannerList.splice(this.bannerList.indexOf(banner), 1);
+                        this.totalBannerList.splice(this.bannerList.indexOf(banner), 1);
+                        this.filterBanner();
                     }
                 },
                 reason => alert("Error!"));
             } else {
                 this.$resource('/banner/delete{/id}').update({id: banner.id}, {}).then(result =>
                     result.json().then((data : Object) => {
-                        banner.activity = false;
+                        banner.activity= false;
+                        this.clearForm();
                     }),
                     reason => alert("Error!")
                 );
             }
         }
 
-        public saveBanner(banner : BannerRow){
+        public saveBanner(banner : Banner){
 
             let formData = new FormData();
             formData.append('image', banner.imgFile);
@@ -135,47 +156,42 @@
             if (banner.id !== null) {
                 formData.append('priority', banner.priority.toString());
                 this.$resource('/banner{/id}').update({id: banner.id}, formData).then(result =>
-                    result.json().then((data : BannerRow) => {
-                        const index = BannerList.getIndex(this.bannerList, data.id);
-                        this.bannerList.splice(index, 1, data);
+                    result.json().then((data : Banner) => {
+                        const index = BannerList.getIndex(this.totalBannerList, data.id);
+                        this.totalBannerList.splice(index, 1, data);
                         this.clearForm();
+                        this.filterBanner();
                     }),
                     reason => alert("Error!")
                 );
             } else {
-                let vm = this;
                 this.$resource('/banner{/id}').save({}, formData).then(result =>
-                    result.json().then((data : BannerRow) => {
-                        this.bannerList.push(data);
+                    result.json().then((data : Banner) => {
+                        this.totalBannerList.push(data);
                         this.clearForm();
+                        this.filterBanner();
                     }),
                     reason => alert("Save error! There is no image!"))
             }
         }
 
-        clearForm(){
-            this.$nextTick(() =>{
-                this.bannerAttr = null;
-            });
+        public upBanner(banner: Banner) {
+            this.swapTwoBanners(banner, -1);
+            this.clearForm()
+        }
+        public downBanner(banner: Banner) {
+            this.swapTwoBanners(banner, 1);
+            this.clearForm()
         }
 
-        public upBanner(banner: BannerRow) {
-            const index = BannerList.getIndex(this.bannerList, banner.id);
+        private swapTwoBanners(banner: Banner, indent : number){
+            const index1 = BannerList.getIndex(this.bannerList, banner.id);
+            const index2 = index1 + indent;
             const currentPriority = banner.priority;
-            this.bannerList[index].priority = this.bannerList[index-1].priority;
-            this.bannerList[index-1].priority = currentPriority;
-            this.bannerList.splice(index, 1, this.bannerList[index-1]);
-            this.bannerList.splice(index-1, 1, banner);
-            this.bannerAttr = null;
-        }
-        public downBanner(banner: BannerRow) {
-            const index = BannerList.getIndex(this.bannerList, banner.id);
-            const currentPriority = banner.priority;
-            this.bannerList[index].priority = this.bannerList[index+1].priority;
-            this.bannerList[index+1].priority = currentPriority;
-            this.bannerList.splice(index, 1, this.bannerList[index+1]);
-            this.bannerList.splice(index+1, 1, banner);
-            this.bannerAttr = null;
+            this.bannerList[index1].priority = this.bannerList[index2].priority;
+            this.bannerList[index2].priority = currentPriority;
+            this.bannerList.splice(index1, 1, this.bannerList[index2]);
+            this.bannerList.splice(index2, 1, banner);
         }
 
         sortBanner(){
@@ -183,6 +199,7 @@
             if(this.isSortBanners){
                 this.$resource('/banner{/id}').update(this.bannerList).then(result =>
                     result.json().then((data : Object) => {
+                        this.filterBanner();
                         this.isSortBanners = false;
                         this.isSortBannersButtonText = "Sort banners!!"
                     }),

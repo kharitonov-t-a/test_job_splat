@@ -67,7 +67,7 @@ public class Banner {
         this.priority = priority;
     }
 
-    public Boolean isActivity() {
+    public Boolean getActivity() {
         return activity;
     }
 

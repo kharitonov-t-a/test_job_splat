@@ -1,4 +1,4 @@
-package banner.service;
+package banner.service.implementations;
 
 import banner.dao.interfaces.UserDao;
 import banner.model.User;

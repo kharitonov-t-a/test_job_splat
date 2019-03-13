@@ -1,4 +1,4 @@
-package banner.dao;
+package banner.dao.implementations;
 
 import banner.dao.interfaces.UserDao;
 import banner.model.User;
@@ -16,9 +16,9 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private final String INSERT_SQL = "INSERT INTO Users(username, password) values(?,?)";
-    private final String SELECT_ALL_SQL = "select id, username, password from Users";
-    private final String SELECT_SQL_BY_USERNAME = "select * from Users where username = ?";
+    private final String INSERT_SQL = "INSERT INTO User(username, password) values(?,?)";
+    private final String SELECT_ALL_SQL = "select id, username, password from User";
+    private final String SELECT_SQL_BY_USERNAME = "select * from User where username = ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -51,17 +51,16 @@ public class UserDaoImpl implements UserDao {
         return (User) jdbcTemplate.queryForObject(SELECT_SQL_BY_USERNAME, new Object[] { username }, new UserMapper());
     }
 
-}
-
-class UserMapper implements RowMapper {
-
-    @Override
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user = new User();
-        user.setId(rs.getInt("id"));
-        user.setUsername(rs.getString("username"));
-        user.setPassword(rs.getString("password"));
-        return user;
+    class UserMapper implements RowMapper {
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            return user;
+        }
     }
-
 }
+
+
