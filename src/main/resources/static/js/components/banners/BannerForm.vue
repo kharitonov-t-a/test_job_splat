@@ -12,7 +12,8 @@
         <input type="text" placeholder="height" v-model="banner.height"/>
         <input type="text" placeholder="targetUrl" v-model="banner.targetUrl"/>
         <select v-model="banner.langId">
-            <option v-for="locale in localeList" v-bind:value="locale.id">
+            <option v-bind:value="null" selected>Select locale</option>
+            <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
                 {{ locale.name }}
             </option>
         </select>
@@ -26,7 +27,9 @@
     import Banner from "components/banners/Banner.ts"
     import Locale from "components/locales/Locale.ts";
 
-    @Component
+    @Component({
+        name: 'BannerForm'
+    })
     export default class BannerForm extends Vue {
 
         @Prop() bannerAttr!: Banner;
@@ -37,13 +40,20 @@
         banner : Banner = new Banner();
         image : any = null;
 
-        /**
-         * set locale only for create new banner
-         */
-        mounted(){//updated
-            if(this.banner.langId === null)
-                this.banner.langId = this.localeList[0].id;
-        }
+        // /**
+        //  * set locale only for create new banner
+        //  */
+        // @Watch('localeList')
+        // setActiveLocaleChoice(){
+        //     if(this.banner.langId === null) {
+        //         for(var i = 0; i < this.localeList.length; i ++){
+        //             if (this.localeList[i].activity == true) {
+        //                 this.banner.langId = this.localeList[i].id;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         @Watch('bannerAttrChange')
         getBannerAttr(){
@@ -56,12 +66,19 @@
         }
 
         saveBanner() {
-            this.$emit('saveBanner', this.banner);
+            if(this.banner.imgFile != null
+                && this.banner.height != null
+                && this.banner.width != null
+                && this.banner.langId != null
+                && this.banner.targetUrl != null){
+                this.$emit('saveBanner', this.banner);
+            }else{
+                alert("Fill the fields!");
+            }
         }
 
         clearForm(){
             this.banner.clean();
-            this.banner.langId = this.localeList[0].id;
             this.image = '';
         }
 

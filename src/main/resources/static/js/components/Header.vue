@@ -1,6 +1,5 @@
 <template>
     <header class="sticky">
-        <a href="/" class="logo">Webdevkin</a>
         <button v-for="appTab in appTabList"
                 :key="appTab.component"
                 @click="$emit('change-tab', appTab)"

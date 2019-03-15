@@ -1,12 +1,11 @@
 package banner.service.implementations;
 
+import banner.annotation.*;
 import banner.dao.interfaces.BannerDao;
 import banner.model.Banner;
-import banner.service.GenericService;
 import banner.service.GenericServiceImpl;
 import banner.service.interfaces.BannerService;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,16 +26,21 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
     @Value("${upload_path}")
     private String pathImage;
 
+    @AuditCreate
     @Override
     public Banner createBanner(Banner banner, MultipartFile image) {
         if (image!=null && !image.isEmpty()) {
             saveNewBannerImage(banner, image);
-            banner.setPriority(dao.getMaxPriority() + 1);
+            Integer priority = dao.getMaxPriority();
+            if(priority == null)
+                priority = 0;
+            banner.setPriority(priority + 1);
             return dao.create(banner);
         }
         return null;
     }
 
+    @AuditUpdate
     @Override
     public Banner updateBanner(Banner banner, MultipartFile image) {
         if (image!=null && !image.isEmpty()) {
@@ -46,26 +50,41 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return dao.update(banner);
     }
 
+    //BATCH!!!!!!!!!!!!!
+    @AuditSort
     @Override
-    public boolean updateSorting(List<Banner> bannerList) {
+    public List<Banner> updateSorting(List<Banner> bannerList) {
         List<Banner> bannerBDList = dao.findAll();
         bannerList = bannerList.stream().filter(banner ->
                 bannerBDList.stream().allMatch(bannerBD ->
                         !(banner.getId() == bannerBD.getId() && banner.getPriority() == bannerBD.getPriority()))).collect(Collectors.toList());
         bannerList.forEach(banner -> dao.updatePriority(banner));
-        return true;
+        return bannerList;
     }
 
+    @AuditDelete
     @Override
-    public void delete(Integer id) {
+    public boolean deleteBanner(Integer id) {
         deleteOldBannerImage(id);
         dao.delete(id);
+        return true;
     }
 
     private boolean deleteOldBannerImage(Integer id) {
         String bannerImage = dao.getBannerImage(id);
         File dirFile = new File(bannerImage);
         return dirFile.delete();
+    }
+
+    @AuditSwitchActivity
+    @Override
+    public boolean switchActivity(Integer id, boolean newActivityState) {
+        return dao.switchActivity(id, newActivityState);
+    }
+
+    @Override
+    public List<Banner> findAll() {
+        return dao.findAll();
     }
 
     private boolean saveNewBannerImage(Banner banner, MultipartFile image) {

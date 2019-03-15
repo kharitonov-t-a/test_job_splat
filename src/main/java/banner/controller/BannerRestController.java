@@ -5,7 +5,6 @@ import banner.service.interfaces.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +32,7 @@ public class BannerRestController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Banner> update(@PathVariable Integer id, @ModelAttribute Banner banner,@RequestParam(value = "image", required = false) MultipartFile image){
+    public ResponseEntity<Banner> update(@PathVariable Integer id, @ModelAttribute Banner banner, @RequestParam(value = "image", required = false) MultipartFile image){
         banner.setId(id);
         Banner resultBanner = bannerService.updateBanner(banner, image);
         if(resultBanner == null)
@@ -43,19 +42,22 @@ public class BannerRestController {
     }
 
     @PutMapping
-    public boolean updateSorting(@RequestBody List<Banner> bannerList){
-        return bannerService.updateSorting(bannerList);
+    public ResponseEntity updateSorting(@RequestBody List<Banner> bannerList){
+        if(bannerService.updateSorting(bannerList) == null)
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        else
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable Integer id){
-        bannerService.delete(id);
+        bannerService.deleteBanner(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("delete/{id}")
-    public boolean disable(@PathVariable Integer id){
-        return bannerService.disable(id);
+    public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
+        return bannerService.switchActivity(id, newActivityState);
     }
 
 }

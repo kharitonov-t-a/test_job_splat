@@ -74,4 +74,18 @@ public class Banner {
     public void setActivity(Boolean activity) {
         this.activity = activity;
     }
+
+    @Override
+    public String toString() {
+        return "Banner{" +
+                "id=" + id +
+                ", imgSrc='" + imgSrc + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", targetUrl='" + targetUrl + '\'' +
+                ", langId=" + langId +
+                ", priority=" + priority +
+                ", activity=" + activity +
+                '}';
+    }
 }

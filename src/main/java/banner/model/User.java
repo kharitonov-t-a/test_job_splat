@@ -5,6 +5,7 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private Boolean activity;
 
     public User(String username, String password) {
         this.username = username;
@@ -37,5 +38,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Boolean activity) {
+        this.activity = activity;
     }
 }

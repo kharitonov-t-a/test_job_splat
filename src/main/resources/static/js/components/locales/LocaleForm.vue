@@ -11,7 +11,7 @@
     import Locale from "components/locales/Locale.ts";
 
     @Component({
-        name: 'BannerRow'
+        name: 'LocaleForm'
     })
     export default class LocaleForm extends Vue {
 

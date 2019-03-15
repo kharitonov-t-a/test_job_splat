@@ -4,7 +4,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     // это соответствует поддержке браузеров у Vue
-    "target": "es5",
+    "target": "es2015",
     // это обеспечивает более строгий вывод для свойств данных в `this`
     "strict": true,
     // при использовании webpack 2+ или rollup, добавить поддержку tree-shaking:

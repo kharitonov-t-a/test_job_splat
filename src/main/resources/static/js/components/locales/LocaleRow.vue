@@ -13,6 +13,11 @@
                 <input type="button" value="Delete" @click="deleteLocale"/>
             </span>
         </div>
+        <div style="display:table-cell" v-if="!locale.activity">
+            <span>
+                <input type="button" value="Activate" @click="activateLocale"/>
+            </span>
+        </div>
     </div>
 </template>
 
@@ -26,7 +31,6 @@
     export default class LocaleRow extends Vue {
 
         @Prop() readonly locale!: Locale;
-        // @Prop() readonly localeList!: Array<Locale>;
 
         editLocale() {
             this.$emit('editLocale')
@@ -34,6 +38,10 @@
 
         deleteLocale() {
             this.$emit('deleteLocale')
+        }
+
+        activateLocale() {
+            this.$emit('activateLocale')
         }
     }
 </script>

@@ -12,6 +12,8 @@ public interface BannerService extends GenericService<Banner, Integer> {
 
     Banner updateBanner(Banner banner, MultipartFile image);
 
-    boolean updateSorting(List<Banner> bannerList);
+    List<Banner> updateSorting(List<Banner> bannerList);
+
+    boolean deleteBanner(Integer id);
 
 }

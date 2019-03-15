@@ -1,11 +1,26 @@
 package banner.controller;
 
-import banner.service.interfaces.BannerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.HandlerMapping;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 
 @Controller
 public class MainController {
@@ -13,10 +28,16 @@ public class MainController {
     @Value("${spring_profile_active}")
     private String profile;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("eventName", "FIFA 2018");
-        return "index2";
+    @GetMapping("/opt/apache-tomcat-8.5.35/**")
+    public ResponseEntity<byte[]> index(HttpServletRequest request) throws IOException {
+        String restOfTheUrl = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        File imgPath = new File(restOfTheUrl);
+        byte[] image = Files.readAllBytes(imgPath.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setContentLength(image.length);
+        return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
     @GetMapping("/banners")

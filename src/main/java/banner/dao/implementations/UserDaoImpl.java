@@ -1,27 +1,36 @@
 package banner.dao.implementations;
 
+import banner.dao.GenericDaoImpl;
+import banner.dao.GenericMapper;
 import banner.dao.interfaces.UserDao;
 import banner.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends GenericDaoImpl<User, Integer, GenericMapper<User>> implements UserDao {
 
-    private final String INSERT_SQL = "INSERT INTO User(username, password) values(?,?)";
-    private final String SELECT_ALL_SQL = "select id, username, password from User";
-    private final String SELECT_SQL_BY_USERNAME = "select * from User where username = ?";
+    @Override protected String getSELECT_ALL_SQL() { return "SELECT * FROM User ORDER BY id"; }
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Override protected String getSELECT_BY_ID_SQL() { return "SELECT * FROM User WHERE id = ?"; }
+
+    @Override protected String getTOTAL_DELETE_SQL() { return "DELETE FROM User WHERE id = ?"; }
+
+    @Override protected String getUPDATE_ACTIVITY_SQL() { return "UPDATE User SET activity = ? WHERE id = ?"; }
+
+    private final String INSERT_SQL =
+            "INSERT INTO User(username, password, activity) values(?,?,?)";
+
+    private final String UPDATE_SQL =
+            "UPDATE User SET username = ?, password = ?, activity = ? WHERE id = ?";
+
+    private final String SELECT_BY_USERNAME_SQL =
+            "select * from User where username = ?";
+
 
     @Override
     public User create(final User user) {
@@ -32,6 +41,7 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUsername());
                 ps.setString(2, user.getPassword());
+                ps.setInt(3, user.getActivity()?1:0);
                 return ps;
             }
         }, holder);
@@ -42,25 +52,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List findAll() {
-        return jdbcTemplate.query(SELECT_ALL_SQL, new UserMapper());
+    public User update(User user) {
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(UPDATE_SQL, Statement.NO_GENERATED_KEYS);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getActivity()?1:0);
+            ps.setInt(4, user.getId());
+            return ps;
+        });
+        return user;
     }
 
     @Override
     public User findUserByUsername(String username) {
-        return (User) jdbcTemplate.queryForObject(SELECT_SQL_BY_USERNAME, new Object[] { username }, new UserMapper());
+        return jdbcTemplate.queryForObject(SELECT_BY_USERNAME_SQL, new Object[] { username }, mapper);
     }
 
-    class UserMapper implements RowMapper {
-        @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User user = new User();
-            user.setId(rs.getInt("id"));
-            user.setUsername(rs.getString("username"));
-            user.setPassword(rs.getString("password"));
-            return user;
-        }
-    }
 }
 
 

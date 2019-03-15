@@ -2,7 +2,8 @@ package banner.model.enums;
 
 public enum UserRoles {
 
-    ADMIN;
+    ADMIN,
+    MANAGER;
 
     UserRoles() {
     }

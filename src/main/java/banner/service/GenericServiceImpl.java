@@ -32,8 +32,8 @@ public class GenericServiceImpl<Model, PK extends Serializable, Dao> implements 
     }
 
     @Override
-    public boolean disable(PK id) {
-        return ((GenericDaoImpl)dao).disable(id);
+    public boolean switchActivity(PK id, boolean newActivityState) {
+        return ((GenericDaoImpl)dao).switchActivity(id, newActivityState);
     }
 
     @Override

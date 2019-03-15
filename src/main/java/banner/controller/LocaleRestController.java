@@ -47,7 +47,7 @@ public class LocaleRestController {
     }
 
     @PutMapping("delete/{id}")
-    public boolean disable(@PathVariable Integer id){
-        return localeService.disable(id);
+    public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
+        return localeService.switchActivity(id, newActivityState);
     }
 }

@@ -1,9 +1,12 @@
 <template>
     <div>
+
         <locale-form :localeAttr="localeAttr"
                      :localeAttrChange="localeAttrChange"
                      v-on:saveLocale="saveLocale($event)"/>
+
         <div class="drop list" style="display:table">
+
             <div style="display:table-row">
                 <div style="display:table-cell">id</div>
                 <div style="display:table-cell">name</div>
@@ -11,15 +14,19 @@
                 <div style="display:table-cell"></div>
                 <div style="display:table-cell"></div>
             </div>
+
             <div class="table-row-group" style="display:table-row-group">
-                <locale-row v-for="(locale, index) in localeList"
+                <locale-row v-for="locale in localeList"
                             :key="locale.id"
                             :locale="locale"
+                            v-on:activateLocale="activateLocale(locale)"
                             v-on:editLocale="editLocale(locale)"
                             v-on:deleteLocale="deleteLocale(locale)">
                 </locale-row>
             </div>
+
         </div>
+
     </div>
 </template>
 
@@ -40,26 +47,19 @@
         @Prop() localeList!: Array<Locale>;
         localeAttr: Locale = new Locale();
         localeAttrChange: Boolean = true;
+        @Prop() localeMap!: Map<number, string>;
 
         constructor(){
             super();
-            // this.$resource('/locale/list').get().then(result =>
-            //     result.json().then((data : Locale[]) =>
-            //         data.forEach((locale : Locale)=> this.localeList.push(locale))
-            //     )
-            // );
         }
 
         public saveLocale(locale : Locale){
-
-            let formData = new FormData();
-            formData.append('name', locale.name);
-            formData.append('activity', locale.activity.toString());
 
             if (locale.id !== null) {
                 this.$resource('/locale{/id}').update({id: locale.id}, locale).then(result =>
                         result.json().then((data : Locale) => {
                             const index = LocaleList.getIndex(this.localeList, data.id);
+                            this.localeMap.set(data.id, data.name);
                             this.localeList.splice(index, 1, data);
                             this.clearForm();
                         }),
@@ -69,6 +69,7 @@
                 this.$resource('/locale{/id}').save({}, locale).then(result =>
                         result.json().then((data : Locale) => {
                             this.localeList.push(data);
+                            this.localeMap.set(data.id, data.name);
                             this.clearForm();
                         }),
                     reason => alert("Save error!"))
@@ -86,20 +87,31 @@
                 this.$resource('/locale{/id}').remove({id: locale.id}).then(result => {
                         if (result.ok) {
                             this.localeList.splice(this.localeList.indexOf(locale), 1);
+                            this.$emit("reloadBanners");
                         }
                     },
                     reason => alert("Error!"));
             } else {
-                this.$resource('/locale/delete{/id}').update({id: locale.id}, {}).then(result =>
-                        result.json().then((data : Object) => {
-                            locale.activity= false;
-                        }),
-                    reason => alert("Error!")
-                );
+                this.switchActivity(locale, false);
             }
         }
+        public activateLocale(locale : Locale){
+            this.switchActivity(locale, true);
+        }
 
-        clearForm(){
+        private switchActivity(locale : Locale, newActivityState : boolean){
+            let formData = new FormData();
+            formData.append('newActivityState', newActivityState.toString());
+            this.$resource('/locale/delete{/id}').update({id: locale.id}, formData).then(result =>
+                    result.json().then((data : Object) => {
+                        locale.activity= newActivityState;
+                        this.$emit("reloadBanners");
+                    }),
+                reason => alert("Error!")
+            );
+        }
+
+        private clearForm(){
             this.localeAttr = null;
             this.localeAttrChange = !this.localeAttrChange;
         }

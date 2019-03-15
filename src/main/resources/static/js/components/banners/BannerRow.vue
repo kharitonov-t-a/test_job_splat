@@ -10,7 +10,7 @@
         <div style="display:table-cell">{{ banner.width }}</div>
         <div style="display:table-cell">{{ banner.height }}</div>
         <div style="display:table-cell">{{ banner.targetUrl }}</div>
-        <div style="display:table-cell">{{ banner.langId }}</div>
+        <div style="display:table-cell">{{ localeMap.get(banner.langId) }}</div>
         <div style="display:table-cell">{{ banner.activity }}</div>
         <template v-if="!isSortBanners">
             <div style="display:table-cell">
@@ -21,6 +21,11 @@
             <div style="display:table-cell">
                 <span>
                     <input type="button" value="Delete" @click="deleteBanner"/>
+                </span>
+            </div>
+            <div style="display:table-cell" v-if="!selectedActivity">
+                <span>
+                   <input type="button" value="Activate" @click="activateBanner"/>
                 </span>
             </div>
         </template>
@@ -38,6 +43,11 @@
                 </span>
             </div>
         </template>
+        <div style="display:table-cell">
+                <span>
+                   <input type="button" value="History" @click="showHistory"/>
+                </span>
+        </div>
     </div>
 </template>
 
@@ -54,6 +64,8 @@
         @Prop() readonly banner!: Banner;
         @Prop() readonly bannerList!: Array<Banner>;
         @Prop() readonly isSortBanners!: boolean;
+        @Prop() readonly selectedActivity!: boolean;
+        @Prop() readonly localeMap!: Map<number, string>;
 
         isLastDownButton() {
             return BannerList.getIndex(this.bannerList, this.banner.id) === this.bannerList.length - 1;
@@ -71,12 +83,20 @@
             this.$emit('deleteBanner')
         }
 
+        activateBanner() {
+            this.$emit('activateBanner')
+        }
+
         upBanner() {
             this.$emit('upBanner')
         }
 
         downBanner() {
             this.$emit('downBanner')
+        }
+
+        showHistory() {
+            this.$emit('showHistory')
         }
     }
 </script>

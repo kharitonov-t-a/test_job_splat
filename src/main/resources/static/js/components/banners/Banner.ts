@@ -10,16 +10,6 @@ export default class Banner{
     public priority : number | null = null;
     public activity : boolean = true;
 
-    // static copyBanner(bannerRowFrom : Banner, bannerRowTo : Banner){
-    //     bannerRowTo.id = bannerRowFrom.id;
-    //     bannerRowTo.imgSrc = bannerRowFrom.imgSrc;
-    //     bannerRowTo.width = bannerRowFrom.width;
-    //     bannerRowTo.height = bannerRowFrom.height;
-    //     bannerRowTo.targetUrl = bannerRowFrom.targetUrl;
-    //     bannerRowTo.langId = bannerRowFrom.langId;
-    //     bannerRowTo.priority = bannerRowFrom.priority;
-    //     bannerRowTo.activity = bannerRowFrom.activity;
-    // }
     public copyBanner(bannerRowFrom : Banner){
         this.id = bannerRowFrom.id;
         this.imgSrc = bannerRowFrom.imgSrc;
@@ -34,6 +24,7 @@ export default class Banner{
     public clean(){
         this.id = null;
         this.imgSrc = null;
+        this.imgFile = null;
         this.width = null;
         this.height = null;
         this.targetUrl = null;

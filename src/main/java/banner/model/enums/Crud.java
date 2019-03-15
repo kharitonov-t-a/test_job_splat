@@ -3,8 +3,8 @@ package banner.model.enums;
 public enum Crud {
 
     CREATE(1),
-    READ(2),
-    UPDATE(3),
+    UPDATE(2),
+    SWITCH_ACTIVITY(3),
     DELETE(4),
     SORT(5);
 

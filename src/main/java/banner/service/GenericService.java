@@ -13,7 +13,7 @@ public interface GenericService<Model, PK extends Serializable> {
 
     void delete(PK id);
 
-    boolean disable(PK id);
+    boolean switchActivity(PK id, boolean newActivityState);
 
     List<Model> findAll();
 }

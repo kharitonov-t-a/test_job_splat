@@ -7,8 +7,11 @@ public interface BannerDao extends GenericDao<Banner, Integer> {
 
     Integer getMaxPriority();
 
-    void updatePriority(Banner banner);
-
     String getBannerImage(Integer id);
 
+    void updatePriority(Banner banner);
+
+    void switchActivityByLocale(Integer localeId, boolean newActivityState);
+
+    void cleanBanners();
 }

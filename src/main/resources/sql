@@ -1,9 +1,10 @@
 CREATE SCHEMA `banner` DEFAULT CHARACTER SET utf8 ;
 
 CREATE TABLE `banner`.`User` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(120) NOT NULL,
+  `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC));
 
@@ -18,18 +19,38 @@ CREATE TABLE `banner`.`Banner` (
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 
-CREATE TABLE `banner`.`Locale` (
+CREATE TABLE `banner`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 
+CREATE TABLE `banner`.`Audit` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idBanner` INT NOT NULL,
+  `idUser` INT NOT NULL,
+  `crud` TINYINT(1) NOT NULL,
+  `description` VARCHAR(300) NULL,
+  `date` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Audit_1_idx` (`idBanner` ASC),
+  INDEX `idUser_idx` (`idUser` ASC),
+  CONSTRAINT `idBanner`
+    FOREIGN KEY (`idBanner`)
+    REFERENCES `banner`.`Banner` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idUser`
+    FOREIGN KEY (`idUser`)
+    REFERENCES `banner`.`User` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 insert into banner.User values (1, 'admin', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi')
-INSERT INTO `banner`.`Locale` (`id`, `name`) VALUES ('1', 'RU');
-INSERT INTO `banner`.`Locale` (`id`, `name`) VALUES ('2', 'US');
-INSERT INTO `banner`.`Locale` (`id`, `name`) VALUES ('3', 'DE');
+INSERT INTO `banner`.`User` (`id`, `name`) VALUES ('1', 'RU');
+INSERT INTO `banner`.`User` (`id`, `name`) VALUES ('2', 'US');
+INSERT INTO `banner`.`User` (`id`, `name`) VALUES ('3', 'DE');
 
 
 
