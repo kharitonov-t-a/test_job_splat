@@ -56,6 +56,7 @@
     import BannerList from 'components/banners/BannerList.vue';
     import Banner from 'components/banners/Banner.ts';
     import GenericRowImpl from "../generics/implementations/GenericRowImpl";
+    import GenericListImpl from "../generics/implementations/GenericListImpl";
 
     @Component({
         name: 'BannerRow'
@@ -68,11 +69,11 @@
         @Prop() readonly localeMap!: Map<number, string>;
 
         isLastDownButton() {
-            return BannerList.getIndex(this.itemList, this.item.id) === this.itemList.length - 1;
+            return GenericListImpl.getIndex(this.itemList, this.item.id) === this.itemList.length - 1;
         }
 
         isFirstUpButton() {
-            return BannerList.getIndex(this.itemList, this.item.id) === 0;
+            return GenericListImpl.getIndex(this.itemList, this.item.id) === 0;
         }
 
 

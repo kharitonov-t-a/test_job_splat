@@ -28,6 +28,11 @@ public class AuditRestController {
         return auditService.findByUser(id);
     }
 
+    @GetMapping("list/username/{name}")
+    public List<Audit> listByUserName(@PathVariable String name) {
+        return auditService.findByUserName(name);
+    }
+
     @GetMapping("list/banner/{id}")
     public List<Audit> listByBanner(@PathVariable Integer id) {
         return auditService.findByBanner(id);

@@ -37,6 +37,11 @@ public class AuditDaoImpl extends GenericDaoImpl<Audit, Integer, GenericMapper<A
     private final String SELECT_BY_USER_SQL =
             "SELECT * FROM Audit WHERE idUser = ? ORDER BY date";
 
+    private final String SELECT_BY_USERNAME_SQL =
+            "SELECT * FROM Audit " +
+                    " LEFT JOIN User ON Audit.idUser = User.id" +
+                    " WHERE User.username = ? ORDER BY Audit.date";
+
     private final String SELECT_BY_BANNER_SQL =
             "SELECT * FROM Audit WHERE idBanner = ? ORDER BY date";
 
@@ -102,6 +107,18 @@ public class AuditDaoImpl extends GenericDaoImpl<Audit, Integer, GenericMapper<A
             PreparedStatement ps = connection.prepareStatement(CLEAN_AUDIT_SQL, Statement.NO_GENERATED_KEYS);
             return ps;
         });
+    }
+
+    @Override
+    public List<Audit> findByUserName(String name) {
+        return jdbcTemplate.query(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(SELECT_BY_USERNAME_SQL, Statement.NO_GENERATED_KEYS);
+                ps.setString(1, name);
+                return ps;
+            }
+        }, mapper);
     }
 
     private List<Audit> findBySome(String query, Integer id) {

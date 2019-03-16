@@ -12,4 +12,6 @@ public interface AuditDao  extends GenericDao<Audit, Integer> {
     List<Audit> findByBanner(Integer id);
 
     void cleanAudit();
+
+    List<Audit> findByUserName(String name);
 }

@@ -23,10 +23,12 @@
     import BannerList from 'components/banners/BannerList.vue';
     import LocaleList from 'components/locales/LocaleList.vue';
     import UserList from 'components/users/UserList.vue';
+    import AuditList from 'components/audits/AuditList.vue';
     import Header from 'components/Header.vue';
     import Locale from "../components/locales/Locale";
     import Banner from "../components/banners/Banner";
     import User from "../components/users/User";
+    import Audit from "../components/audits/Audit";
 
     type AppTabList = {
         component: string;
@@ -40,17 +42,16 @@
             BannerList,
             LocaleList,
             UserList,
+            AuditList,
             Header
         }
     })
     export default class App extends Vue {
 
-
-
-
         totalLocaleList: Array<Locale> = [];
         totalBannerList: Array<Banner> = [];
         totalUserList: Array<User> = [];
+        auditList: Array<Audit> = [];
 
         appTabList: AppTabList[] = [{
             component: 'BannerList',
@@ -67,6 +68,11 @@
             title: 'Users',
             totalItemList: this.totalUserList,
             pathURL: '/user',
+        }, {
+            component: 'AuditList',
+            title: 'History',
+            totalItemList: [],
+            pathURL: "",
         }];
         currentTab: AppTabList = this.appTabList[0];
 

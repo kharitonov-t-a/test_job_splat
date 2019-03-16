@@ -3,7 +3,7 @@ import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
 import VueDraggable from 'vue-draggable'
 
-Vue.use(VueDraggable)
+Vue.use(VueDraggable.install);
 Vue.use(VueResource);
 
 new Vue({

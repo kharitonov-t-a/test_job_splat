@@ -20,4 +20,9 @@ public class AuditServiceImpl extends GenericServiceImpl<Audit, Integer, AuditDa
     public List<Audit> findByBanner(Integer id) {
         return dao.findByBanner(id);
     }
+
+    @Override
+    public List<Audit> findByUserName(String name) {
+        return dao.findByUserName(name);
+    }
 }

@@ -1,6 +1,7 @@
 <template>
         <div class="drop list" style="display:table">
-
+            <input type="text" placeholder="width" v-model="searchValue"/>
+            <input type="button" value="Search" @click="searchHistory"/>
             <div style="display:table-row">
                 <div style="display:table-cell">id</div>
                 <div style="display:table-cell">date</div>
@@ -11,7 +12,7 @@
             </div>
 
             <div class="table-row-group" style="display:table-row-group">
-                <audit-row v-for="audit in auditList"
+                <audit-row v-for="audit in itemList"
                             :key="audit.id"
                             :audit="audit">
                 </audit-row>
@@ -32,7 +33,36 @@
         }
     })
     export default class AuditList extends Vue {
-        @Prop() auditList!: Array<Audit>;
+        @Prop({default () : Array<Audit> { return [] }}) readonly auditList: Array<Audit>;
+        itemList: Array<Audit> = this.auditList;
+        searchValue : string | number = null;
+
+        // update(){
+        //     this.auditList.forEach(value => this.itemList.push(value));
+        // }
+
+        searchHistory(){
+            if(this.searchValue === null || this.searchValue === "")
+                this.itemList = new Array<Audit>();
+            else if(!isNaN(Number(this.searchValue))){
+                this.searchHistoryBy("/banner");
+            }else {
+                this.searchHistoryBy("/username");
+            }
+        }
+        searchHistoryBy(pathURL : string){
+            this.itemList = new Array<Audit>();
+            this.$resource('/audit/list' + pathURL + '{/id}').get({id: this.searchValue}).then(result =>
+                result.json().then((data : Audit[]) => {
+                    data.forEach((audit: Audit) => this.itemList.push(audit))
+                })
+            );
+        }
+
+
+
+
+
     }
 
 </script>

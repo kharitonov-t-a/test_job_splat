@@ -10,4 +10,6 @@ public interface AuditService extends GenericService<Audit, Integer> {
     List<Audit> findByUser(Integer id);
 
     List<Audit> findByBanner(Integer id);
+
+    List<Audit> findByUserName(String name);
 }
