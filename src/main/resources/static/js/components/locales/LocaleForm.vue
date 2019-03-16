@@ -1,42 +1,30 @@
 <template>
     <div>
-        <input type="text" placeholder="width" v-model="locale.name"/>
-        <input type="button" value="Save" @click="saveLocale"/>
-        <input type="button" value="Cancel" @click="clearForm"/>
+        <input type="text" placeholder="width" v-model="item.name"/>
+        <input type="button" value="Save" @click="saveItem"/>
+        <input type="button" value="Cancel" @click="cleanForm"/>
     </div>
 </template>
 
 <script lang="ts">
     import {Vue, Component, Prop, Watch} from "vue-property-decorator";
     import Locale from "components/locales/Locale.ts";
+    import GenericFormImpl from "../generics/implementations/GenericFormImpl";
 
     @Component({
         name: 'LocaleForm'
     })
-    export default class LocaleForm extends Vue {
+    export default class LocaleForm extends GenericFormImpl<Locale> {
 
-        @Prop() localeAttr!: Locale;
-        locale: Locale = new Locale();
-        @Prop() readonly localeAttrChange : boolean;
-
-        saveLocale() {
-            this.$emit('saveLocale', this.locale);
+        constructor(){
+            super();
+            this.item = new Locale();
         }
 
-        @Watch('localeAttrChange')
-        getLocaleAttr(){
-            if(this.localeAttr !== null){
-                this.locale.copyLocale(this.localeAttr);
-            }else{
-                this.clearForm();
-            }
+        checkItemBeforeSave(): boolean {
+            return this.item.name != null;
         }
 
-        clearForm(){
-            this.locale.id = null;
-            this.locale.name = null;
-            this.locale.activity = true;
-        }
     }
 </script>
 

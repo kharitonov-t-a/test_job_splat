@@ -1,21 +1,21 @@
 <template>
     <div class="table-row" style="display:table-row">
-        <div style="display:table-cell">{{ locale.id }}</div>
-        <div style="display:table-cell">{{ locale.name }}</div>
-        <div style="display:table-cell">{{ locale.activity }}</div>
+        <div style="display:table-cell">{{ item.id }}</div>
+        <div style="display:table-cell">{{ item.name }}</div>
+        <div style="display:table-cell">{{ item.activity }}</div>
         <div style="display:table-cell">
             <span>
-               <input type="button" value="Edit" @click="editLocale"/>
+               <input type="button" value="Edit" @click="editItem"/>
             </span>
         </div>
         <div style="display:table-cell">
             <span>
-                <input type="button" value="Delete" @click="deleteLocale"/>
+                <input type="button" value="Delete" @click="deleteItem"/>
             </span>
         </div>
-        <div style="display:table-cell" v-if="!locale.activity">
+        <div style="display:table-cell" v-if="!item.activity">
             <span>
-                <input type="button" value="Activate" @click="activateLocale"/>
+                <input type="button" value="Activate" @click="activateItem"/>
             </span>
         </div>
     </div>
@@ -24,25 +24,13 @@
 <script lang="ts">
     import {Vue, Component, Prop} from "vue-property-decorator";
     import Locale from "components/locales/Locale.ts";
+    import GenericRowImpl from "../generics/implementations/GenericRowImpl";
 
     @Component({
         name: 'LocaleRow'
     })
-    export default class LocaleRow extends Vue {
+    export default class LocaleRow extends GenericRowImpl<Locale> {
 
-        @Prop() readonly locale!: Locale;
-
-        editLocale() {
-            this.$emit('editLocale')
-        }
-
-        deleteLocale() {
-            this.$emit('deleteLocale')
-        }
-
-        activateLocale() {
-            this.$emit('activateLocale')
-        }
     }
 </script>
 

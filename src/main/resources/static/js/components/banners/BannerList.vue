@@ -1,23 +1,22 @@
-<!--suppress ALL -->
 <template>
     <div>
 
-        <banner-form :bannerAttr="bannerAttr"
-                     :bannerAttrChange="bannerAttrChange"
+        <banner-form :itemAttr="itemAttr"
+                     :itemAttrChange="itemAttrChange"
                      :isSortBanners="isSortBanners"
                      :localeList="localeList"
-                     v-on:saveBanner="saveBanner($event)"/>
+                     v-on:saveItem="saveItem(fillSaveFormData($event), $event.id)"/>
 
         <input type="button" v-bind:value="isSortBannersButtonText" @click="sortBanner"/>
 
-        <select v-model="selectedLocaleId" @change="filterBanner" :disabled="isSortBanners">
+        <select v-model="selectedLocaleId" @change="filterItem" :disabled="isSortBanners">
             <option v-bind:value="0">All</option>
             <option v-for="locale in localeList" v-bind:value="locale.id"  v-if="locale.activity">
                 {{ locale.name }}
             </option>
         </select>
 
-        <select v-model="selectedActivity" @change="filterBanner" :disabled="isSortBanners">
+        <select v-model="selectedActivity" @change="filterItem" :disabled="isSortBanners">
             <option v-bind:value="true">Actived</option>
             <option v-bind:value="false">Disabled</option>
         </select>
@@ -39,19 +38,19 @@
             </div>
 
             <div class="table-row-group" style="display:table-row-group">
-                <banner-row v-for="banner in bannerList"
-                            :key="banner.id"
-                            :banner="banner"
-                            :bannerList="bannerList"
+                <banner-row v-for="item in itemList"
+                            :key="item.id"
+                            :item="item"
+                            :itemList="itemList"
                             :isSortBanners="isSortBanners"
                             :selectedActivity="selectedActivity"
                             :localeMap="localeMap"
-                            v-on:editBanner="editBanner(banner)"
-                            v-on:deleteBanner="deleteBanner(banner)"
-                            v-on:activateBanner="activateBanner(banner)"
-                            v-on:upBanner="upBanner(banner)"
-                            v-on:downBanner="downBanner(banner)"
-                            v-on:showHistory="showHistory(banner)">
+                            v-on:editItem="editItem(item)"
+                            v-on:deleteItem="deleteItem(item)"
+                            v-on:activateItem="activateItem(item)"
+                            v-on:upBanner="upBanner(item)"
+                            v-on:downBanner="downBanner(item)"
+                            v-on:showHistory="showHistory(item)">
                 </banner-row>
             </div>
 
@@ -73,6 +72,7 @@
     import Audit from 'components/audits/Audit.ts';
     import Banner from 'components/banners/Banner.ts';
     import Locale from "components/locales/Locale.ts";
+    import GenericListImpl from "../generics/implementations/GenericListImpl";
 
     @Component({
         name: 'BannerList',
@@ -98,36 +98,27 @@
         }*/
     })
 
-    export default class BannerList extends Vue {
+    export default class BannerList extends GenericListImpl<Banner> {
 
-        bannerList: Array<Banner> = new Array<Banner>();
-        @Prop() totalBannerList: Array<Banner>;
-        @Prop() readonly localeList!: Array<Locale>;
-        @Prop() readonly localeMap!: Map<number, string>;
-        bannerAttr: Banner = new Banner();
-        bannerAttrChange: Boolean = true;
-        isSortBanners : boolean = false;
-        isSortBannersButtonText : string = "Sort banners!";
         selectedLocaleId : number = 0;
         selectedActivity : boolean = true;
-        showAuditTab : boolean = false;
-        auditList: Array<Audit> = new Array<Audit>();
+        isSortBanners : boolean = false;
+        isSortBannersButtonText : string = "Sort banners!";
 
-        // activity : number<0,1,2> = 0;
+        @Prop() readonly localeList!: Array<Locale>;
 
 
-
-        @Watch('totalBannerList')
+        @Watch('totalItemList')
         getBannerAttr(){
             this.selectedLocaleId = 0;
-            this.filterBanner();
+            this.filterItem();
         }
 
-        filterBanner(){
+        filterItem(){
             this.showAuditTab = false;
             let selectedLocaleId = this.selectedLocaleId;
             let selectedActivity = this.selectedActivity;
-            this.bannerList = this.totalBannerList.filter(function (banner) {
+            this.itemList = this.totalItemList.filter(function (banner) {
 
                 return checkActivity() && checkLocale();
 
@@ -140,144 +131,64 @@
                 function checkActivity() {
                     return banner.activity === selectedActivity;
                 }
-
-
             }).sort((a, b) => a.priority>b.priority?1:-1);
-        }
-
-        static getIndex(list : Array<Banner>, id : Number) {
-            for (var i = 0; i < list.length; i++) {
-                if (list[i].id === id) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public editBanner(banner: Banner) {
-            this.showAuditTab = false;
-            this.clearForm();
-            this.bannerAttr = banner;
-        }
-
-        private clearForm(){
-            this.bannerAttr = null;
-            this.bannerAttrChange = !this.bannerAttrChange;
-        }
-
-        public deleteBanner(banner : Banner){
-            this.showAuditTab = false;
-            this.clearForm();
-            if (banner.activity === false) {
-                this.$resource('/banner{/id}').remove({id: banner.id}).then(result => {
-                    if (result.ok) {
-                        this.totalBannerList.splice(this.totalBannerList.indexOf(banner), 1);
-                        this.filterBanner();
-                    }
-                },
-                reason => alert("Error!"));
-            } else {
-                this.switchActivity(banner, false);
-            }
-        }
-
-        public activateBanner(banner : Banner){
-            this.showAuditTab = false;
-            this.switchActivity(banner, true);
-        }
-
-        private switchActivity(banner : Banner, newActivityState : boolean){
-            let formData = new FormData();
-            formData.append('newActivityState', newActivityState.toString());
-            this.$resource('/banner/delete{/id}').update({id: banner.id}, formData).then(result =>
-                    result.json().then((data : Object) => {
-                        banner.activity= newActivityState;
-                        this.filterBanner();
-                    }),
-                reason => alert("Error!")
-            );
-        }
-
-        public saveBanner(banner : Banner){
-            this.showAuditTab = false;
-            let formData = new FormData();
-            formData.append('image', banner.imgFile);
-            formData.append('imgSrc', banner.imgSrc);
-            formData.append('width', banner.width.toString());
-            formData.append('height', banner.height.toString());
-            formData.append('targetUrl', banner.targetUrl);
-            formData.append('langId', banner.langId.toString());
-            formData.append('activity', banner.activity.toString());
-
-            if (banner.id !== null) {
-                formData.append('priority', banner.priority.toString());
-                this.$resource('/banner{/id}').update({id: banner.id}, formData).then(result =>
-                    result.json().then((data : Banner) => {
-                        const index = BannerList.getIndex(this.totalBannerList, data.id);
-                        this.totalBannerList.splice(index, 1, data);
-                        this.clearForm();
-                        this.filterBanner();
-                    }),
-                    reason => alert("Error!")
-                );
-            } else {
-                this.$resource('/banner{/id}').save({}, formData).then(result =>
-                    result.json().then((data : Banner) => {
-                        this.totalBannerList.push(data);
-                        this.clearForm();
-                        this.filterBanner();
-                    }),
-                    reason => alert("Save error! There is no image!"))
-            }
         }
 
         public upBanner(banner: Banner) {
             this.swapTwoBanners(banner, -1);
-            this.clearForm()
+            this.cleanForm()
         }
         public downBanner(banner: Banner) {
             this.swapTwoBanners(banner, 1);
-            this.clearForm()
+            this.cleanForm()
         }
 
         private swapTwoBanners(banner: Banner, indent : number){
             this.showAuditTab = false;
-            const index1 = BannerList.getIndex(this.bannerList, banner.id);
+            const index1 = GenericListImpl.getIndex(this.itemList, banner.id);
             const index2 = index1 + indent;
             const currentPriority = banner.priority;
-            this.bannerList[index1].priority = this.bannerList[index2].priority;
-            this.bannerList[index2].priority = currentPriority;
-            this.bannerList.splice(index1, 1, this.bannerList[index2]);
-            this.bannerList.splice(index2, 1, banner);
+            this.itemList[index1].priority = this.itemList[index2].priority;
+            this.itemList[index2].priority = currentPriority;
+            this.itemList.splice(index1, 1, this.itemList[index2]);
+            this.itemList.splice(index2, 1, banner);
         }
 
         sortBanner(){
             this.showAuditTab = false;
-            this.clearForm();
+            this.cleanForm();
             if(this.isSortBanners){
-                this.$resource('/banner{/id}').update(this.bannerList).then(result => {
-                    if (result.ok) {
-                        this.filterBanner();
-                        this.isSortBanners = false;
-                        this.isSortBannersButtonText = "Sort banners!!"
-                    }
-                },
-                reason => alert("Error!"));
+                this.$resource(this.pathURL + '{/id}').update(this.itemList).then(result => {
+                        if (result.ok) {
+                            this.filterItem();
+                            this.isSortBanners = false;
+                            this.isSortBannersButtonText = "Sort banners!!"
+                        }
+                    },
+                    reason => alert("Error!"));
             }else{
                 this.isSortBanners = true;
                 this.isSortBannersButtonText = "Save!"
             }
         }
 
-        showHistory(banner : Banner){
-            this.auditList = new Array<Audit>();
-            this.$resource('/audit/list/banner{/id}').get({id: banner.id}).then(result =>
-                result.json().then((data : Audit[]) => {
-                    data.forEach((audit: Audit) => this.auditList.push(audit))
-                    this.showAuditTab = true;
-                })
-            );
+        fillSaveFormData(item: Banner): FormData {
+            let formData = new FormData();
+            formData.append('image', item.imgFile);
+            formData.append('imgSrc', item.imgSrc);
+            formData.append('width', item.width.toString());
+            formData.append('height', item.height.toString());
+            formData.append('targetUrl', item.targetUrl);
+            formData.append('langId', item.langId.toString());
+            formData.append('activity', item.activity.toString());
+
+            if (item.id !== null)
+                formData.append('priority', item.priority.toString());
+            return formData;
         }
+
+
+
 
     }
 </script>

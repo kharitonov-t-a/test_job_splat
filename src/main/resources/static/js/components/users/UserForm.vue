@@ -1,44 +1,31 @@
 <template>
     <div>
-        <input type="text" placeholder="username" v-model="user.username"/>
-        <input type="text" placeholder="password" v-model="user.password"/>
-        <input type="button" value="Save" @click="saveUser"/>
-        <input type="button" value="Cancel" @click="clearForm"/>
+        <input type="text" placeholder="username" v-model="item.username"/>
+        <input type="text" placeholder="password" v-model="item.password"/>
+        <input type="button" value="Save" @click="saveItem"/>
+        <input type="button" value="Cancel" @click="cleanForm"/>
     </div>
 </template>
 
 <script lang="ts">
     import {Vue, Component, Prop, Watch} from "vue-property-decorator";
     import User from "components/users/User.ts";
+    import GenericFormImpl from "../generics/implementations/GenericFormImpl";
 
     @Component({
         name: 'UserForm'
     })
-    export default class UserForm extends Vue {
+    export default class UserForm extends GenericFormImpl<User> {
 
-        @Prop() userAttr!: User;
-        user: User = new User();
-        @Prop() readonly userAttrChange : boolean;
-
-        saveUser() {
-            this.$emit('saveUser', this.user);
+        constructor(){
+            super();
+            this.item = new User();
         }
 
-        @Watch('userAttrChange')
-        getUserAttr(){
-            if(this.userAttr !== null){
-                this.user.copyUser(this.userAttr);
-            }else{
-                this.clearForm();
-            }
+        checkItemBeforeSave(): boolean {
+            return this.item.username != null;
         }
 
-        clearForm(){
-            this.user.id = null;
-            this.user.username = null;
-            this.user.password = null;
-            this.user.activity = true;
-        }
     }
 </script>
 

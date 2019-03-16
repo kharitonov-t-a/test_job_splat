@@ -15,5 +15,13 @@
   },
   "files": [
     "vue-shims.d.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "src/**/*.html"
   ]
 }

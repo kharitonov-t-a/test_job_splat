@@ -8,77 +8,60 @@
             <img :src="image" width="100"/>
             <button @click="removeImage">Remove image</button>
         </div>
-        <input type="text" placeholder="width" v-model="banner.width"/>
-        <input type="text" placeholder="height" v-model="banner.height"/>
-        <input type="text" placeholder="targetUrl" v-model="banner.targetUrl"/>
-        <select v-model="banner.langId">
+        <input type="text" placeholder="width" v-model="item.width"/>
+        <input type="text" placeholder="height" v-model="item.height"/>
+        <input type="text" placeholder="targetUrl" v-model="item.targetUrl"/>
+        <select v-model="item.langId">
             <option v-bind:value="null" selected>Select locale</option>
             <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
                 {{ locale.name }}
             </option>
         </select>
-        <input type="button" value="Save" @click="saveBanner" :disabled="isSortBanners"/>
-        <input type="button" value="Cancel" @click="clearForm"/>
+        <input type="button" value="Save" @click="saveItem" :disabled="isSortBanners"/>
+        <input type="button" value="Cancel" @click="cleanForm"/>
     </div>
 </template>
 
 <script lang="ts">
     import {Vue, Component, Prop, Watch} from "vue-property-decorator";
-    import Banner from "components/banners/Banner.ts"
+    import Banner from "components/banners/Banner.ts";
     import Locale from "components/locales/Locale.ts";
+    import GenericFormImpl from "components/generics/implementations/GenericFormImpl.ts";
 
     @Component({
         name: 'BannerForm'
     })
-    export default class BannerForm extends Vue {
+    export default class BannerForm extends GenericFormImpl<Banner> {
 
-        @Prop() bannerAttr!: Banner;
         @Prop() readonly localeList!: Array<Locale>;
         @Prop() readonly isSortBanners : boolean;
-        @Prop() readonly bannerAttrChange : boolean;
-
-        banner : Banner = new Banner();
         image : any = null;
 
-        // /**
-        //  * set locale only for create new banner
-        //  */
-        // @Watch('localeList')
-        // setActiveLocaleChoice(){
-        //     if(this.banner.langId === null) {
-        //         for(var i = 0; i < this.localeList.length; i ++){
-        //             if (this.localeList[i].activity == true) {
-        //                 this.banner.langId = this.localeList[i].id;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
+        constructor(){
+            super();
+            this.item = new Banner();
+        }
 
-        @Watch('bannerAttrChange')
-        getBannerAttr(){
-            if(this.bannerAttr !== null){
-                this.banner.copyBanner(this.bannerAttr);
-                this.image = this.bannerAttr.imgSrc;
+        @Watch('itemAttrChange')
+        getItemAttr(){
+            if(this.itemAttr !== null){
+                this.item.copyItem(this.itemAttr);
+                this.image = this.itemAttr.imgSrc;
             }else{
-                this.clearForm();
+                this.cleanForm();
             }
         }
 
-        saveBanner() {
-            if(this.banner.imgFile != null
-                && this.banner.height != null
-                && this.banner.width != null
-                && this.banner.langId != null
-                && this.banner.targetUrl != null){
-                this.$emit('saveBanner', this.banner);
-            }else{
-                alert("Fill the fields!");
-            }
+        checkItemBeforeSave(): boolean {
+            return this.item.imgFile != null
+                && this.item.height != null
+                && this.item.width != null
+                && this.item.langId != null
+                && this.item.targetUrl != null;
         }
 
-        clearForm(){
-            this.banner.clean();
+        cleanForm(): void {
+            this.item.clean();
             this.image = '';
         }
 
@@ -86,7 +69,7 @@
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
-            this.banner.imgFile = files[0];
+            this.item.imgFile = files[0];
             this.createImage(files[0]);
 
         }
@@ -103,7 +86,6 @@
         removeImage () {
             this.image = '';
         }
-
     }
 </script>
 

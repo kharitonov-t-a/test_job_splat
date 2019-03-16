@@ -4,12 +4,12 @@
             <header is="Header" :appTabList="appTabList" @change-tab="changeTab"></header>
             <keep-alive>
                 <component
-                        :is="currentTab"
+                        :is="currentTab.component"
                         class="col-sm-10"
-                        :localeList="localeList"
-                        :userList="userList"
-                        :totalBannerList="totalBannerList"
+                        :totalItemList="currentTab.totalItemList"
                         :localeMap="localeMap"
+                        :localeList="totalLocaleList"
+                        :pathURL="currentTab.pathURL"
                         v-on:reloadBanners="reloadBanners()"
                 ></component>
             </keep-alive>
@@ -24,10 +24,16 @@
     import LocaleList from 'components/locales/LocaleList.vue';
     import UserList from 'components/users/UserList.vue';
     import Header from 'components/Header.vue';
-    import Locale from 'components/locales/Locale.ts';
-    import Banner from 'components/banners/Banner.ts';
-    import User from 'components/users/User.ts';
+    import Locale from "../components/locales/Locale";
+    import Banner from "../components/banners/Banner";
+    import User from "../components/users/User";
 
+    type AppTabList = {
+        component: string;
+        title: string;
+        totalItemList: Array<any>;
+        pathURL: string;
+    };
 
     @Component({
         components: {
@@ -38,25 +44,36 @@
         }
     })
     export default class App extends Vue {
-        appTabList: Array<{ component: string, title: string }> = [{
+
+
+
+
+        totalLocaleList: Array<Locale> = [];
+        totalBannerList: Array<Banner> = [];
+        totalUserList: Array<User> = [];
+
+        appTabList: AppTabList[] = [{
             component: 'BannerList',
-            title: 'Banners'
+            title: 'Banners',
+            totalItemList: this.totalBannerList,
+            pathURL: '/banner',
         }, {
             component: 'LocaleList',
-            title: 'Locales'
+            title: 'Locales',
+            totalItemList: this.totalLocaleList,
+            pathURL: '/locale',
         }, {
             component: 'UserList',
-            title: 'Users'
+            title: 'Users',
+            totalItemList: this.totalUserList,
+            pathURL: '/user',
         }];
-        currentTab: string = this.appTabList[0].component;
+        currentTab: AppTabList = this.appTabList[0];
 
-        localeList: Array<Locale> = new Array<Locale>();
-        totalBannerList: Array<Banner> = new Array<Banner>();
         localeMap : Map<number, string> = new Map();
-        userList: Array<User> = new Array<User>();
 
-        changeTab(appTab: { component: string, title: string }) {
-            this.currentTab = appTab.component;
+        changeTab(appTab: AppTabList) {
+            this.currentTab = appTab;
         }
 
         constructor(){
@@ -65,27 +82,23 @@
             this.$resource('/locale/list').get().then(result =>
                 result.json().then((data : Locale[]) => {
                     data.forEach((locale : Locale)=> {
-                        this.localeList.push(locale);
+                        this.totalLocaleList.push(locale);
                         this.localeMap.set(locale.id, locale.name);
                     });
-                    this.$resource('/banner/list').get().then(result =>
-                        result.json().then((data : Banner[]) => {
-                            data.forEach((banner: Banner) => this.totalBannerList.push(banner))
-
-                        })
-                    );
+                    this.reloadBanners();
                 })
             );
             this.$resource('/user/list').get().then(result =>
                 result.json().then((data : User[]) => {
-                    data.forEach((user: User) => this.userList.push(user))
+                    data.forEach((user: User) => this.totalUserList.push(user))
 
                 })
             );
         }
 
         reloadBanners(){
-            this.totalBannerList = new Array<Banner>();
+            if(this.totalBannerList.length > 0)
+                this.totalBannerList = new Array<Banner>();
             this.$resource('/banner/list').get().then(result =>
                 result.json().then((data : Banner[]) => {
                     data.forEach((banner: Banner) => this.totalBannerList.push(banner))

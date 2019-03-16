@@ -1,6 +1,8 @@
-export default class Banner{
+import Model from "../Model";
 
-    public id : number | null = null;
+export default class Banner extends Model{
+
+    // public id : number | null = null;
     public imgSrc : string | null = null;
     public imgFile : any | null = null;
     public width : number | null = null;
@@ -8,18 +10,7 @@ export default class Banner{
     public targetUrl : string | null = null;
     public langId : number | null = null;
     public priority : number | null = null;
-    public activity : boolean = true;
-
-    public copyBanner(bannerRowFrom : Banner){
-        this.id = bannerRowFrom.id;
-        this.imgSrc = bannerRowFrom.imgSrc;
-        this.width = bannerRowFrom.width;
-        this.height = bannerRowFrom.height;
-        this.targetUrl = bannerRowFrom.targetUrl;
-        this.langId = bannerRowFrom.langId;
-        this.priority = bannerRowFrom.priority;
-        this.activity = bannerRowFrom.activity;
-    }
+    // public activity : boolean = true;
 
     public clean(){
         this.id = null;
@@ -33,6 +24,14 @@ export default class Banner{
         this.activity = true;
     }
 
-
-
+    copyItem<T extends Model>(localeRowFrom: T): void {
+        this.id = localeRowFrom.id;
+        this.imgSrc = (<Banner><unknown>localeRowFrom).imgSrc;
+        this.width = (<Banner><unknown>localeRowFrom).width;
+        this.height = (<Banner><unknown>localeRowFrom).height;
+        this.targetUrl = (<Banner><unknown>localeRowFrom).targetUrl;
+        this.langId = (<Banner><unknown>localeRowFrom).langId;
+        this.priority = (<Banner><unknown>localeRowFrom).priority;
+        this.activity = localeRowFrom.activity;
+    }
 }

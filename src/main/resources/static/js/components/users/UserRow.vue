@@ -1,21 +1,21 @@
 <template>
     <div class="table-row" style="display:table-row">
-        <div style="display:table-cell">{{ user.id }}</div>
-        <div style="display:table-cell">{{ user.username }}</div>
-        <div style="display:table-cell">{{ user.activity }}</div>
+        <div style="display:table-cell">{{ item.id }}</div>
+        <div style="display:table-cell">{{ item.username }}</div>
+        <div style="display:table-cell">{{ item.activity }}</div>
         <div style="display:table-cell">
             <span>
-               <input type="button" value="Edit" @click="editUser"/>
+               <input type="button" value="Edit" @click="editItem"/>
             </span>
         </div>
         <div style="display:table-cell">
             <span>
-                <input type="button" value="Delete" @click="deleteUser"/>
+                <input type="button" value="Delete" @click="deleteItem"/>
             </span>
         </div>
-        <div style="display:table-cell" v-if="!user.activity">
+        <div style="display:table-cell" v-if="!item.activity">
             <span>
-                <input type="button" value="Activate" @click="activateUser"/>
+                <input type="button" value="Activate" @click="activateItem"/>
             </span>
         </div>
         <div style="display:table-cell">
@@ -29,29 +29,14 @@
 <script lang="ts">
     import {Vue, Component, Prop} from "vue-property-decorator";
     import User from "components/users/User.ts";
+    import GenericRowImpl from "../generics/implementations/GenericRowImpl";
 
     @Component({
         name: 'UserRow'
     })
-    export default class UserRow extends Vue {
+    export default class UserRow extends GenericRowImpl<User> {
 
-        @Prop() readonly user!: User;
 
-        editUser() {
-            this.$emit('editUser')
-        }
-
-        deleteUser() {
-            this.$emit('deleteUser')
-        }
-
-        activateUser() {
-            this.$emit('activateUser')
-        }
-
-        showHistory() {
-            this.$emit('showHistory')
-        }
     }
 </script>
 
