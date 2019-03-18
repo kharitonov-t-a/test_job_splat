@@ -23,10 +23,10 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer, GenericMapper<Use
     @Override protected String getUPDATE_ACTIVITY_SQL() { return "UPDATE User SET activity = ? WHERE id = ?"; }
 
     private final String INSERT_SQL =
-            "INSERT INTO User(username, password, activity) values(?,?,?)";
+            "INSERT INTO User(username, password, role, activity) values(?,?,?,?)";
 
     private final String UPDATE_SQL =
-            "UPDATE User SET username = ?, password = ?, activity = ? WHERE id = ?";
+            "UPDATE User SET username = ?, password = ?, role = ?, activity = ? WHERE id = ?";
 
     private final String SELECT_BY_USERNAME_SQL =
             "select * from User where username = ?";
@@ -41,7 +41,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer, GenericMapper<Use
                 PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUsername());
                 ps.setString(2, user.getPassword());
-                ps.setInt(3, user.getActivity()?1:0);
+                ps.setString(3, user.getRole().toString());
+                ps.setInt(4, user.getActivity()?1:0);
                 return ps;
             }
         }, holder);
@@ -57,8 +58,9 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer, GenericMapper<Use
             PreparedStatement ps = connection.prepareStatement(UPDATE_SQL, Statement.NO_GENERATED_KEYS);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
-            ps.setInt(3, user.getActivity()?1:0);
-            ps.setInt(4, user.getId());
+            ps.setString(3, user.getRole().toString());
+            ps.setInt(4, user.getActivity()?1:0);
+            ps.setInt(5, user.getId());
             return ps;
         });
         return user;

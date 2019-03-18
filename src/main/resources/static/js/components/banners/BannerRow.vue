@@ -48,6 +48,14 @@
                    <input type="button" value="History" @click="showHistory"/>
                 </span>
         </div>
+        <div style="display:table-cell">
+            <router-link :to="{
+                path: '/banner/' + item.id,
+                query:{
+                    item: item
+                }
+            }" >Admin panel</router-link>
+        </div>
     </div>
 </template>
 

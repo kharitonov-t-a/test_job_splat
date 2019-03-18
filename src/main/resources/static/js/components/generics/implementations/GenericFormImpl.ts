@@ -8,6 +8,8 @@ export default class GenericFormImpl<T extends Model> extends Vue implements Gen
     @Prop() itemAttr!: T;
     item: T;
     @Prop() readonly itemAttrChange: boolean;
+    @Prop() readonly errorsForm: Array<any>;
+    errorsFormMap: Map<string, string> = new Map();
 
     saveItem(): void {
         if(this.checkItemBeforeSave())
@@ -23,6 +25,14 @@ export default class GenericFormImpl<T extends Model> extends Vue implements Gen
         }else{
             this.cleanForm();
         }
+    }
+
+    @Watch('errorsForm')
+    setErrorsForm() : void{
+        this.errorsFormMap = new Map<string, string>();
+        this.errorsForm.forEach(value => {
+            this.errorsFormMap.set(value.field, value.code);//value.defaultMessage
+        });
     }
 
     cleanForm(): void {

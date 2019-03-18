@@ -47,7 +47,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
             deleteOldBannerImage(banner.getId());
             saveNewBannerImage(banner, image);
         }
-        return dao.update(banner);
+         return dao.update(banner);
     }
 
     //BATCH!!!!!!!!!!!!!
@@ -88,7 +88,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
     }
 
     private boolean saveNewBannerImage(Banner banner, MultipartFile image) {
-        String rootPath = System.getProperty("catalina.home");
+        String rootPath = "/opt/apache-tomcat-8.5.35";//System.getProperty("catalina.home");
 
         String uuidFile = UUID.randomUUID().toString();
         String fileName = uuidFile + "_" + image.getOriginalFilename();
@@ -104,8 +104,8 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
             image.transferTo(dirFile);
             banner.setImgSrc(dirFile.getPath());
             // clean metadata
-            BufferedImage bufferedImage = ImageIO.read(dirFile);
-            ImageIO.write(bufferedImage, getFileExtension(dirFile), dirFile);
+//            BufferedImage bufferedImage = ImageIO.read(dirFile);
+//            ImageIO.write(bufferedImage, getFileExtension(dirFile), dirFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

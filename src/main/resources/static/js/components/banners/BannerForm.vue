@@ -9,8 +9,14 @@
             <button @click="removeImage">Remove image</button>
         </div>
         <input type="text" placeholder="width" v-model="item.width"/>
+        <div class="errorForm">{{errorsFormMap.get("width")}}</div>
+
         <input type="text" placeholder="height" v-model="item.height"/>
+        <div class="errorForm">{{errorsFormMap.get("height")}}</div>
+
         <input type="text" placeholder="targetUrl" v-model="item.targetUrl"/>
+        <div class="errorForm">{{errorsFormMap.get("targetUrl")}}</div>
+
         <select v-model="item.langId">
             <option v-bind:value="null" selected>Select locale</option>
             <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
@@ -53,7 +59,7 @@
         }
 
         checkItemBeforeSave(): boolean {
-            return this.item.imgFile != null
+            return (this.item.imgFile != null || this.item.imgSrc != null)
                 && this.item.height != null
                 && this.item.width != null
                 && this.item.langId != null
@@ -69,9 +75,22 @@
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
-            this.item.imgFile = files[0];
-            this.createImage(files[0]);
-
+            if(files[0].size > 500000) {
+                this.removeImage();
+                alert("File is too large");
+                return;
+            } else{
+                let name = files[0].name;
+                const fileExtension = ['png', 'jpg', 'jpeg']; // допустимые типы файлов
+                if (fileExtension.indexOf(name.split('.').pop().toLowerCase()) == -1) {
+                    this.removeImage();
+                    alert("File have wrong type. Proper types: " + fileExtension);
+                    return;
+                }else {
+                    this.item.imgFile = files[0];
+                    this.createImage(files[0]);
+                }
+            }
         }
         createImage(file : any) {
             let reader : FileReader = new FileReader();

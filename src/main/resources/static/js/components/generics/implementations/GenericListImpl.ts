@@ -20,10 +20,13 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
     auditList : Array<Audit> = [];
 
     @Prop() pathURL : String;
+    @Prop() readonly totalItemListChange: Boolean;
+
+    errorsForm : Array<any> = [];
 
 
     public editItem(item: T) {
-        if(item instanceof Banner || item instanceof User)
+        if(Banner.generalityOf(item) || User.generalityOf(item))
             this.showAuditTab = false;
         this.cleanForm();
         this.itemAttr = item;
@@ -31,7 +34,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
 
     public deleteItem(item: T): void {
 
-        if(item instanceof Banner || item instanceof User)
+        if(Banner.generalityOf(item) || User.generalityOf(item))
             this.showAuditTab = false;
 
         this.cleanForm();
@@ -41,10 +44,10 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
                     if (result.ok) {
                         this.totalItemList.splice(this.totalItemList.indexOf(item), 1);
 
-                        if(item instanceof Locale)
+                        if(Locale.generalityOf(item))
                             this.$emit("reloadBanners");
 
-                        if(item instanceof Banner)
+                        if(Banner.generalityOf(item))
                             this.filterItem();
                     }
                 },
@@ -55,7 +58,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
     }
 
     public activateItem(item : T){
-        if(item instanceof Banner || item instanceof User)
+        if(Banner.generalityOf(item) || User.generalityOf(item))
             this.showAuditTab = false;
 
         this.switchActivity(item, true);
@@ -68,8 +71,11 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
                 result.json().then((data : Object) => {
                     item.activity= newActivityState;
 
-                    if(item instanceof Locale)
+                    if(Locale.generalityOf(item))
                         this.$emit("reloadBanners");
+
+                    if(Banner.generalityOf(item))
+                        this.filterItem();
                 }),
             reason => alert("Error!")
         );
@@ -89,40 +95,47 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
         return -1;
     }
 
-    public saveItem(item : T | FormData, id? : number){
-        if(item instanceof Banner || item instanceof User)
+    public saveItem(item : T, id? : number, itemFormData? : FormData){
+        if(Banner.generalityOf(item) || User.generalityOf(item))
             this.showAuditTab = false;
 
-
+        let requestBody;
+        if(itemFormData != null)
+            requestBody = itemFormData;
+        else
+            requestBody = item;
 
         if (id !== null) {
-            this.$resource(this.pathURL + '{/id}').update({id: id}, item).then(result =>
+            this.$resource(this.pathURL + '{/id}').update({id: id}, requestBody).then(result =>
                     result.json().then((data : T) => {
                         const index = GenericListImpl.getIndex(this.totalItemList, data.id);
                         this.totalItemList.splice(index, 1, data);
                         this.cleanForm();
 
-                        if(item instanceof Locale)
+                        if(Locale.generalityOf(item))
                             this.localeMap.set(data.id, (<Locale>(<unknown>data)).name);
 
-                        if(item instanceof Banner)
+                        if(Banner.generalityOf(item))
                             this.filterItem();
                     }),
-                reason => alert("Error!")
-            );
+            reason => {
+                this.errorsForm = reason.errors;
+            });
         } else {
-            this.$resource(this.pathURL + '{/id}').save({}, item).then(result =>
+            this.$resource(this.pathURL + '{/id}').save({}, requestBody).then(result =>
                     result.json().then((data : T) => {
                         this.totalItemList.push(data);
                         this.cleanForm();
 
-                        if(item instanceof Locale)
+                        if(Locale.generalityOf(item))
                             this.localeMap.set(data.id, (<Locale>(<unknown>data)).name);
 
-                        if(item instanceof Banner)
+                        if(Banner.generalityOf(item))
                             this.filterItem();
                     }),
-                reason => alert("Save error! There is no image!"))
+            reason => {
+                this.errorsForm = reason.body.errors;
+            })
         }
     }
 

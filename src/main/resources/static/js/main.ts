@@ -2,14 +2,42 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
 import VueDraggable from 'vue-draggable'
-
-Vue.use(VueDraggable.install);
+import router from "./router/router";
+import VueRouter from "vue-router";
+Vue.use(VueDraggable);
 Vue.use(VueResource);
+Vue.use(VueRouter);
 
-new Vue({
+let application = new Vue({
     el: '#app',
+    data(){
+
+        return {
+            // @ts-ignore
+            profile: frontendData.profile
+        }
+
+    },
+    router,
     render: a => a(App)
 });
+
+router.beforeEach((to, from, next) => {
+    if(to.matched.some(record => record.meta.requiresAuth)) {
+        if (!application.$root.$data.profile) {
+            next({
+                path: '/login',
+                params: { nextUrl: to.fullPath }
+            })
+        } else {
+            next()
+        }
+    }else{
+        next()
+    }
+});
+
+
 /*
 function getIndex(list, id) {
     for (var i = 0; i < list.length; i++) {

@@ -17,4 +17,13 @@ export default class Locale extends Model{
         this.name = (<Locale><unknown>localeRowFrom).name
         this.activity = localeRowFrom.activity;
     }
+
+    public static CLASS_NAME = 'Locale';
+    public className : string = Locale.CLASS_NAME;
+
+    // public static generalityOf<T extends Model>(item: T) : boolean {
+    //     if (item.className === this.CLASS_NAME)
+    //         return true;
+    //     return super.generalityOf(item);
+    // }
 }

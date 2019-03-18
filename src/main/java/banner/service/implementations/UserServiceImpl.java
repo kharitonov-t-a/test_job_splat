@@ -4,6 +4,7 @@ import banner.dao.interfaces.AuditDao;
 import banner.dao.interfaces.BannerDao;
 import banner.dao.interfaces.UserDao;
 import banner.model.User;
+import banner.model.enums.UserRoles;
 import banner.service.GenericServiceImpl;
 import banner.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
     @Override
     public User create(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(UserRoles.ROLE_MANAGER);
         return dao.create(user);
     }
 

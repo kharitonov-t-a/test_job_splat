@@ -43,13 +43,22 @@ module.exports = {
                     'css-loader'
                 ]
             },
+            {
+                test: /\.less$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'less-loader'
+                ]
+            }
+
         ]
     },
     plugins: [
         new VueLoaderPlugin()
     ],
     resolve: {
-        extensions: ['.js', ".ts", ".vue"],
+        extensions: ['.css', '.less', '.js', ".ts", ".vue"],
         modules: [
             path.join(__dirname, 'src', 'main', 'resources', 'static', 'js'),
             path.join(__dirname, 'node_modules'),

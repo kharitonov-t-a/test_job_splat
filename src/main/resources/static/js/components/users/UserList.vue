@@ -2,8 +2,9 @@
     <div>
 
         <user-form :itemAttr="itemAttr"
-                     :itemAttrChange="itemAttrChange"
-                     v-on:saveItem="saveItem($event, $event.id)"/>
+                   :itemAttrChange="itemAttrChange"
+                   :errorsForm="errorsForm"
+                   v-on:saveItem="saveItem($event, $event.id)"/>
 
         <div class="drop list" style="display:table">
 

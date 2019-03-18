@@ -29,13 +29,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // с помощью нашего сервиса UserService получаем User
         User user = userService.getUserByName(username);
 
-        if(user==null){
+        if(user==null || !user.getActivity()){
             logger.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
         // указываем роли для этого пользователя
         Set<GrantedAuthority> roles = new HashSet();
-        roles.add(new SimpleGrantedAuthority("ROLE_" + UserRoles.ADMIN.name()));
+        roles.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
         // на основании полученных данных формируем объект UserDetails
         // который позволит проверить введенный пользователем логин и пароль

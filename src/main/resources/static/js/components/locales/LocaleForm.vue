@@ -1,6 +1,8 @@
 <template>
     <div>
         <input type="text" placeholder="width" v-model="item.name"/>
+        <div class="errorForm">{{errorsFormMap.get("name")}}</div>
+
         <input type="button" value="Save" @click="saveItem"/>
         <input type="button" value="Cancel" @click="cleanForm"/>
     </div>

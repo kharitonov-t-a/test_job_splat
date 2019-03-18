@@ -9,7 +9,7 @@ import java.util.List;
 public class GenericServiceImpl<Model, PK extends Serializable, Dao> implements GenericService<Model, PK>{
 
     @Autowired
-    protected Dao dao;
+    public Dao dao;
 
     @Override
     public Model findById(PK id) {

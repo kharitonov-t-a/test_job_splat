@@ -34,4 +34,13 @@ export default class Banner extends Model{
         this.priority = (<Banner><unknown>localeRowFrom).priority;
         this.activity = localeRowFrom.activity;
     }
+
+    public static CLASS_NAME = 'Banner';
+    public className : string = Banner.CLASS_NAME;
+
+    // public static generalityOf<T extends Model>(item: T) : boolean {
+    //     if (item.className === this.CLASS_NAME)
+    //         return true;
+    //     return super.generalityOf(item);
+    // }
 }

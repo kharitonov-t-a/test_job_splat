@@ -1,7 +1,11 @@
 <template>
     <div>
         <input type="text" placeholder="username" v-model="item.username"/>
+        <div class="errorForm">{{errorsFormMap.get("username")}}</div>
+
         <input type="text" placeholder="password" v-model="item.password"/>
+        <div class="errorForm">{{errorsFormMap.get("password")}}</div>
+
         <input type="button" value="Save" @click="saveItem"/>
         <input type="button" value="Cancel" @click="cleanForm"/>
     </div>

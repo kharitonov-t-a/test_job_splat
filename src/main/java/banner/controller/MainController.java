@@ -1,5 +1,6 @@
 package banner.controller;
 
+import banner.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 
 
 @Controller
@@ -40,20 +44,13 @@ public class MainController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/banners")
-    public String banners(Model model) {
+    @GetMapping("/")
+    public String banners(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("profile", userDetails);
+        model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", "dev".equals(profile));
-        return "banners";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "index2";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "/login";
+        return "index";
     }
 
     @GetMapping("/403")

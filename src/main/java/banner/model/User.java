@@ -1,10 +1,13 @@
 package banner.model;
 
+import banner.model.enums.UserRoles;
+
 public class User {
 
     private int id;
     private String username;
     private String password;
+    private UserRoles role;
     private Boolean activity;
 
     public User(String username, String password) {
@@ -46,5 +49,24 @@ public class User {
 
     public void setActivity(Boolean activity) {
         this.activity = activity;
+    }
+
+    public UserRoles getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoles role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", activity=" + activity +
+                '}';
     }
 }

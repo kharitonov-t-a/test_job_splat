@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -30,8 +32,19 @@ public abstract class GenericDaoImpl <T, PK extends Serializable, Mapper extends
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    private DataSource dataSource;
     @Autowired
-    protected Mapper mapper;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Autowired
+    public Mapper mapper;
 
     @Override
     public List<T> findAll() {

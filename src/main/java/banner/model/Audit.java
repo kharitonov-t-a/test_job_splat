@@ -1,7 +1,10 @@
 package banner.model;
 
 import banner.model.enums.Crud;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Audit {

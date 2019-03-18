@@ -23,7 +23,8 @@
                      :itemAttrChange="itemAttrChange"
                      :isSortBanners="isSortBanners"
                      :localeList="localeList"
-                     v-on:saveItem="saveItem(fillSaveFormData($event), $event.id)"/>
+                     :errorsForm="errorsForm"
+                     v-on:saveItem="saveItem($event, $event.id, fillSaveFormData($event))"/>
 
         <input type="button" v-bind:value="isSortBannersButtonText" @click="sortBanner"/>
 
@@ -124,6 +125,7 @@
         isSortBannersButtonText : string = "Sort banners!";
 
         @Prop() readonly localeList!: Array<Locale>;
+        @Prop() readonly totalItemListChange: boolean;
 
         // added($event : any){
         //     console.log($event);
@@ -151,6 +153,7 @@
         @Watch('totalItemList')
         getBannerAttr(){
             this.selectedLocaleId = 0;
+            this.selectedActivity = true;
             this.filterItem();
         }
 

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-class BannerMapper implements GenericMapper<Banner> {
+public class BannerMapper implements GenericMapper<Banner> {
     @Override
     public Banner mapRow(ResultSet rs, int rowNum) throws SQLException {
         Banner banner = new Banner();
