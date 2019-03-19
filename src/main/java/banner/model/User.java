@@ -1,6 +1,9 @@
 package banner.model;
 
 import banner.model.enums.UserRoles;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
 
 public class User {
 

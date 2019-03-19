@@ -1,7 +1,9 @@
 <template>
         <div class="drop list" style="display:table">
-            <input type="text" placeholder="width" v-model="searchValue"/>
-            <input type="button" value="Search" @click="searchHistory"/>
+            <div v-if="showSearchForm">
+                <input type="text" placeholder="width" v-model="searchValue"/>
+                <input type="button" value="Search" @click="searchHistory"/>
+            </div>
             <div style="display:table-row">
                 <div style="display:table-cell">id</div>
                 <div style="display:table-cell">date</div>
@@ -22,7 +24,7 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop} from "vue-property-decorator";
+    import {Vue, Component, Prop, Watch} from "vue-property-decorator";
     import AuditRow from 'components/audits/AuditRow.vue';
     import Audit from "components/audits/Audit.ts";
 
@@ -36,10 +38,15 @@
         @Prop({default () : Array<Audit> { return [] }}) readonly auditList: Array<Audit>;
         itemList: Array<Audit> = this.auditList;
         searchValue : string | number = null;
-
+        @Prop({default () : boolean {return true}}) readonly  showSearchForm : boolean;
         // update(){
         //     this.auditList.forEach(value => this.itemList.push(value));
         // }
+
+        @Watch("auditList")
+        changeAuditList(){
+            this.itemList = this.auditList;
+        }
 
         searchHistory(){
             if(this.searchValue === null || this.searchValue === "")

@@ -3,19 +3,22 @@ package banner;
 import banner.service.UserDetailsServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.unit.DataSize;
 
 import javax.servlet.MultipartConfigElement;
 
-@SpringBootApplication//(exclude = ErrorMvcAutoConfiguration.class)
+@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
 public class Application extends SpringBootServletInitializer
 {
 
@@ -59,7 +62,7 @@ public class Application extends SpringBootServletInitializer
     public UserDetailsService getUserDetailsService(){
         return new UserDetailsServiceImpl();
     }
-//
+
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
@@ -67,4 +70,11 @@ public class Application extends SpringBootServletInitializer
         factory.setMaxRequestSize(DataSize.ofKilobytes(512));
         return factory.createMultipartConfig();
     }
+
+//    @Bean
+//    public MessageSource messageSource() {
+//        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+//        messageSource.setBasenames("messages");
+//        return messageSource;
+//    }
 }

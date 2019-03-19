@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
+public
 class LocaleMapper implements GenericMapper<Locale> {
     @Override
     public Locale mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -52,9 +52,9 @@
             <router-link :to="{
                 path: '/banner/' + item.id,
                 query:{
-                    item: item
+                    item: {item}
                 }
-            }" >Admin panel</router-link>
+            }" >Preview</router-link>
         </div>
     </div>
 </template>

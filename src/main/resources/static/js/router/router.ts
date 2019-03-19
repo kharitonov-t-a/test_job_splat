@@ -12,8 +12,7 @@ const routes = [
     { path: '/login', component: login },
     { path: '/admin', component: adminPanel, meta: { requiresAuth: true } },
     { path: '/banner/:id', component: PreviewBanner },
-    { path: '*', component: adminPanel },
-    // { path: '/bar', component: Bar }
+    { path: '*', component: PreviewList },
 ];
 
 export default new VueRouter({

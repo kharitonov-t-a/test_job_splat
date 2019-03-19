@@ -1,5 +1,9 @@
 package banner.model;
 
+import org.springframework.format.annotation.NumberFormat;
+
+import javax.validation.constraints.Max;
+
 public class Banner {
 
     private Integer id;

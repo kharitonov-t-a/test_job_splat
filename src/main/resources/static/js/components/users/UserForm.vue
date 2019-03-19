@@ -27,7 +27,7 @@
         }
 
         checkItemBeforeSave(): boolean {
-            return this.item.username != null;
+            return this.item.username != null && this.item.username.length != 0;
         }
 
     }

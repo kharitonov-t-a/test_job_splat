@@ -36,7 +36,7 @@ public class LocaleDaoImpl extends GenericDaoImpl<Locale, Integer, GenericMapper
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, locale.getName());
-            ps.setInt(2, locale.getActivity()?1:0);
+            ps.setInt(2, 1);
             return ps;
         }, holder);
 

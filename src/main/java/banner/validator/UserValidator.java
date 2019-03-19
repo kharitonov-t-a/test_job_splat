@@ -15,9 +15,20 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         User user = (User) obj;
-        if(user.getUsername().length()>45)
-            errors.rejectValue("username", "value.exceed");
-        if(user.getPassword().length()>120)
-            errors.rejectValue("password", "value.exceed");
+
+        if(user.getUsername()!=null && user.getUsername().length() != 0){
+            if(user.getUsername().length()>45)
+                errors.rejectValue("username", "value.exceed", "Username exceed 45 characters");
+        }else {
+            errors.rejectValue("username", "value.notNull", "Field is empty");
+        }
+
+        if(user.getPassword()!=null && user.getPassword().length() != 0){
+            if(user.getPassword().length()>45)
+                errors.rejectValue("password", "value.exceed", "Password exceed 45 characters");
+        }else {
+            errors.rejectValue("password", "value.notNull", "Field is empty");
+
+        }
     }
 }

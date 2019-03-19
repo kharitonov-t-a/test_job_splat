@@ -10,6 +10,8 @@ import banner.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> implements UserService {
@@ -18,14 +20,16 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
     AuditDao auditDao;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     @Override
     public User getUserByName(String username) {
         User user = dao.findUserByUsername(username);
         return user;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User create(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -33,6 +37,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
         return dao.create(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User update(User user) {
         if(user.getPassword() != null){
@@ -42,7 +47,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
             user.setPassword(currentUser.getPassword());
         }
         user = dao.update(user);
-        user.setPassword(null);
+//        user.setPassword(null);
         return dao.update(user);
     }
 
@@ -50,6 +55,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
      * clean audit if banners and user deleted
      * @param id
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void delete(Integer id) {
         dao.delete(id);

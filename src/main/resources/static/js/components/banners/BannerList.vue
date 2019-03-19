@@ -1,24 +1,5 @@
 <template xmlns:v-drag-and-drop="http://www.w3.org/1999/xhtml">
     <div>
-        <!--<div v-drag-and-drop:options="options" class="drag-wrapper">-->
-            <!--<ul @added="added"-->
-                <!--@removed="removed"-->
-                <!--@reordered="reordered">-->
-                <!--<li>Item 1</li>-->
-                <!--<li>Item 2</li>-->
-                <!--<li>Item 3</li>-->
-            <!--</ul>-->
-            <!--<ul >-->
-                <!--<li>Item 4</li>-->
-                <!--<li>Item 5</li>-->
-                <!--<li>Item 6</li>-->
-            <!--</ul>-->
-            <!--<ul>-->
-                <!--<li>Item 7</li>-->
-                <!--<li>Item 8</li>-->
-                <!--<li>Item 9</li>-->
-            <!--</ul>-->
-        <!--</div>-->
         <banner-form :itemAttr="itemAttr"
                      :itemAttrChange="itemAttrChange"
                      :isSortBanners="isSortBanners"
@@ -79,6 +60,7 @@
                 v-if="showAuditTab"
                 class="col-sm-10"
                 :auditList="auditList"
+                :showSearchForm="false"
         ></audit-list>
 
     </div>

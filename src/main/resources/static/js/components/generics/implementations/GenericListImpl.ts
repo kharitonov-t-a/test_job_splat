@@ -26,16 +26,14 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
 
 
     public editItem(item: T) {
-        if(Banner.generalityOf(item) || User.generalityOf(item))
-            this.showAuditTab = false;
+        this.showAuditTab = false;
         this.cleanForm();
         this.itemAttr = item;
     }
 
     public deleteItem(item: T): void {
 
-        if(Banner.generalityOf(item) || User.generalityOf(item))
-            this.showAuditTab = false;
+        this.showAuditTab = false;
 
         this.cleanForm();
 
@@ -58,8 +56,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
     }
 
     public activateItem(item : T){
-        if(Banner.generalityOf(item) || User.generalityOf(item))
-            this.showAuditTab = false;
+        this.showAuditTab = false;
 
         this.switchActivity(item, true);
     }
@@ -96,8 +93,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
     }
 
     public saveItem(item : T, id? : number, itemFormData? : FormData){
-        if(Banner.generalityOf(item) || User.generalityOf(item))
-            this.showAuditTab = false;
+        this.showAuditTab = false;
 
         let requestBody;
         if(itemFormData != null)
@@ -119,7 +115,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
                             this.filterItem();
                     }),
             reason => {
-                this.errorsForm = reason.errors;
+                this.errorsForm = reason.body.errors;
             });
         } else {
             this.$resource(this.pathURL + '{/id}').save({}, requestBody).then(result =>

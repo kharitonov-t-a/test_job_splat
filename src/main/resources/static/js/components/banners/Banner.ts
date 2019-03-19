@@ -7,7 +7,7 @@ export default class Banner extends Model{
     public imgFile : any | null = null;
     public width : number | null = null;
     public height : number| null = null;
-    public targetUrl : string | null = null;
+    public targetUrl : string | null = "http://";
     public langId : number | null = null;
     public priority : number | null = null;
     // public activity : boolean = true;
@@ -18,7 +18,7 @@ export default class Banner extends Model{
         this.imgFile = null;
         this.width = null;
         this.height = null;
-        this.targetUrl = null;
+        this.targetUrl = "http://";
         this.langId = null;
         this.priority = null;
         this.activity = true;

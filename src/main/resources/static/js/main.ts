@@ -3,7 +3,8 @@ import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
 import VueDraggable from 'vue-draggable'
 import router from "./router/router";
-import VueRouter from "vue-router";
+import VueRouter from 'vue-router';
+
 Vue.use(VueDraggable);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -14,7 +15,7 @@ let application = new Vue({
 
         return {
             // @ts-ignore
-            profile: frontendData.profile
+            profile: frontendData.profile!=null?frontendData.profile:""
         }
 
     },

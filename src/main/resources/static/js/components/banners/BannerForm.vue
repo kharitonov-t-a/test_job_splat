@@ -8,10 +8,10 @@
             <img :src="image" width="100"/>
             <button @click="removeImage">Remove image</button>
         </div>
-        <input type="text" placeholder="width" v-model="item.width"/>
+        <input type="number" placeholder="width" v-model="item.width > 1000?item.width=1000:item.width<1?item.width=1:item.width"/>
         <div class="errorForm">{{errorsFormMap.get("width")}}</div>
 
-        <input type="text" placeholder="height" v-model="item.height"/>
+        <input type="number" placeholder="height" v-model="item.height > 1000?item.height=500:item.height<1?item.height=1:item.height"/>
         <div class="errorForm">{{errorsFormMap.get("height")}}</div>
 
         <input type="text" placeholder="targetUrl" v-model="item.targetUrl"/>
@@ -33,6 +33,7 @@
     import Banner from "components/banners/Banner.ts";
     import Locale from "components/locales/Locale.ts";
     import GenericFormImpl from "components/generics/implementations/GenericFormImpl.ts";
+
 
     @Component({
         name: 'BannerForm'
@@ -60,15 +61,16 @@
 
         checkItemBeforeSave(): boolean {
             return (this.item.imgFile != null || this.item.imgSrc != null)
-                && this.item.height != null
-                && this.item.width != null
+                && (this.item.height != null && this.item.height.toString().length != 0)
+                && (this.item.width != null && this.item.width.toString().length != 0)
                 && this.item.langId != null
-                && this.item.targetUrl != null;
+                && (this.item.targetUrl != null && this.item.targetUrl.length != 0);
         }
 
         cleanForm(): void {
             this.item.clean();
             this.image = '';
+            this.errorsFormMap.clear();
         }
 
         onFileChange(e : any) {
@@ -104,8 +106,11 @@
         }
         removeImage () {
             this.image = '';
+            this.item.imgFile = null;
+            this.item.imgSrc = null;
         }
     }
+
 </script>
 
 <style scoped>

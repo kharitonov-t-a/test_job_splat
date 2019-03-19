@@ -8,6 +8,8 @@ import banner.service.interfaces.BannerService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -26,6 +28,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
     @Value("${upload_path}")
     private String pathImage;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @AuditCreate
     @Override
     public Banner createBanner(Banner banner, MultipartFile image) {
@@ -40,6 +43,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return null;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @AuditUpdate
     @Override
     public Banner updateBanner(Banner banner, MultipartFile image) {
@@ -51,6 +55,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
     }
 
     //BATCH!!!!!!!!!!!!!
+    @Transactional(propagation = Propagation.REQUIRED)
     @AuditSort
     @Override
     public List<Banner> updateSorting(List<Banner> bannerList) {
@@ -62,6 +67,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return bannerList;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @AuditDelete
     @Override
     public boolean deleteBanner(Integer id) {
@@ -76,12 +82,14 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return dirFile.delete();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @AuditSwitchActivity
     @Override
     public boolean switchActivity(Integer id, boolean newActivityState) {
         return dao.switchActivity(id, newActivityState);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     @Override
     public List<Banner> findAll() {
         return dao.findAll();

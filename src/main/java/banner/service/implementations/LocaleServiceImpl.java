@@ -8,6 +8,8 @@ import banner.service.interfaces.BannerService;
 import banner.service.interfaces.LocaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LocaleServiceImpl extends GenericServiceImpl<Locale, Integer, LocaleDao> implements LocaleService {
@@ -19,6 +21,7 @@ public class LocaleServiceImpl extends GenericServiceImpl<Locale, Integer, Local
      * delete banner if locale deleted
      * @param id
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void delete(Integer id) {
         dao.delete(id);
@@ -31,6 +34,7 @@ public class LocaleServiceImpl extends GenericServiceImpl<Locale, Integer, Local
      * @param newActivityState
      * @return
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public boolean switchActivity(Integer id, boolean newActivityState) {
         if(!newActivityState)

@@ -31,12 +31,13 @@ export default class GenericFormImpl<T extends Model> extends Vue implements Gen
     setErrorsForm() : void{
         this.errorsFormMap = new Map<string, string>();
         this.errorsForm.forEach(value => {
-            this.errorsFormMap.set(value.field, value.code);//value.defaultMessage
+            this.errorsFormMap.set(value.field, value.defaultMessage);//value.defaultMessage
         });
     }
 
     cleanForm(): void {
         this.item.clean();
+        this.errorsFormMap.clear();
     }
 
     checkItemBeforeSave(): boolean {return true};

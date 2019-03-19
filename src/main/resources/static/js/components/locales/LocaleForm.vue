@@ -24,7 +24,7 @@
         }
 
         checkItemBeforeSave(): boolean {
-            return this.item.name != null;
+            return this.item.name != null && this.item.name.length != 0;
         }
 
     }

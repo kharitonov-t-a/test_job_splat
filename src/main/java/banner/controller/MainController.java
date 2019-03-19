@@ -44,7 +44,7 @@ public class MainController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping({"/error", "/", "/**"})
     public String banners(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         HashMap<Object, Object> data = new HashMap<>();
         data.put("profile", userDetails);

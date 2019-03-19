@@ -32,6 +32,7 @@
                 v-if="showAuditTab"
                 class="col-sm-10"
                 :auditList="auditList"
+                :showSearchForm="false"
         ></audit-list>
     </div>
 </template>
