@@ -28,8 +28,8 @@ public class LocaleServiceImplTest {
     public void setUp() throws Exception {
         db = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql/createLocaleTable.sql")
-                .addScript("sql/createBannerTable.sql")
+                .addScript("sqlScripts/createLocaleTable")
+                .addScript("sqlScripts/createBannerTable")
                 .build();
         localeDao = new LocaleDaoImpl();
         localeDao.setDataSource(db);

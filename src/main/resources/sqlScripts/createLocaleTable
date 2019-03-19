@@ -1,0 +1,9 @@
+CREATE TABLE `Locale` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `activity` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`));
+
+INSERT INTO `Locale` (`id`, `name`) VALUES ('1', 'RU');
+INSERT INTO `Locale` (`id`, `name`) VALUES ('2', 'US');
+INSERT INTO `Locale` (`id`, `name`) VALUES ('3', 'DE');

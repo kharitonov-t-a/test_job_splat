@@ -1,0 +1,8 @@
+CREATE TABLE `Audit` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idBanner` INT NOT NULL,
+  `idUser` INT NOT NULL,
+  `crud` TINYINT(1) NOT NULL,
+  `description` VARCHAR(300) NULL,
+  `date` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));

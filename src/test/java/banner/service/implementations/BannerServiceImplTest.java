@@ -17,8 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.File;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 public class BannerServiceImplTest {
 
@@ -29,8 +27,8 @@ public class BannerServiceImplTest {
     public void setUp() throws Exception {
         db = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql/createBannerTable.sql")
-                .addScript("sql/createLocaleTable.sql")
+                .addScript("sqlScripts/createBannerTable")
+                .addScript("sqlScripts/createLocaleTable")
                 .build();
         bannerDao = new BannerDaoImpl();
         bannerDao.setDataSource(db);

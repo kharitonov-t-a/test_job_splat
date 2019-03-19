@@ -22,6 +22,8 @@ CREATE TABLE `banner`.`Banner` (
 CREATE TABLE `banner`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(120) NOT NULL,
+  `role` VARCHAR(45) NOT NULL,
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 

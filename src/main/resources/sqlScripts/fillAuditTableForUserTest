@@ -1,0 +1,1 @@
+INSERT INTO `Audit` (`id`, `idBanner`, `idUser`, `crud`, `description`, `date`) VALUES ('139', '81', '12', '1', 'Banner{id=81, imgSrc=/opt/apache-tomcat-8.5.35/images/43/8b/04676dee-d0e3-4af2-8480-e1f61b1db14b_Selection_016.png, width=200, height=100, targetUrl=http://ya.ru, langId=2, priority=12, activity=true}', '2019-03-18 00:00:00');

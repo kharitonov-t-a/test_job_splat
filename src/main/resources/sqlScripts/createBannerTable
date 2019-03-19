@@ -1,0 +1,10 @@
+CREATE TABLE `Banner` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `imgSrc` VARCHAR(120) NOT NULL,
+  `width` INT NULL,
+  `height` INT NULL,
+  `targetUrl` VARCHAR(45) NULL,
+  `langId` INT NULL,
+  `priority` INT NULL,
+  `activity` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`));

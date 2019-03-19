@@ -9,20 +9,14 @@ import banner.model.User;
 import banner.model.enums.UserRoles;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 public class UserServiceImplTest {
@@ -34,10 +28,10 @@ public class UserServiceImplTest {
     public void setUp() throws Exception {
         db = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql/createUserTable.sql")
-                .addScript("sql/createAuditTable.sql")
-                .addScript("sql/createBannerTable.sql")
-                .addScript("sql/fillAuditTableForUserTest.sql")
+                .addScript("sqlScripts/createUserTable")
+                .addScript("sqlScripts/createAuditTable")
+                .addScript("sqlScripts/createBannerTable")
+                .addScript("sqlScripts/fillAuditTableForUserTest")
                 .build();
         userDao = new UserDaoImpl();
         userDao.setDataSource(db);
