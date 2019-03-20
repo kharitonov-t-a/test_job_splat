@@ -1,30 +1,41 @@
 <template>
-    <div>
-        <div v-if="!image">
-            <h2>Select an image</h2>
-            <input type="file" @change="onFileChange">
+    <div class="form">
+        <div v-if="!image" class="field">
+            <label for="fileField">Image</label>
+            <input id="fileField" type="file" @change="onFileChange">
         </div>
-        <div v-else>
+        <div v-else id="fileSelect" class="field">
             <img :src="image" width="100"/>
             <button @click="removeImage">Remove image</button>
         </div>
-        <input type="number" placeholder="width" v-model="item.width > 1000?item.width=1000:item.width<1?item.width=1:item.width"/>
-        <div class="errorForm">{{errorsFormMap.get("width")}}</div>
-
-        <input type="number" placeholder="height" v-model="item.height > 1000?item.height=500:item.height<1?item.height=1:item.height"/>
-        <div class="errorForm">{{errorsFormMap.get("height")}}</div>
-
-        <input type="text" placeholder="targetUrl" v-model="item.targetUrl"/>
-        <div class="errorForm">{{errorsFormMap.get("targetUrl")}}</div>
-
-        <select v-model="item.langId">
-            <option v-bind:value="null" selected>Select locale</option>
-            <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
-                {{ locale.name }}
-            </option>
-        </select>
-        <input type="button" value="Save" @click="saveItem" :disabled="isSortBanners"/>
-        <input type="button" value="Cancel" @click="cleanForm"/>
+        <div class="field">
+            <label for="widthField">Width</label>
+            <input id="widthField" type="number" placeholder="width" v-model="item.width > 1000?item.width=1000:item.width<1?item.width=1:item.width"/>
+            <div class="errorForm">{{errorsFormMap.get("width")}}</div>
+        </div>
+        <div class="field">
+            <label for="heightField">Height</label>
+            <input id="heightField" type="number" placeholder="height" v-model="item.height > 1000?item.height=500:item.height<1?item.height=1:item.height"/>
+            <div class="errorForm">{{errorsFormMap.get("height")}}</div>
+        </div>
+        <div class="field">
+            <label for="targetUrlField">Target Url</label>
+            <input id="targetUrlField" type="text" placeholder="targetUrl" v-model="item.targetUrl"/>
+            <div class="errorForm">{{errorsFormMap.get("targetUrl")}}</div>
+        </div>
+        <div class="field fieldNotInput">
+            <label for="localeField">Locale</label>
+            <select id="localeField" v-model="item.langId">
+                <option v-bind:value="null" selected>Select locale</option>
+                <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
+                    {{ locale.name }}
+                </option>
+            </select>
+        </div>
+        <div class="field fieldNotInput">
+            <input type="button" value="Save" @click="saveItem" :disabled="isSortBanners"/>
+            <input type="button" value="Cancel" @click="cleanForm"/>
+        </div>
     </div>
 </template>
 
@@ -53,7 +64,7 @@
         getItemAttr(){
             if(this.itemAttr !== null){
                 this.item.copyItem(this.itemAttr);
-                this.image = this.itemAttr.imgSrc;
+                this.image = '/image' + this.itemAttr.imgSrc;
             }else{
                 this.cleanForm();
             }
@@ -79,7 +90,7 @@
                 return;
             if(files[0].size > 500000) {
                 this.removeImage();
-                alert("File is too large");
+                alert("File is too large. Max - 500Kb.");
                 return;
             } else{
                 let name = files[0].name;
@@ -113,6 +124,12 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
+
+    #fileSelect{
+        margin: 0 0 0 auto;
+    }
+
 
 </style>

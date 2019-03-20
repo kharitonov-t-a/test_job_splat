@@ -1,14 +1,14 @@
 <template>
-    <div>
-
+    <div class="content-container">
+        <div class="flex-container">
         <locale-form :itemAttr="itemAttr"
                      :itemAttrChange="itemAttrChange"
                      :errorsForm="errorsForm"
                      v-on:saveItem="saveItem($event, $event.id)"/>
 
-        <div class="drop list" style="display:table">
+        <div style="display:table" class="flex-table">
 
-            <div style="display:table-row">
+            <div class="table-row table-header" style="display:table-row">
                 <div style="display:table-cell">id</div>
                 <div style="display:table-cell">name</div>
                 <div style="display:table-cell">activity</div>
@@ -17,9 +17,10 @@
             </div>
 
             <div class="table-row-group" style="display:table-row-group">
-                <locale-row v-for="item in totalItemList"
+                <locale-row v-for="(item, index) in totalItemList"
                             :key="item.id"
                             :item="item"
+                            :index="index"
                             v-on:activateItem="activateItem(item)"
                             v-on:editItem="editItem(item)"
                             v-on:deleteItem="deleteItem(item)">
@@ -27,7 +28,7 @@
             </div>
 
         </div>
-
+        </div>
     </div>
 </template>
 

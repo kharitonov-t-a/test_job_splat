@@ -1,26 +1,40 @@
 <template>
-        <div class="drop list" style="display:table">
-            <div v-if="showSearchForm">
-                <input type="text" placeholder="width" v-model="searchValue"/>
-                <input type="button" value="Search" @click="searchHistory"/>
-            </div>
-            <div style="display:table-row">
-                <div style="display:table-cell">id</div>
-                <div style="display:table-cell">date</div>
-                <div style="display:table-cell">crud</div>
-                <div style="display:table-cell">idBanner</div>
-                <div style="display:table-cell">idUser</div>
-                <div style="display:table-cell">description</div>
+    <div class="content-container">
+
+        <h1 v-if="!showSearchForm">History of banner changes</h1>
+
+        <div class="flex-container">
+
+            <div class="form" v-if="showSearchForm">
+                <div class="field">
+                    <label for="searchValue">Username or banner ID</label>
+                    <input id="searchValue" type="text" placeholder="Search value" v-model="searchValue"/>
+                    <input type="button" value="Search" @click="searchHistory"/>
+                </div>
             </div>
 
-            <div class="table-row-group" style="display:table-row-group">
-                <audit-row v-for="audit in itemList"
-                            :key="audit.id"
-                            :audit="audit">
-                </audit-row>
-            </div>
+            <div class="flex-table" style="display:table">
 
+
+                <div class="table-row table-header" style="display:table-row">
+                    <div style="display:table-cell">id</div>
+                    <div style="display:table-cell">date</div>
+                    <div style="display:table-cell">crud</div>
+                    <div style="display:table-cell">idBanner</div>
+                    <div style="display:table-cell">idUser</div>
+                    <div style="display:table-cell">description</div>
+                </div>
+
+                <div class="table-row-group" style="display:table-row-group">
+                    <audit-row v-for="(audit, index) in itemList"
+                               :key="audit.id"
+                               :audit="audit"
+                               :index="index">
+                    </audit-row>
+                </div>
+            </div>
         </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -30,37 +44,46 @@
 
     @Component({
         name: 'AuditList',
-        components:{
+        components: {
             AuditRow
         }
     })
     export default class AuditList extends Vue {
-        @Prop({default () : Array<Audit> { return [] }}) readonly auditList: Array<Audit>;
+        @Prop({
+            default(): Array<Audit> {
+                return []
+            }
+        }) readonly auditList: Array<Audit>;
         itemList: Array<Audit> = this.auditList;
-        searchValue : string | number = null;
-        @Prop({default () : boolean {return true}}) readonly  showSearchForm : boolean;
+        searchValue: string | number = null;
+        @Prop({
+            default(): boolean {
+                return true
+            }
+        }) readonly showSearchForm: boolean;
         // update(){
         //     this.auditList.forEach(value => this.itemList.push(value));
         // }
 
         @Watch("auditList")
-        changeAuditList(){
+        changeAuditList() {
             this.itemList = this.auditList;
         }
 
-        searchHistory(){
-            if(this.searchValue === null || this.searchValue === "")
+        searchHistory() {
+            if (this.searchValue === null || this.searchValue === "")
                 this.itemList = new Array<Audit>();
-            else if(!isNaN(Number(this.searchValue))){
+            else if (!isNaN(Number(this.searchValue))) {
                 this.searchHistoryBy("/banner");
-            }else {
+            } else {
                 this.searchHistoryBy("/username");
             }
         }
-        searchHistoryBy(pathURL : string){
+
+        searchHistoryBy(pathURL: string) {
             this.itemList = new Array<Audit>();
             this.$resource('/audit/list' + pathURL + '{/id}').get({id: this.searchValue}).then(result =>
-                result.json().then((data : Audit[]) => {
+                result.json().then((data: Audit[]) => {
                     data.forEach((audit: Audit) => this.itemList.push(audit))
                 })
             );
@@ -69,6 +92,37 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
+    .flex-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .flex-table{
+        width: 100%;
+    }
+
+    .form{
+        width: 100%;
+    }
+
+    .content-container .flex-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .field{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .field label {
+        float: none;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
 
 </style>

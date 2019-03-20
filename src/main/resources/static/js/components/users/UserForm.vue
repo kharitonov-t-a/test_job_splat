@@ -1,13 +1,21 @@
 <template>
-    <div>
-        <input type="text" placeholder="username" v-model="item.username"/>
-        <div class="errorForm">{{errorsFormMap.get("username")}}</div>
+    <div class="form">
+        <div class="field">
+            <label for="usernameField">Username</label>
+            <input id="usernameField" type="text" placeholder="username" v-model="item.username"/>
+            <div class="errorForm">{{errorsFormMap.get("username")}}</div>
+        </div>
 
-        <input type="text" placeholder="password" v-model="item.password"/>
-        <div class="errorForm">{{errorsFormMap.get("password")}}</div>
+        <div class="field">
+            <label for="passwordField">Password</label>
+            <input id="passwordField" type="password" placeholder="password" v-model="item.password"/>
+            <div class="errorForm">{{errorsFormMap.get("password")}}</div>
+        </div>
 
-        <input type="button" value="Save" @click="saveItem"/>
-        <input type="button" value="Cancel" @click="cleanForm"/>
+        <div class="field fieldNotInput">
+            <input type="button" value="Save" @click="saveItem"/>
+            <input type="button" value="Cancel" @click="cleanForm"/>
+        </div>
     </div>
 </template>
 

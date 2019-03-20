@@ -1,12 +1,12 @@
 <template>
-    <div class="table-row" style="display:table-row">
-        <div style="display:table-cell">
-            <span class="handle">
+    <div :class="'table-row-' + (index%2+1) + ' table-row'" style="display:table-row">
+        <div style="display:table-cell" class="handle">
+            <span>
                 <i class="glyphicon glyphicon-menu-hamburger"></i>
             </span>
         </div>
         <div style="display:table-cell">{{ item.id }}</div>
-        <div style="display:table-cell"><img :src="item.imgSrc" width="100"/></div>
+        <div style="display:table-cell"><img :src="'/image' + item.imgSrc" width="100"/></div>
         <div style="display:table-cell">{{ item.width }}</div>
         <div style="display:table-cell">{{ item.height }}</div>
         <div style="display:table-cell">{{ item.targetUrl }}</div>
@@ -15,41 +15,41 @@
         <template v-if="!isSortBanners">
             <div style="display:table-cell">
                 <span>
-                   <input type="button" value="Edit" @click="editItem"/>
+                   <input class="button" type="button" value="Edit" @click="editItem"/>
                 </span>
             </div>
             <div style="display:table-cell">
                 <span>
-                    <input type="button" value="Delete" @click="deleteItem"/>
+                    <input class="button" type="button" value="Delete" @click="deleteItem"/>
                 </span>
             </div>
             <div style="display:table-cell" v-if="!selectedActivity">
                 <span>
-                   <input type="button" value="Activate" @click="activateItem"/>
+                   <input class="button" type="button" value="Activate" @click="activateItem"/>
                 </span>
             </div>
         </template>
         <template v-if="isSortBanners">
             <div style="display:table-cell">
                 <span>
-                   <input type="button" value="Up" @click="upBanner"
+                   <input class="button" type="button" value="Up" @click="upBanner"
                           :disabled="isFirstUpButton()"/>
                 </span>
             </div>
             <div style="display:table-cell">
                 <span>
-                    <input type="button" value="Down" @click="downBanner"
+                    <input class="button" type="button" value="Down" @click="downBanner"
                            :disabled="isLastDownButton()"/>
                 </span>
             </div>
         </template>
         <div style="display:table-cell">
                 <span>
-                   <input type="button" value="History" @click="showHistory"/>
+                   <input class="button" type="button" value="History" @click="showHistory"/>
                 </span>
         </div>
         <div style="display:table-cell">
-            <router-link :to="{
+            <router-link class="preview" :to="{
                 path: '/banner/' + item.id,
                 query:{
                     item: {item}
@@ -65,6 +65,7 @@
     import Banner from 'components/banners/Banner.ts';
     import GenericRowImpl from "../generics/implementations/GenericRowImpl";
     import GenericListImpl from "../generics/implementations/GenericListImpl";
+    // import sassStyles from '../generics/implementations/Row'
 
     @Component({
         name: 'BannerRow'
@@ -96,6 +97,7 @@
     }
 </script>
 
-<style scoped>
+<!--<style lang="less" scoped src="static/css/row"></style>-->
+<style lang="less" scoped>
 
 </style>

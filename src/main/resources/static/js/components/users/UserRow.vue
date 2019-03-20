@@ -1,5 +1,5 @@
 <template>
-    <div class="table-row" style="display:table-row">
+    <div :class="'table-row-' + (index%2+1) + ' table-row'" style="display:table-row">
         <div style="display:table-cell">{{ item.id }}</div>
         <div style="display:table-cell">{{ item.username }}</div>
         <div style="display:table-cell">{{ item.activity }}</div>
@@ -40,6 +40,5 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
 </style>

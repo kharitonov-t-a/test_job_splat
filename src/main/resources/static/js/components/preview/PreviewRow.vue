@@ -7,7 +7,7 @@
                 }
             }" >
 
-            <img :src="item.imgSrc" :width="100"/>
+            <img :src="'/image' + item.imgSrc" :width="100"/>
 
         </router-link>
 
@@ -26,6 +26,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

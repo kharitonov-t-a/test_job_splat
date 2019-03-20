@@ -1,5 +1,6 @@
 package banner.service.implementations;
 
+import banner.dao.GenericDaoImpl;
 import banner.dao.interfaces.AuditDao;
 import banner.dao.interfaces.BannerDao;
 import banner.dao.interfaces.UserDao;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> implements UserService {
@@ -60,5 +63,13 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
     public void delete(Integer id) {
         dao.delete(id);
         auditDao.cleanAudit();
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Override
+    public List<User> findAllWithoutPassword() {
+        List<User> userList = dao.findAll();
+        userList.forEach(user -> user.setPassword(""));
+        return userList;
     }
 }

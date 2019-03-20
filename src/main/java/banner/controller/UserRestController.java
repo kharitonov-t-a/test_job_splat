@@ -35,7 +35,7 @@ public class UserRestController {
 
     @GetMapping("list")
     public List<User> list() {
-        return userService.findAll();
+        return userService.findAllWithoutPassword();
     }
 
     @PostMapping

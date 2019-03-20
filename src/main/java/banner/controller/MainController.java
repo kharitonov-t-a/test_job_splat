@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
 
@@ -31,12 +33,15 @@ public class MainController {
 
     @Value("${spring_profile_active}")
     private String profile;
+    private static final String path = System.getProperty("catalina.home") + "/**";
 
-    @GetMapping("/opt/apache-tomcat-8.5.35/**")
+    @GetMapping("/image/**")
     public ResponseEntity<byte[]> index(HttpServletRequest request) throws IOException {
         String restOfTheUrl = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        File imgPath = new File(restOfTheUrl);
+
+        File imgPath = new File(restOfTheUrl.replaceFirst("/image", ""));
+        URL dsd = imgPath.toURI().toURL();
         byte[] image = Files.readAllBytes(imgPath.toPath());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);

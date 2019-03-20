@@ -25,7 +25,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
     EmbeddedDatabase db;
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         db = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("sqlScripts/createUserTable")
@@ -119,7 +119,7 @@ public class UserServiceImplTest {
         System.out.println("Save User: " + user.toString());
 
         User loadedUser = userService.getUserByName("username");
-        Assert.assertEquals(1, loadedUser.getId());
+        Assert.assertEquals(1, (int) loadedUser.getId());
         Assert.assertEquals("username", loadedUser.getUsername());
 
         userService.delete(loadedUser.getId());

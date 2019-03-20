@@ -1,10 +1,15 @@
 <template>
-    <div>
-        <input type="text" placeholder="width" v-model="item.name"/>
-        <div class="errorForm">{{errorsFormMap.get("name")}}</div>
+    <div class="form">
 
-        <input type="button" value="Save" @click="saveItem"/>
-        <input type="button" value="Cancel" @click="cleanForm"/>
+        <div class="field">
+            <label for="nameField">Name locale</label>
+            <input id="nameField" type="text" placeholder="name" v-model="item.name"/>
+            <div class="errorForm">{{errorsFormMap.get("name")}}</div>
+        </div>
+        <div class="field fieldNotInput">
+            <input type="button" value="Save" @click="saveItem"/>
+            <input type="button" value="Cancel" @click="cleanForm"/>
+        </div>
     </div>
 </template>
 

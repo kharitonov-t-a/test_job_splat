@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dynamic-content">
         <input type="text" placeholder="username" v-model="username"/>
         <input type="password" placeholder="password" v-model="password"/>
         <input type="button" value="Log In" @click="logIn"/>
@@ -24,10 +24,11 @@
                 this.$router.push('/');
             });
         }
-
     }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+    .dynamic-content{
+        padding-top: 10%;
+    }
 </style>

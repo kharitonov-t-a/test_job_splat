@@ -5,7 +5,8 @@ import VueDraggable from 'vue-draggable'
 import router from "./router/router";
 import VueRouter from 'vue-router';
 
-Vue.use(VueDraggable);
+// @ts-ignore
+Vue.use(VueDraggable.install);
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
@@ -136,7 +137,7 @@ Vue.component('banner-form', {
 
 
 /!*--------------------------------BANNER_LIST--------------------------------*!/
-Vue.component('banner-row', {
+Vue.component('banner-Row', {
     props: ['banner', 'editMethod', 'banners'],
     template:
         '<tr class="list-group-item">' +
@@ -225,7 +226,7 @@ Vue.component('banners-list', {
                 '</thead>' +
                 '<tbody class="list-group drag">' +
                     '<draggable :list="banners" class="dragArea" :options="{handle:\'.handle\'}">' +
-                        '<banner-row v-for="banner in banners" :key="banner.id" :banner="banner" ' +
+                        '<banner-Row v-for="banner in banners" :key="banner.id" :banner="banner" ' +
                            ':editMethod="editMethod" :banners="banners" />' +
                     '</draggable>' +
                 '</tbody>' +

@@ -1,5 +1,5 @@
 <template>
-    <div class="table-row" style="display:table-row">
+    <div :class="'table-row-' + (index%2+1) + ' table-row'" style="display:table-row">
         <div style="display:table-cell">{{ audit.id }}</div>
         <div style="display:table-cell">{{ audit.date }}</div>
         <div style="display:table-cell">{{ audit.crud }}</div>
@@ -19,10 +19,12 @@
     export default class AuditRow extends Vue {
 
         @Prop() readonly audit!: Audit;
+        @Prop() readonly index!: number;
 
     }
 </script>
 
+<!--<style lang="less" scoped src="static/css/row"></style>-->
 <style scoped>
 
 </style>

@@ -23,12 +23,12 @@ public class UserValidator implements Validator {
             errors.rejectValue("username", "value.notNull", "Field is empty");
         }
 
+        if(user.getId() == null)
         if(user.getPassword()!=null && user.getPassword().length() != 0){
             if(user.getPassword().length()>45)
                 errors.rejectValue("password", "value.exceed", "Password exceed 45 characters");
         }else {
             errors.rejectValue("password", "value.notNull", "Field is empty");
-
         }
     }
 }

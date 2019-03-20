@@ -105,6 +105,9 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
             this.$resource(this.pathURL + '{/id}').update({id: id}, requestBody).then(result =>
                     result.json().then((data : T) => {
                         const index = GenericListImpl.getIndex(this.totalItemList, data.id);
+                        if(User.generalityOf(item))
+                            (<User>(<unknown>data)).password = "";
+
                         this.totalItemList.splice(index, 1, data);
                         this.cleanForm();
 
@@ -120,6 +123,8 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
         } else {
             this.$resource(this.pathURL + '{/id}').save({}, requestBody).then(result =>
                     result.json().then((data : T) => {
+                        if(User.generalityOf(item))
+                            (<User>(<unknown>data)).password = "";
                         this.totalItemList.push(data);
                         this.cleanForm();
 

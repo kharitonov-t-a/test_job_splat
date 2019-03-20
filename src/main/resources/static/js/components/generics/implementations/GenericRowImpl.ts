@@ -7,6 +7,7 @@ import Model from "../../Model";
 export default class GenericRowImpl<T extends Model> extends Vue implements GenericRow<T> {
 
     @Prop() readonly item!: T;
+    @Prop() readonly index!: number;
 
     activateItem(): void {
         this.$emit('activateItem')

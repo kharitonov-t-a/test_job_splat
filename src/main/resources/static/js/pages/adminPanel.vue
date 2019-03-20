@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="dynamic-content">
         <header is="Header" :appTabList="appTabList" @change-tab="changeTab"></header>
         <keep-alive>
             <component
@@ -99,7 +99,6 @@
                     data.forEach((user: User) => {
                         user.className = User.CLASS_NAME;
                         this.totalUserList.push(user);
-                        // this.totalUserList[this.totalUserList.length - 1].className = User.CLASS_NAME;
                     })
                 })
             );
@@ -125,16 +124,81 @@
 </script>
 
 <style lang="less">
-    .component {
-        width: 300px;
-        @media (min-width: 768px) {
-            width: 600px;
-        }
-        @media (min-width: 1280px) {
-            width: 800px;
-        }
+
+    @shadow : rgba(0,0,0,0.2);
+    @background-color-form-element : #f5f5f5;
+    @border : solid 1px #ccc;
+
+    input[type="text"], input[type="password"], input[type="number"], select, input[type="file"], #fileSelect {
+        width:12em;
+        border-radius:2px;
+        border: @border;
+        padding:0.4em;
     }
-    .errorForm{
-       color: red;
+
+    select, input[type="button"], #fileSelect {
+        background: white no-repeat center right;
+        -webkit-box-shadow: 0 1px 3px @shadow;
+        box-shadow: 0 1px 3px @shadow;
     }
+
+    input[type="text"], input[type="password"], input[type="number"], input[type="file"], #fileSelect {
+        background-color: @background-color-form-element;
+        -webkit-box-shadow: inset 0 2px 3px @shadow;
+        box-shadow: inset 0 2px 3px @shadow;
+    }
+
+    label:before {
+        display:inline-block;
+        position:relative;
+        top:0.25em;
+        left:-2px;
+        content:'';
+        width:25px;
+        height:25px;
+    }
+
+    input[type="button"] {
+        padding:0.5em 1em;
+        line-height:1em;
+        cursor:pointer;
+        border-radius:4px;
+        color:#000;
+        font-weight:bold;
+        font-size:inherit;
+        border: @border;
+        box-shadow:0 1px 5px @shadow;
+        background-position: center bottom;
+    }
+
+    input[type="button"]:active{
+        background: lighten(@background-color-form-element, -5%);
+    }
+
+    input[type="button"]:disabled{
+        background: lighten(@background-color-form-element, -5%);
+    }
+
+
+
+
+
+
+
+    /*header{*/
+        /*margin-bottom: 20px;*/
+    /*}*/
+
+    /*.component {*/
+        /*width: 300px;*/
+        /*@media (min-width: 768px) {*/
+            /*width: 600px;*/
+        /*}*/
+        /*@media (min-width: 1280px) {*/
+            /*width: 800px;*/
+        /*}*/
+    /*}*/
+    /*.errorForm{*/
+       /*color: red;*/
+    /*}*/
 </style>

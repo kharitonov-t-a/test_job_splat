@@ -36,6 +36,11 @@ public class BannerRestController {
         return bannerService.findAll();
     }
 
+    @GetMapping("{id}/preview")
+    public Banner findById(@PathVariable Integer id) {
+        return bannerService.findById(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @ModelAttribute Banner banner, @RequestParam(value = "image", required = false) MultipartFile image){
         HttpHeaders responseHeader = new HttpHeaders();

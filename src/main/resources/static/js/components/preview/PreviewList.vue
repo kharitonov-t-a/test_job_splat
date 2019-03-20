@@ -1,5 +1,5 @@
 <template>
-    <div class="drop list" style="display:table">
+    <div class="table" style="display:table">
         <div class="table-row" style="display:table-row">
             <preview-row v-for="item in itemList"
                        :key="item.id"
@@ -38,6 +38,18 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+    .table-row{
+        display: flex !important;
+        flex-wrap: wrap;
+    }
 
+    .table-row div{
+        text-align: center;
+        vertical-align: middle;
+        padding: 5px 7px;
+        margin: 0;
+        /* outline: 1px dotted black; */
+        outline-offset: -1px;
+    }
 </style>

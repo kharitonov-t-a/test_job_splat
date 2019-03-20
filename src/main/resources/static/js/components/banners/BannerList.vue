@@ -1,60 +1,68 @@
 <template xmlns:v-drag-and-drop="http://www.w3.org/1999/xhtml">
-    <div>
-        <banner-form :itemAttr="itemAttr"
-                     :itemAttrChange="itemAttrChange"
-                     :isSortBanners="isSortBanners"
-                     :localeList="localeList"
-                     :errorsForm="errorsForm"
-                     v-on:saveItem="saveItem($event, $event.id, fillSaveFormData($event))"/>
+    <div class="content-container">
 
-        <input type="button" v-bind:value="isSortBannersButtonText" @click="sortBanner"/>
 
-        <select v-model="selectedLocaleId" @change="filterItem" :disabled="isSortBanners">
-            <option v-bind:value="0">All</option>
-            <option v-for="locale in localeList" v-bind:value="locale.id"  v-if="locale.activity">
-                {{ locale.name }}
-            </option>
-        </select>
+        <div class="formSortTable">
 
-        <select v-model="selectedActivity" @change="filterItem" :disabled="isSortBanners">
-            <option v-bind:value="true">Actived</option>
-            <option v-bind:value="false">Disabled</option>
-        </select>
+            <input type="button" v-bind:value="isSortBannersButtonText" @click="sortBanner"/>
 
-        <div class="drag-wrapper" style="display:table" v-drag-and-drop:options="options"> <!---->
+            <select v-model="selectedLocaleId" @change="filterItem" :disabled="isSortBanners">
+                <option v-bind:value="0">All locale</option>
+                <option v-for="locale in localeList" v-bind:value="locale.id" v-if="locale.activity">
+                    {{ locale.name }}
+                </option>
+            </select>
 
-            <div style="display:table-row">
-                <div style="display:table-cell"></div>
-                <div style="display:table-cell">id</div>
-                <div style="display:table-cell">imgSrc</div>
-                <div style="display:table-cell">width</div>
-                <div style="display:table-cell">height</div>
-                <div style="display:table-cell">targetUrl</div>
-                <div style="display:table-cell">langId</div>
-                <div style="display:table-cell">priority</div>
-                <div style="display:table-cell">activity</div>
-                <div style="display:table-cell"></div>
-                <div style="display:table-cell"></div>
+            <select v-model="selectedActivity" @change="filterItem" :disabled="isSortBanners">
+                <option v-bind:value="true">Actived</option>
+                <option v-bind:value="false">Disabled</option>
+            </select>
+        </div>
+
+        <div class="flex-container">
+            <banner-form :itemAttr="itemAttr"
+                         :itemAttrChange="itemAttrChange"
+                         :isSortBanners="isSortBanners"
+                         :localeList="localeList"
+                         :errorsForm="errorsForm"
+                         v-on:saveItem="saveItem($event, $event.id, fillSaveFormData($event))"/>
+
+            <div class="drag-wrapper flex-table" style="display:table" v-drag-and-drop:options="options"> <!---->
+
+                <div class="table-row table-header" style="display:table-row">
+                    <div style="display:table-cell"></div>
+                    <div style="display:table-cell">id</div>
+                    <div style="display:table-cell">imgSrc</div>
+                    <div style="display:table-cell">width</div>
+                    <div style="display:table-cell">height</div>
+                    <div style="display:table-cell">targetUrl</div>
+                    <div style="display:table-cell">langId</div>
+                    <div style="display:table-cell">activity</div>
+                    <div style="display:table-cell"></div>
+                    <div style="display:table-cell"></div>
+                    <div style="display:table-cell"></div>
+                    <div style="display:table-cell"></div>
+                </div>
+                <div class="table-row-group" style="display:table-row-group" @reordered="reordered">
+                    <banner-row v-for="(item, index) in itemList"
+                                :key="item.id"
+                                :item="item"
+                                :index="index"
+                                :itemList="itemList"
+                                :isSortBanners="isSortBanners"
+                                :selectedActivity="selectedActivity"
+                                :localeMap="localeMap"
+                                v-on:editItem="editItem(item)"
+                                v-on:deleteItem="deleteItem(item)"
+                                v-on:activateItem="activateItem(item)"
+                                v-on:upBanner="upBanner(item)"
+                                v-on:downBanner="downBanner(item)"
+                                v-on:showHistory="showHistory(item)"
+                    >
+                    </banner-row>
+                </div>
+
             </div>
-
-            <div class="table-row-group" style="display:table-row-group" @reordered="reordered">
-                <banner-row v-for="item in itemList"
-                            :key="item.id"
-                            :item="item"
-                            :itemList="itemList"
-                            :isSortBanners="isSortBanners"
-                            :selectedActivity="selectedActivity"
-                            :localeMap="localeMap"
-                            v-on:editItem="editItem(item)"
-                            v-on:deleteItem="deleteItem(item)"
-                            v-on:activateItem="activateItem(item)"
-                            v-on:upBanner="upBanner(item)"
-                            v-on:downBanner="downBanner(item)"
-                            v-on:showHistory="showHistory(item)"
-                            >
-                </banner-row>
-            </div>
-
         </div>
         <audit-list
                 v-if="showAuditTab"
@@ -77,19 +85,19 @@
 
     @Component({
         name: 'BannerList',
-        components:{
+        components: {
             BannerRow,
             BannerForm,
             AuditList
         },
-        data (){
+        data() {
             return {
-                options:{
+                options: {
                     dropzoneSelector: '.table-row-group',
                     draggableSelector: '.table-row',
                     handlerSelector: '.handle',
-                    reactivityEnabled: true,
-                    showDropzoneAreas: true,
+                    // reactivityEnabled: true,
+                    // showDropzoneAreas: true,
                     // onDrop: function(event : any) {
                     // console.log(event.nativeEvent);},
                     // onDragstart: function(event : any) {console.log(event.nativeEvent);},
@@ -101,10 +109,10 @@
 
     export default class BannerList extends GenericListImpl<Banner> {
 
-        selectedLocaleId : number = 0;
-        selectedActivity : boolean = true;
-        isSortBanners : boolean = false;
-        isSortBannersButtonText : string = "Sort banners!";
+        selectedLocaleId: number = 0;
+        selectedActivity: boolean = true;
+        isSortBanners: boolean = false;
+        isSortBannersButtonText: string = "Sort banners!";
 
         @Prop() readonly localeList!: Array<Locale>;
         @Prop() readonly totalItemListChange: boolean;
@@ -115,16 +123,18 @@
         // removed($event : any){
         //     console.log($event);
         // }
-        reordered($event : any){
-            if(this.isSortBanners){
+        reordered($event: any) {
+            if (this.isSortBanners) {
                 let destinateIndex = $event.detail.index;
                 let banner = <Banner>$event.detail.items[0].__vue__.item;
                 let currentIndex = GenericListImpl.getIndex(this.itemList, banner.id);
-                while(destinateIndex != currentIndex){
-                    if(destinateIndex < currentIndex){
+                if (destinateIndex > currentIndex)
+                    destinateIndex--;
+                while (destinateIndex != currentIndex) {
+                    if (destinateIndex < currentIndex) {
                         this.upBanner(banner);
                         currentIndex--;
-                    }else{
+                    } else if (destinateIndex > currentIndex) {
                         this.downBanner(banner)
                         currentIndex++;
                     }
@@ -133,13 +143,13 @@
         }
 
         @Watch('totalItemList')
-        getBannerAttr(){
+        getBannerAttr() {
             this.selectedLocaleId = 0;
             this.selectedActivity = true;
             this.filterItem();
         }
 
-        filterItem(){
+        filterItem() {
             this.showAuditTab = false;
             let selectedLocaleId = this.selectedLocaleId;
             let selectedActivity = this.selectedActivity;
@@ -148,25 +158,27 @@
                 return checkActivity() && checkLocale();
 
                 function checkLocale() {
-                    if(selectedLocaleId===0)
+                    if (selectedLocaleId === 0)
                         return true;
                     else
                         return banner.langId === selectedLocaleId;
                 }
+
                 function checkActivity() {
                     return banner.activity === selectedActivity;
                 }
-            }).sort((a, b) => a.priority>b.priority?1:-1);
+            }).sort((a, b) => a.priority > b.priority ? 1 : -1);
         }
 
         public upBanner(banner: Banner) {
             this.swapTwoBanners(banner, -1);
         }
+
         public downBanner(banner: Banner) {
             this.swapTwoBanners(banner, 1);
         }
 
-        private swapTwoBanners(banner: Banner, indent : number){
+        private swapTwoBanners(banner: Banner, indent: number) {
             this.cleanForm();
             this.showAuditTab = false;
             const index1 = GenericListImpl.getIndex(this.itemList, banner.id);
@@ -178,10 +190,10 @@
             this.itemList.splice(index2, 1, banner);
         }
 
-        sortBanner(){
+        sortBanner() {
             this.showAuditTab = false;
             this.cleanForm();
-            if(this.isSortBanners){
+            if (this.isSortBanners) {
                 this.$resource(this.pathURL + '{/id}').update(this.itemList).then(result => {
                         if (result.ok) {
                             this.filterItem();
@@ -190,7 +202,7 @@
                         }
                     },
                     reason => alert("Error!"));
-            }else{
+            } else {
                 this.isSortBanners = true;
                 this.isSortBannersButtonText = "Save!"
             }
@@ -212,83 +224,83 @@
         }
 
 
-
-
     }
 </script>
 
-<style scoped>
-    /*.drag-wrapper {*/
-        /*display: flex;*/
-        /*justify-content: center;*/
-    /*}*/
-    /*.table-row-group {*/
-        /*display: flex;*/
-        /*flex-direction: column;*/
-        /*padding: 3px !important;*/
-        /*min-height: 70vh;*/
-        /*float:left;*/
-        /*list-style-type:none;*/
-        /*overflow-y:auto;*/
-        /*border:2px solid #888;*/
-        /*border-radius:0.2em;*/
-        /*background:#8adccc;*/
-        /*color:#555;*/
-        /*margin-right: 5px;*/
-    /*}*/
+<style lang="less">
 
-    /*!* drop target state *!*/
-    /*.table-row-group[aria-dropeffect="move"] {*/
-        /*border-color:#68b;*/
-        /*background:#fff;*/
-    /*}*/
+    .form {
+        float: left;
+        width: 25%;
+        margin-top: 25px;
+    }
 
-    /*!* drop target focus and dragover state *!*/
-    /*.table-row-group[aria-dropeffect="move"]:focus,*/
-    /*.table-row-group[aria-dropeffect="move"].dragover*/
-    /*{*/
-        /*outline:none;*/
-        /*box-shadow:0 0 0 1px #fff, 0 0 0 3px #68b;*/
-    /*}*/
+    .field {
+        clear: both;
+        text-align: right;
+        line-height: 25px;
+    }
 
-    /*!* draggable items *!*/
-    /*.table-row {*/
-        /*display:block;*/
-        /*list-style-type:none;*/
-        /*margin:0 0 2px 0;*/
-        /*padding:0.2em 0.4em;*/
-        /*border-radius:0.2em;*/
-        /*line-height:1.3;*/
-    /*}*/
+    .field label {
+        float: left;
+        line-height: 10px;
+        margin-top: -4px;
+    }
 
-    /*.table-row:hover {*/
-        /*box-shadow:0 0 0 2px #68b, inset 0 0 0 1px #ddd;*/
-    /*}*/
+    .fieldNotInput {
+        line-height: 35px;
+    }
 
-    /*!* items focus state *!*/
-    /*.table-row:focus*/
-    /*{*/
-        /*outline:none;*/
-        /*box-shadow:0 0 0 2px #68b, inset 0 0 0 1px #ddd;*/
-    /*}*/
+    .table-row-group[aria-dropeffect="move"] {
+        border-color: #68b;
+        background: #fff;
+    }
 
-    /*!* items grabbed state *!*/
-    /*.table-row[aria-grabbed="true"]*/
-    /*{*/
-        /*background:#5cc1a6;*/
-        /*color:#fff;*/
-    /*}*/
+    .table-row[aria-grabbed="true"] {
+        background: #5cc1a6;
+        color: #fff;
+    }
 
-    /*@keyframes nodeInserted {*/
-        /*from { opacity: 0.2; }*/
-        /*to { opacity: 0.8; }*/
-    /*}*/
+    .table-header{
+        background: #6d8285;
+    }
 
-    /*.item-dropzone-area {*/
-        /*height: 2rem;*/
-        /*background: #888;*/
-        /*opacity: 0.8;*/
-        /*animation-duration: 0.5s;*/
-        /*animation-name: nodeInserted;*/
-    /*}*/
+    @keyframes nodeInserted {
+        from {
+            opacity: 0.2;
+        }
+        to {
+            opacity: 0.8;
+        }
+    }
+
+    .item-dropzone-area {
+        height: 2rem;
+        background: #888;
+        opacity: 0.8;
+        animation-duration: 0.5s;
+        animation-name: nodeInserted;
+    }
+
+    .content-container{
+        display: flex;
+        flex-direction: column;
+        margin-top: 25px;
+    }
+
+    .content-container .flex-container{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .flex-table{
+        float: right;
+        margin: 0 0 0 auto;
+        width: 70%;
+    }
+
+    .formSortTable{
+        margin-bottom: 10px;
+    }
+
 </style>
