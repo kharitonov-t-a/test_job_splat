@@ -15,7 +15,7 @@
         </div>
         <div class="field">
             <label for="heightField">Height</label>
-            <input id="heightField" type="number" placeholder="height" v-model="item.height > 1000?item.height=500:item.height<1?item.height=1:item.height"/>
+            <input id="heightField" type="number" placeholder="height" v-model="item.height > 500?item.height=500:item.height<1?item.height=1:item.height"/>
             <div class="errorForm">{{errorsFormMap.get("height")}}</div>
         </div>
         <div class="field">

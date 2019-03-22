@@ -6,8 +6,9 @@
     <script th:inline="javascript">
         var frontendData = [[${frontendData}]]
     </script>
-    <!-- CSS RESET -->
     <style>
+        /*CSS RESET*/
+
         body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
         form, fieldset, input, p, blockquote, table, th, td, embed, object {
             padding: 0;
@@ -50,7 +51,9 @@
     </style>
 </head>
 <body>
+<noscript>
+    <strong>We're sorry but my-project-name doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
 <div id="app"></div>
-<!--<script lang="ts" src="/js/main.ts"></script>-->
-<script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : '/js/main.js'"></script>
+<script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : @{/js/main.js}"></script>
 </body>

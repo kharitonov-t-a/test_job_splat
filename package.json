@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "cross-env NODE_ENV=production webpack"
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

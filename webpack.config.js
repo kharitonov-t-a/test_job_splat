@@ -5,6 +5,10 @@ module.exports = {
     mode: 'development',
     devtool: 'source-map',
     entry: path.join(__dirname, 'src', 'main', 'resources', 'static', 'js', 'main.ts'),
+    output: {
+        path: path.join(__dirname, 'target', 'classes', 'static', 'js'),
+        filename: 'main.js'
+    },
     devServer: {
         contentBase: './dist',
         compress: true,
@@ -64,4 +68,4 @@ module.exports = {
             path.join(__dirname, 'node_modules'),
         ],
     }
-}
+};

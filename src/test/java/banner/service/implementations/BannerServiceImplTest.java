@@ -1,5 +1,6 @@
 package banner.service.implementations;
 
+import banner.Application;
 import banner.dao.implementations.BannerDaoImpl;
 import banner.dao.mappers.BannerMapper;
 import banner.model.Banner;
@@ -8,17 +9,42 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
 import java.util.List;
 
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(locations="classpath:testApplication.properties")
 @RunWith(SpringRunner.class)
+//@SqlGroup({
+//        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
+//                "classpath:sqlScripts/createBannerTable.sql",
+//                "classpath:sqlScripts/createAuditTable.sql",
+//                "classpath:sqlScripts/createUserTable.sql",
+//                "classpath:sqlScripts/createLocaleTable.sql"}),
+//        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sqlScripts/drop.sql")
+//})
 public class BannerServiceImplTest {
+
+    @Value("${path_root_dir}")
+    String pathRootDir;
 
     private BannerDaoImpl bannerDao;
     private BannerServiceImpl bannerService;
@@ -37,13 +63,13 @@ public class BannerServiceImplTest {
 
         bannerService = new BannerServiceImpl();
         bannerService.dao = bannerDao;
+        bannerService.pathRootDir = pathRootDir;
     }
 
     @After
     public void tearDown() throws Exception {
         db.shutdown();
     }
-
 
     @Test
     public void createBanner() {

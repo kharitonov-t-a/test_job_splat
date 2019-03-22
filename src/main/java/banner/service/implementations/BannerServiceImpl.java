@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, BannerDao> implements BannerService {
 
-    @Value("${upload_path}")
-    private String pathImage;
+    @Value("${path_root_dir}")
+    String pathRootDir;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @AuditCreate
@@ -96,7 +96,7 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
     }
 
     private boolean saveNewBannerImage(Banner banner, MultipartFile image) {
-        String rootPath = "/opt/apache-tomcat-8.5.35";//System.getProperty("catalina.home");
+        String rootPath = pathRootDir;//System.getenv("CATALINA_HOME");
 
         String uuidFile = UUID.randomUUID().toString();
         String fileName = uuidFile + "_" + image.getOriginalFilename();
