@@ -2,7 +2,7 @@
     <div class="table-row" style="display:table-row">
         <div style="display:table-cell">{{ this.item.id }}
             <a :href="item.targetUrl">
-                <img :src="'/image' + item.imgSrc" :width="item.width" :height="item.height"/>
+                <img :src="this.$root.$data.baseURL + '/image' + item.imgSrc" :width="item.width" :height="item.height"/>
             </a>
         </div>
     </div>
@@ -19,8 +19,8 @@
         item : Banner = new Banner();
         mounted(){
             this.item = (<Banner><undefined>this.$router.currentRoute.query.item);
-            if(this.item.imgSrc === undefined){
-                this.$resource('/banner/{id}/preview').get({id: this.$router.currentRoute.params.id}).then(result => {
+            if(this.item === undefined || this.item.id === undefined){
+                this.$resource('preview/{id}').get({id: this.$router.currentRoute.params.id}).then(result => {
                     result.json().then((data: Banner) => {
                         this.item = data;
                     });

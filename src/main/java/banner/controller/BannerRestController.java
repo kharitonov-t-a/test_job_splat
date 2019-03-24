@@ -36,7 +36,7 @@ public class BannerRestController {
         return bannerService.findAll();
     }
 
-    @GetMapping("{id}/preview")
+    @GetMapping("preview/{id}")
     public Banner findById(@PathVariable Integer id) {
         return bannerService.findById(id);
     }

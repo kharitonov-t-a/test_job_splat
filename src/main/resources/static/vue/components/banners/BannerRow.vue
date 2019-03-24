@@ -6,7 +6,7 @@
             </span>
         </div>
         <div style="display:table-cell">{{ item.id }}</div>
-        <div style="display:table-cell"><img :src="'/image' + item.imgSrc" width="100"/></div>
+        <div style="display:table-cell"><img :src="this.$root.$data.baseURL + '/image' + item.imgSrc" width="100"/></div>
         <div style="display:table-cell">{{ item.width }}</div>
         <div style="display:table-cell">{{ item.height }}</div>
         <div style="display:table-cell">{{ item.targetUrl }}</div>
@@ -52,7 +52,7 @@
             <router-link class="preview" :to="{
                 path: '/banner/' + item.id,
                 query:{
-                    item: {item}
+                    item
                 }
             }" >Preview</router-link>
         </div>

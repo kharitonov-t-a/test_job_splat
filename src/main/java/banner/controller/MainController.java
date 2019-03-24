@@ -33,7 +33,8 @@ public class MainController {
 
     @Value("${spring_profile_active}")
     private String profile;
-    private static final String path = System.getProperty("catalina.home") + "/**";
+    @Value("${contextPath:}")
+    private String contextPath;
 
     @GetMapping("/image/**")
     public ResponseEntity<byte[]> index(HttpServletRequest request) throws IOException {
@@ -41,7 +42,6 @@ public class MainController {
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
         File imgPath = new File(restOfTheUrl.replaceFirst("/image", ""));
-        URL dsd = imgPath.toURI().toURL();
         byte[] image = Files.readAllBytes(imgPath.toPath());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
@@ -49,10 +49,11 @@ public class MainController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @GetMapping({"/error", "/", "/**"})
+    @GetMapping({"/error", "/", "/**/{path:[^\\.]+}"})
     public String banners(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         HashMap<Object, Object> data = new HashMap<>();
         data.put("profile", userDetails);
+        model.addAttribute("contextPath", contextPath);
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", "dev".equals(profile));
         return "index";

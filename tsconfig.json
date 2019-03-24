@@ -1,5 +1,4 @@
 {
-  "include": ["./src/main/resources/static/js/**/*"],
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
@@ -11,7 +10,8 @@
     "module": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "baseUrl": "."
   },
   "files": [
     "vue-shims.d.ts"
@@ -23,5 +23,8 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "src/**/*.html"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

@@ -10,11 +10,8 @@ import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.unit.DataSize;
@@ -22,15 +19,19 @@ import org.springframework.util.unit.DataSize;
 import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
-public class Application extends SpringBootServletInitializer
+public class ApplicationInitializer extends SpringBootServletInitializer
 {
+
+//    @Value("${server.servlet.context-path}")
+//    private static String contextPath;
+
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+        return application.sources(ApplicationInitializer.class);
     }
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ApplicationInitializer.class, args);
     }
 
 //    public static void main(String[] args)
@@ -76,6 +77,12 @@ public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderCon
         factory.setMaxRequestSize(DataSize.ofKilobytes(512));
         return factory.createMultipartConfig();
     }
+
+//    @Bean
+//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
+//    webServerFactoryCustomizer() {
+//        return factory -> factory.setContextPath("/baeldung");
+//    }
 
 //    @Bean
 //    public MessageSource messageSource() {

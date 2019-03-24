@@ -31,7 +31,7 @@
     })
     export default class App extends Vue {
         logout() {
-            this.$resource('/logout').get({}).then(value => {
+            this.$resource('logout').get({}).then(value => {
                 this.$root.$data.profile = null;
                 this.$router.push('/');
             });

@@ -26,7 +26,7 @@
 
 
         beforeCreate(){
-            this.$resource('/banner/list').get().then(result => {
+            this.$resource('banner/list').get().then(result => {
                 result.json().then((data: Banner[]) => {
                     data.forEach((banner: Banner) => {
                         this.itemList.push(banner);

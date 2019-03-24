@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Banners</title>
     <script th:inline="javascript">
-        var frontendData = [[${frontendData}]]
+        var frontendData = [[${frontendData}]];
+        var contextPath = [[${contextPath}]];
+        contextPath = contextPath!=null?contextPath:"";
     </script>
     <style>
         /*CSS RESET*/
@@ -52,8 +54,8 @@
 </head>
 <body>
 <noscript>
-    <strong>We're sorry but my-project-name doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    <strong>We're sorry but project doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
 </noscript>
 <div id="app"></div>
-<script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : @{/js/main.js}"></script>
+<script type="text/javascript" th:src="${isDevMode} ? 'http://localhost:8000/main.js' : @{/js/main.js}"></script>
 </body>

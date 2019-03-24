@@ -1,21 +1,23 @@
 {
   "name": "Banner",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "repository": "https://github.com/kharitonov-t-a/test_job_splat.git",
   "author": "Tom <kharitonov.t.a@yandex.ru>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --hot",
-    "build": "webpack --config webpack.config.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
+    "@types/node": "^11.11.5",
     "axios": "^0.18.0",
     "vue": "^2.6.8",
     "vue-draggable": "^2.0.0-beta.1",
     "vue-property-decorator": "^8.0.0",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "webpack-merge": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

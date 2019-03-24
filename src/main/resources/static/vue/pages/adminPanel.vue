@@ -17,11 +17,11 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import BannerList from 'components/banners/BannerList.vue';
-    import LocaleList from 'components/locales/LocaleList.vue';
-    import UserList from 'components/users/UserList.vue';
-    import AuditList from 'components/audits/AuditList.vue';
-    import Header from 'components/Header.vue';
+    import BannerList from '../components/banners/BannerList.vue';
+    import LocaleList from '../components/locales/LocaleList.vue';
+    import UserList from '../components/users/UserList.vue';
+    import AuditList from '../components/audits/AuditList.vue';
+    import Header from '../components/Header.vue';
     import Locale from "../components/locales/Locale";
     import Banner from "../components/banners/Banner";
     import User from "../components/users/User";
@@ -55,17 +55,17 @@
             component: 'BannerList',
             title: 'Banners',
             totalItemList: this.totalBannerList,
-            pathURL: '/banner',
+            pathURL: 'banner',
         }, {
             component: 'LocaleList',
             title: 'Locales',
             totalItemList: this.totalLocaleList,
-            pathURL: '/locale',
+            pathURL: 'locale',
         }, {
             component: 'UserList',
             title: 'Users',
             totalItemList: this.totalUserList,
-            pathURL: '/user',
+            pathURL: 'user',
         }, {
             component: 'AuditList',
             title: 'History',
@@ -83,7 +83,7 @@
         constructor() {
             super();
 
-            this.$resource('/locale/list').get().then(result =>
+            this.$resource('locale/list').get().then(result =>
                 result.json().then((data: Locale[]) => {
                     data.forEach((locale: Locale) => {
                         locale.className = Locale.CLASS_NAME;
@@ -94,7 +94,7 @@
                     this.reloadBanners();
                 })
             );
-            this.$resource('/user/list').get().then(result =>
+            this.$resource('user/list').get().then(result =>
                 result.json().then((data: User[]) => {
                     data.forEach((user: User) => {
                         user.className = User.CLASS_NAME;
@@ -109,7 +109,7 @@
                 this.totalBannerList = new Array<Banner>();
             }
 
-            this.$resource('/banner/list').get().then(result => {
+            this.$resource('banner/list').get().then(result => {
                 result.json().then((data: Banner[]) => {
                     data.forEach((banner: Banner) => {
                         banner.className = Banner.CLASS_NAME;

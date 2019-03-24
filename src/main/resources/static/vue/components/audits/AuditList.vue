@@ -82,7 +82,7 @@
 
         searchHistoryBy(pathURL: string) {
             this.itemList = new Array<Audit>();
-            this.$resource('/audit/list' + pathURL + '{/id}').get({id: this.searchValue}).then(result =>
+            this.$resource('audit/list' + pathURL + '{/id}').get({id: this.searchValue}).then(result =>
                 result.json().then((data: Audit[]) => {
                     data.forEach((audit: Audit) => this.itemList.push(audit))
                 })

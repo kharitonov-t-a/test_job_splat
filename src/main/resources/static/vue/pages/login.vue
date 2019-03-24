@@ -19,8 +19,8 @@
             let formData = new FormData();
             formData.append("username", this.username);
             formData.append("password", this.password);
-            this.$resource('/login').save({}, formData).then(value => {
-                this.$resource('/user').get({}, formData).then(value1 => this.$root.$data.profile = value1.data);
+            this.$resource('login').save({}, formData).then(value => {
+                this.$resource('user').get({}, formData).then(value1 => this.$root.$data.profile = value1.data);
                 this.$router.push('/');
             });
         }

@@ -144,9 +144,9 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
 
     showHistory(item : T){
         this.auditList = new Array<Audit>();
-        this.$resource('/audit/list' + this.pathURL + '{/id}').get({id: item.id}).then(result =>
+        this.$resource('audit/list/' + this.pathURL + '{/id}').get({id: item.id}).then(result =>
             result.json().then((data : Audit[]) => {
-                data.forEach((audit: Audit) => this.auditList.push(audit))
+                data.forEach((audit: Audit) => this.auditList.push(audit));
                 this.showAuditTab = true;
             })
         );
