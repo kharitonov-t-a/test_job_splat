@@ -1,0 +1,5 @@
+INSERT INTO `Locale` (`id`, `name`) VALUES ('1', 'RU');
+INSERT INTO `Locale` (`id`, `name`) VALUES ('2', 'US');
+INSERT INTO `Locale` (`id`, `name`) VALUES ('3', 'DE');
+
+INSERT INTO `User` values (1, 'admin', '$2a$10$tuOnngio4MtO2ESZr9kBseNwxkcBaHps6Qv3GOPJIHzV8TobhRjW2');

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class BannerValidator implements Validator {
     @Override
     public boolean supports(Class<?> aClass) {
-        return Banner.class.equals(aClass) || ArrayList.class.equals(aClass);
+        return Banner.class.isAssignableFrom(aClass) || ArrayList.class.equals(aClass);
     }
 
     @Override

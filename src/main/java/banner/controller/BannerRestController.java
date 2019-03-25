@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -42,14 +43,24 @@ public class BannerRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @ModelAttribute Banner banner, @RequestParam(value = "image", required = false) MultipartFile image){
+    public ResponseEntity<?> create(@Valid @ModelAttribute Banner banner,
+                                    BindingResult bindingResult, @RequestParam(value = "image", required = false) MultipartFile image){
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+
         HttpHeaders responseHeader = new HttpHeaders();
         Banner resultBanner = bannerService.createBanner(banner, image);
         return new ResponseEntity<>(resultBanner, responseHeader, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @ModelAttribute Banner banner, @RequestParam(value = "image", required = false) MultipartFile image){
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @ModelAttribute Banner banner,
+                                    BindingResult bindingResult, @RequestParam(value = "image", required = false) MultipartFile image){
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+
         HttpHeaders responseHeader = new HttpHeaders();
         banner.setId(id);
         Banner resultBanner = bannerService.updateBanner(banner, image);

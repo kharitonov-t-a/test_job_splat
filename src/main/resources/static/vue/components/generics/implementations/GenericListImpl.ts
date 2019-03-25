@@ -118,7 +118,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
                             this.filterItem();
                     }),
             reason => {
-                this.errorsForm = reason.body.errors;
+                this.errorsForm = reason.body;
             });
         } else {
             this.$resource(this.pathURL + '{/id}').save({}, requestBody).then(result =>
@@ -135,7 +135,7 @@ export default class GenericListImpl<T extends Model> extends Vue implements Gen
                             this.filterItem();
                     }),
             reason => {
-                this.errorsForm = reason.body.errors;
+                this.errorsForm = reason.body;
             })
         }
     }

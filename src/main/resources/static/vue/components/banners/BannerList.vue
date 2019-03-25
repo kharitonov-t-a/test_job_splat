@@ -112,7 +112,7 @@
         selectedLocaleId: number = 0;
         selectedActivity: boolean = true;
         isSortBanners: boolean = false;
-        isSortBannersButtonText: string = "Sort banners!";
+        isSortBannersButtonText: string = "Sort banners! (d&d)";
 
         @Prop() readonly localeList!: Array<Locale>;
         @Prop() readonly totalItemListChange: boolean;
@@ -198,13 +198,13 @@
                         if (result.ok) {
                             this.filterItem();
                             this.isSortBanners = false;
-                            this.isSortBannersButtonText = "Sort banners!!"
+                            this.isSortBannersButtonText = "Sort banners! (d&d)"
                         }
                     },
                     reason => alert("Error!"));
             } else {
                 this.isSortBanners = true;
-                this.isSortBannersButtonText = "Save!"
+                this.isSortBannersButtonText = "Save! (pull the left part row)"
             }
         }
 

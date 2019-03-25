@@ -39,19 +39,25 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody User user){
+    public ResponseEntity<?> create(@Valid @RequestBody User user,
+                                    BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
 
         HttpHeaders responseHeader = new HttpHeaders();
-
         User resultUser = userService.create(user);
         return new ResponseEntity<>(resultUser, responseHeader, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> update(@PathVariable Integer id, @Valid @RequestBody User user){
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody User user,
+                                       BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
 
         HttpHeaders responseHeader = new HttpHeaders();
-
         user.setId(id);
         User resultUser = userService.update(user);
         return new ResponseEntity<>(resultUser, responseHeader, HttpStatus.OK);
