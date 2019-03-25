@@ -33,6 +33,8 @@ public class MainController {
 
     @Value("${spring_profile_active}")
     private String profile;
+    @Value("${path_root_dir}")
+    private String path_root_dir;
     @Value("${contextPath:}")
     private String contextPath;
 
@@ -40,8 +42,12 @@ public class MainController {
     public ResponseEntity<byte[]> index(HttpServletRequest request) throws IOException {
         String restOfTheUrl = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        File imgPath;
+        if(path_root_dir.startsWith("/"))
+            imgPath = new File(restOfTheUrl.replaceFirst("/image", ""));
+        else
+            imgPath = new File(restOfTheUrl.replaceFirst("/image/", ""));
 
-        File imgPath = new File(restOfTheUrl.replaceFirst("/image/", ""));
         byte[] image = Files.readAllBytes(imgPath.toPath());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);

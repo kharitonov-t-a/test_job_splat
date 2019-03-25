@@ -80,7 +80,13 @@ Tools:
         
         Создаем папку на жестком диске, открытую для чтения/записи, для хранения изображений
         
-        Прописываем в application.properties полный путь. Например path_root_dir=/opt/apache-tomcat-8.5.35 или C:\\DevPrograms\\apache-tomcat-8.5.34
+        Прописываем в application.properties полный путь. Например 
+        
+            path_root_dir=/opt/apache-tomcat-8.5.35 
+            
+        или 
+        
+            path_root_dir=C:\\DevPrograms\\apache-tomcat-8.5.34
         
         Настраиваем подключение к БД в application.properties.
         

@@ -64,7 +64,7 @@
         getItemAttr(){
             if(this.itemAttr !== null){
                 this.item.copyItem(this.itemAttr);
-                this.image = this.$root.$data.baseURL + '/image/' + this.itemAttr.imgSrc;
+                this.image = this.$root.$data.baseURL + '/image' + (this.itemAttr.imgSrc.startsWith('/')?'':'/') + this.itemAttr.imgSrc;
             }else{
                 this.cleanForm();
             }
