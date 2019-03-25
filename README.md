@@ -74,9 +74,13 @@ Tools:
 
     * Общее:
         
+        Проверено на windows7 и linux mint 16
+        
+        Открываем доступ на изменение к папке с приложением.
+        
         Создаем папку на жестком диске, открытую для чтения/записи, для хранения изображений
         
-        Прописываем в application.properties полный путь. Например path_root_dir=/opt/apache-tomcat-8.5.35.
+        Прописываем в application.properties полный путь. Например path_root_dir=/opt/apache-tomcat-8.5.35 или C:\\DevPrograms\\apache-tomcat-8.5.34
         
         Настраиваем подключение к БД в application.properties.
         

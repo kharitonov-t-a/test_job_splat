@@ -7,7 +7,7 @@
                 }
             }" >
 
-            <img :src="this.$root.$data.baseURL + '/image' + item.imgSrc" :width="100"/>
+            <img :src="this.$root.$data.baseURL + '/image/' + item.imgSrc" :width="100"/>
 
         </router-link>
 

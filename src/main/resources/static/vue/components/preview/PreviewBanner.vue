@@ -2,7 +2,7 @@
     <div class="table-row" style="display:table-row">
         <div style="display:table-cell">{{ this.item.id }}
             <a :href="item.targetUrl">
-                <img :src="this.$root.$data.baseURL + '/image' + item.imgSrc" :width="item.width" :height="item.height"/>
+                <img :src="this.$root.$data.baseURL + '/image/' + item.imgSrc" :width="item.width" :height="item.height"/>
             </a>
         </div>
     </div>

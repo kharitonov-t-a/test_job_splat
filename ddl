@@ -1,6 +1,6 @@
 CREATE SCHEMA `banner` DEFAULT CHARACTER SET utf8 ;
 
-CREATE TABLE `Banner` (
+CREATE TABLE `banner`.`Banner` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `imgSrc` VARCHAR(120) NOT NULL,
   `width` INT NULL,
@@ -11,13 +11,13 @@ CREATE TABLE `Banner` (
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 
-CREATE TABLE `Locale` (
+CREATE TABLE `banner`.`Locale` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `activity` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`));
 
-CREATE TABLE `User` (
+CREATE TABLE `banner`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(120) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `User` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC));
 
-CREATE TABLE `Audit` (
+CREATE TABLE `banner`.`Audit` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `idBanner` INT NOT NULL,
   `idUser` INT NOT NULL,

@@ -41,7 +41,7 @@ public class MainController {
         String restOfTheUrl = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
-        File imgPath = new File(restOfTheUrl.replaceFirst("/image", ""));
+        File imgPath = new File(restOfTheUrl.replaceFirst("/image/", ""));
         byte[] image = Files.readAllBytes(imgPath.toPath());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
