@@ -88,6 +88,8 @@ Tools:
         
             path_root_dir=C:\\DevPrograms\\apache-tomcat-8.5.34
         
+        Для тестов этот параметр нужно так-же поменять и в Banner\src\test\resources\testApplication.properties
+        
         Настраиваем подключение к БД в application.properties.
         
         Выполняем ddl и dml.
