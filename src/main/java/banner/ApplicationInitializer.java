@@ -22,10 +22,6 @@ import javax.servlet.MultipartConfigElement;
 public class ApplicationInitializer extends SpringBootServletInitializer
 {
 
-//    @Value("${server.servlet.context-path}")
-//    private static String contextPath;
-
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(ApplicationInitializer.class);
@@ -34,35 +30,21 @@ public class ApplicationInitializer extends SpringBootServletInitializer
         SpringApplication.run(ApplicationInitializer.class, args);
     }
 
-//    public static void main(String[] args)
-//    {
-//        ApplicationContext ctx = SpringApplication.run(Application.class, args);
-//
-//        String[] beanNames = ctx.getBeanDefinitionNames();
-//
-//        Arrays.sort(beanNames);
-//
-//        for (String beanName : beanNames) {
-//            System.out.println(beanName);
-//        }
-//    }
-//
-@Bean
-public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-    return new PropertySourcesPlaceholderConfigurer();
-}
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
     @Bean
     public ErrorPageRegistrar errorPageRegistrar(){
         return new MyErrorPageRegistrar();
     }
 
     private static class MyErrorPageRegistrar implements ErrorPageRegistrar {
-
         @Override
         public void registerErrorPages(ErrorPageRegistry registry) {
             registry.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/"));
         }
-
     }
 
     @Bean
@@ -77,17 +59,4 @@ public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderCon
         factory.setMaxRequestSize(DataSize.ofKilobytes(512));
         return factory.createMultipartConfig();
     }
-
-//    @Bean
-//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
-//    webServerFactoryCustomizer() {
-//        return factory -> factory.setContextPath("/baeldung");
-//    }
-
-//    @Bean
-//    public MessageSource messageSource() {
-//        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-//        messageSource.setBasenames("messages");
-//        return messageSource;
-//    }
 }

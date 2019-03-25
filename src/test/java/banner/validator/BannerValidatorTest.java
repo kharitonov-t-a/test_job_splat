@@ -7,13 +7,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
 import java.util.Locale;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BannerValidatorTest {
     // указываем файл сообщений
     private static final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -28,6 +29,9 @@ public class BannerValidatorTest {
         bannerValidator = new BannerValidator();
     }
 
+    /**
+     *
+     */
     @Test
     public void validate() {
         final Banner banner = new Banner();

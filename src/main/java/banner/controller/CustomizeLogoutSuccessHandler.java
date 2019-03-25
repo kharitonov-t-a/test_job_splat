@@ -17,6 +17,13 @@ public class CustomizeLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onLogoutSuccess(HttpServletRequest request,
                                 HttpServletResponse response, Authentication authentication)

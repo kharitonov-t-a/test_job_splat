@@ -13,12 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ */
 // handle 403 page
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
     private static Logger logger = LoggerFactory.getLogger(MyAccessDeniedHandler.class);
 
+    /**
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param e
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void handle(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,

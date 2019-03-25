@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+/**
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,18 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
 
-//    @Autowired
-//    public void registerGlobalAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(getPasswordEncoder());
-//    }
-//
+    /**
+     * @return
+     */
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -46,19 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
 
+    /**
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/about", "hello").permitAll()
-                .antMatchers("/admin/**").access("hasAnyRole('ADMIN', 'MANAGER')");
-//                .antMatchers("/user/**").hasAnyRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
+                .antMatchers("/").permitAll()
+                .antMatchers("/logout/**", "/admin/**").access("hasAnyRole('ADMIN', 'MANAGER')");
         http.formLogin()
                 .loginPage("/login")
                 .successHandler(customizeAuthenticationSuccessHandler)
-//                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()

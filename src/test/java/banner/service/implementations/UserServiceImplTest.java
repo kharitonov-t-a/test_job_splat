@@ -14,11 +14,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceImplTest {
 
     private UserDaoImpl userDao;
@@ -54,10 +55,16 @@ public class UserServiceImplTest {
         db.shutdown();
     }
 
+    /**
+     *
+     */
     @Test
     public void getUserByName() {
     }
 
+    /**
+     *
+     */
     @Test
     public void create() {
         User user = new User();
@@ -81,6 +88,9 @@ public class UserServiceImplTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void update() {
         User user = new User();
@@ -104,6 +114,9 @@ public class UserServiceImplTest {
         Assert.assertEquals(UserRoles.ROLE_ADMIN, updatedUser.getRole());
     }
 
+    /**
+     *
+     */
     @Test
     public void delete() {
         User user = new User();

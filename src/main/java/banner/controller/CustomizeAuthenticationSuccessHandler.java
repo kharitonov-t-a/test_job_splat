@@ -17,6 +17,13 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response, Authentication authentication)

@@ -41,12 +41,12 @@ public class BannerValidator implements Validator {
         }else {
             errors.rejectValue("targetUrl", "value.notNull", "Field is empty");
         }
-
-
-
-
     }
 
+    /**
+     * @param url
+     * @return
+     */
     private boolean isValidURL(String url) {
 
         URL u = null;

@@ -38,6 +38,11 @@ public class MainController {
     @Value("${contextPath:}")
     private String contextPath;
 
+    /**
+     * @param request
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/image/**")
     public ResponseEntity<byte[]> index(HttpServletRequest request) throws IOException {
         String restOfTheUrl = (String) request.getAttribute(
@@ -55,6 +60,11 @@ public class MainController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
+    /**
+     * @param model
+     * @param userDetails
+     * @return
+     */
     @GetMapping({"/error", "/", "/**/{path:[^\\.]+}"})
     public String banners(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         HashMap<Object, Object> data = new HashMap<>();
@@ -65,8 +75,4 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/403")
-    public String error403() {
-        return "/error/403";
-    }
 }

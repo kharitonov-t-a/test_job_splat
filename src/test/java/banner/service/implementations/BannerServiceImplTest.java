@@ -14,22 +14,17 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.List;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+/**
+ *
+ */
 @TestPropertySource(locations="classpath:testApplication.properties")
-@RunWith(SpringRunner.class)
-//@SqlGroup({
-//        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
-//                "classpath:sqlScripts/createBannerTable.sql",
-//                "classpath:sqlScripts/createAuditTable.sql",
-//                "classpath:sqlScripts/createUserTable.sql",
-//                "classpath:sqlScripts/createLocaleTable.sql"}),
-//        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sqlScripts/drop.sql")
-//})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BannerServiceImplTest {
 
     @Value("${path_root_dir}")
@@ -60,6 +55,9 @@ public class BannerServiceImplTest {
         db.shutdown();
     }
 
+    /**
+     *
+     */
     @Test
     public void createBanner() {
         Banner banner = new Banner();
@@ -89,6 +87,9 @@ public class BannerServiceImplTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void updateBanner() {
         Banner banner = new Banner();
@@ -138,6 +139,9 @@ public class BannerServiceImplTest {
         Assert.assertTrue(updatedBanner.getActivity());
     }
 
+    /**
+     *
+     */
     @Test
     public void deleteBanner() {
         Banner banner = new Banner();
@@ -184,6 +188,9 @@ public class BannerServiceImplTest {
         Assert.assertEquals(0, bannerService.findAll().size());
     }
 
+    /**
+     *
+     */
     @Test
     public void findById() {
         Banner banner = new Banner();

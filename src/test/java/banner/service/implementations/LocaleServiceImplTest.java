@@ -14,11 +14,12 @@ import org.junit.runner.RunWith;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class LocaleServiceImplTest {
 
     private LocaleDaoImpl localeDao;
@@ -51,6 +52,9 @@ public class LocaleServiceImplTest {
     }
 
 
+    /**
+     *
+     */
     @Test
     public void create() {
         Locale locale = new Locale();
@@ -66,6 +70,9 @@ public class LocaleServiceImplTest {
         Assert.assertTrue(loadedLocale.getActivity());
     }
 
+    /**
+     *
+     */
     @Test
     public void update() {
         Locale locale = new Locale();
@@ -86,6 +93,9 @@ public class LocaleServiceImplTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void delete() {
         List<Locale> loadedLocales = localeService.findAll();

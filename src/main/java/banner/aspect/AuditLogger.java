@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 @Component
 @Aspect
 public class AuditLogger {
@@ -51,6 +54,11 @@ public class AuditLogger {
     public void switchActivityMethods() {
     }
 
+    /**
+     * Create new item of Audit table after create new banner
+     * @param jp
+     * @param result
+     */
     @AfterReturning(pointcut = "createMethods()", returning = "result")
     public void createMethodCall(JoinPoint jp, Object result) {
         Audit audit = new Audit();
@@ -59,6 +67,11 @@ public class AuditLogger {
         auditAction(audit);
     }
 
+    /**
+     * Create new item of Audit table after update exists banner
+     * @param jp
+     * @param result
+     */
     @AfterReturning(pointcut = "updateMethods()", returning = "result")
     public void updateMethodCall(JoinPoint jp, Object result) {
         Audit audit = new Audit();
@@ -67,6 +80,25 @@ public class AuditLogger {
         auditAction(audit);
     }
 
+
+    /**
+     * Fill item audit for create report about create or update banner
+     * @param audit
+     * @param result
+     */
+    private void createUpdateAuditCompile(Audit audit, Object result){
+        audit.setIdUser(getUserId());
+        audit.setIdBanner(((Banner)result).getId());
+        audit.setDescription(((Banner)result).toString());
+        audit.setDate(new Date());
+    }
+
+    /**
+     * Create new item of Audit table after delete exists banner
+     * @param jp
+     * @return
+     * @throws Throwable
+     */
     @Around("deleteMethods()")
     public Object deleteMethodCall(ProceedingJoinPoint jp) throws Throwable {
 
@@ -76,22 +108,20 @@ public class AuditLogger {
         audit.setCrud(Crud.DELETE);
         audit.setDescription("Deleted");
         audit.setDate(new Date());
-        auditAction(audit);
 
-        Object result = null;
-        try {
-            result = jp.proceed();
-        } catch (Throwable throwable) {
-            auditService.delete(audit.getId());
-            throw throwable;
-        }
-
+        Object result = jp.proceed();
         if(!((boolean) result))
-            auditService.delete(audit.getId());
+            return result;
+
+        auditAction(audit);
 
         return result;
     }
 
+    /**
+     * Create new item of Audit table after switch activity of exist banner
+     * @param jp
+     */
     @AfterReturning(pointcut = "switchActivityMethods()")
     public void switchActivityMethodCall(JoinPoint jp) {
         Audit audit = new Audit();
@@ -103,13 +133,17 @@ public class AuditLogger {
         auditAction(audit);
     }
 
+    /**
+     * Create few new item of Audit table after change banners priority
+     * @param jp
+     * @param result
+     */
     @AfterReturning(pointcut = "sortMethods()", returning = "result")
     public void sortMethodCall(JoinPoint jp, Object result) {
         Audit audit = new Audit();
         audit.setIdUser(getUserId());
         audit.setCrud(Crud.SORT);
         audit.setDate(new Date());
-
 
         ((List<Banner>)result).forEach(banner -> {
             audit.setIdBanner(banner.getId());
@@ -119,13 +153,11 @@ public class AuditLogger {
         });
     }
 
-    private void createUpdateAuditCompile(Audit audit, Object result){
-        audit.setIdUser(getUserId());
-        audit.setIdBanner(((Banner)result).getId());
-        audit.setDescription(((Banner)result).toString());
-        audit.setDate(new Date());
-    }
 
+    /**
+     * Get current user for create new item in Audit table
+     * @return
+     */
     private Integer getUserId(){
         String userName;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -138,6 +170,10 @@ public class AuditLogger {
     }
 
 
+    /**
+     * Create new item of Audit table
+     * @param audit
+     */
     private void auditAction(Audit audit){
         auditService.create(audit);
     }

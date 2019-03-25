@@ -13,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,16 +33,30 @@ public class BannerRestController {
         binder.setValidator(bannerValidator);
     }
 
+    /**
+     * @return
+     */
     @GetMapping("list")
     public List<Banner> list() {
         return bannerService.findAll();
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("preview/{id}")
     public Banner findById(@PathVariable Integer id) {
         return bannerService.findById(id);
     }
 
+    /**
+     * @param banner
+     * @param bindingResult
+     * @param image
+     * @return
+     */
+    @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PostMapping
     public ResponseEntity<?> create(@Valid @ModelAttribute Banner banner,
                                     BindingResult bindingResult, @RequestParam(value = "image", required = false) MultipartFile image){
@@ -54,6 +69,14 @@ public class BannerRestController {
         return new ResponseEntity<>(resultBanner, responseHeader, HttpStatus.CREATED);
     }
 
+    /**
+     * @param id
+     * @param banner
+     * @param bindingResult
+     * @param image
+     * @return
+     */
+    @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @Valid @ModelAttribute Banner banner,
                                     BindingResult bindingResult, @RequestParam(value = "image", required = false) MultipartFile image){
@@ -67,6 +90,11 @@ public class BannerRestController {
         return new ResponseEntity<>(resultBanner, responseHeader, HttpStatus.OK);
     }
 
+    /**
+     * @param bannerList
+     * @return
+     */
+    @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping
     public ResponseEntity<?> updateSorting(@RequestBody List<Banner> bannerList){
         HttpHeaders responseHeader = new HttpHeaders();
@@ -74,12 +102,23 @@ public class BannerRestController {
         return new ResponseEntity(responseHeader, HttpStatus.OK);
     }
 
+    /**
+     * @param id
+     * @return
+     */
+    @RolesAllowed(value={"ROLE_ADMIN"})
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable Integer id){
         bannerService.deleteBanner(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * @param id
+     * @param newActivityState
+     * @return
+     */
+    @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("delete/{id}")
     public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
         return bannerService.switchActivity(id, newActivityState);
