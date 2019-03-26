@@ -8,25 +8,28 @@ import java.util.List;
 public interface AuditDao  extends GenericDao<Audit, Integer> {
 
     /**
-     * @param id
-     * @return
+     * Find audit note by user id
+     * @param id user id
+     * @return audit list
      */
     List<Audit> findByUser(Integer id);
 
     /**
-     * @param id
-     * @return
+     * Find audit note by banner id
+     * @param id banner id
+     * @return audit list
      */
     List<Audit> findByBanner(Integer id);
 
     /**
-     *
+     * Clean audit notes if banner and user was deleted
      */
     void cleanAudit();
 
     /**
-     * @param name
-     * @return
+     * Find audit note by user name
+     * @param name user name
+     * @return audit list
      */
     List<Audit> findByUserName(String name);
 }

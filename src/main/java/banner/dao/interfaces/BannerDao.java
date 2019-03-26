@@ -6,29 +6,33 @@ import banner.model.Banner;
 public interface BannerDao extends GenericDao<Banner, Integer> {
 
     /**
-     * @return
+     * Get max priority among banners
+     * @return max priority in DB
      */
     Integer getMaxPriority();
 
     /**
-     * @param id
-     * @return
+     * Get imgSrc by banner id
+     * @param id banner id
+     * @return imgSrc
      */
     String getBannerImage(Integer id);
 
     /**
-     * @param banner
+     * Set new priority value for banner
+     * @param banner banner with new priority value
      */
     void updatePriority(Banner banner);
 
     /**
-     * @param localeId
-     * @param newActivityState
+     * Change activity state in banners by locale id
+     * @param localeId locale id
+     * @param newActivityState new activity value
      */
     void switchActivityByLocale(Integer localeId, boolean newActivityState);
 
     /**
-     *
+     * Delete banners from BD if locale was deleted
      */
     void cleanBanners();
 }

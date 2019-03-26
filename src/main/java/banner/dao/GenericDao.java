@@ -5,38 +5,38 @@ import java.util.List;
 
 public interface GenericDao <T, PK extends Serializable> {
 
-    /** Извлечь весь список объектов
-     * @return
+    /** Get all item list
+     * @return item list
      */
     List<T> findAll();
 
-    /** Извлечь объект, используя указанный id в качестве первичного ключа
-     * @param id
-     * @return
+    /** Get item by id
+     * @param id item id
+     * @return item
      */
     T findById(PK id);
 
-    /** Сохранить объект newInstance в базе данных
-     * @param newInstance
-     * @return
+    /** Save newInstance in DB
+     * @param newInstance item
+     * @return item
      */
     T create(T newInstance);
 
-    /** Сохранить изменения, сделанные в объекте
-     * @param transientObject
-     * @return
+    /** Update item in DB
+     * @param transientObject item
+     * @return item
      */
     T update(T transientObject);
 
-    /** Изменение активности объекта
-     * @param id
-     * @param activity
-     * @return
+    /** Change item activity
+     * @param id item id
+     * @param activity new activity value
+     * @return true - all successfully
      */
     boolean switchActivity(PK id, boolean activity);
 
-    /** Удалить объект из базы данных
-     * @param id
+    /** Delete item by id
+     * @param id item id
      */
     void delete(PK id);
 

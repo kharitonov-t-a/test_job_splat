@@ -8,8 +8,9 @@ import java.util.List;
 public interface UserDao  extends GenericDao<User, Integer> {
 
     /**
-     * @param username
-     * @return
+     * Get user by user name
+     * @param username user name
+     * @return model user
      */
     User findUserByUsername(String username);
 }
