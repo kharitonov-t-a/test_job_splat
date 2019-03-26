@@ -18,8 +18,8 @@ public class LocaleServiceImpl extends GenericServiceImpl<Locale, Integer, Local
     BannerDao bannerDao;
 
     /**
-     * delete banner if locale deleted
-     * @param id
+     * Delete banner if locale deleted
+     * @param id locale id
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -29,10 +29,10 @@ public class LocaleServiceImpl extends GenericServiceImpl<Locale, Integer, Local
     }
 
     /**
-     * switch also activity in banners if activity change to false
-     * @param id
+     * Switch activity in banners if activity change to false
+     * @param id locale id
      * @param newActivityState
-     * @return
+     * @return true - all successfully
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override

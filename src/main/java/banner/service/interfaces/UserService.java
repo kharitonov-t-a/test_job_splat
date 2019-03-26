@@ -8,13 +8,15 @@ import java.util.List;
 public interface UserService extends GenericService<User, Integer> {
 
     /**
-     * @param username
-     * @return
+     * Get user by name
+     * @param username name searched user
+     * @return searched user
      */
     User getUserByName(String username);
 
     /**
-     * @return
+     * Get all users and return them with emptied password
+     * @return user list
      */
     List<User> findAllWithoutPassword();
 

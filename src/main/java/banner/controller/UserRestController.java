@@ -36,7 +36,7 @@ public class UserRestController {
 
     /**
      * Get all users
-     * @return list user instances
+     * @return list user
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list")
@@ -100,7 +100,7 @@ public class UserRestController {
      * Change activity exists user
      * @param id user id
      * @param newActivityState new state false or true
-     * @return true if locale disabled successfully
+     * @return true if locale changed activity successfully
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("delete/{id}")

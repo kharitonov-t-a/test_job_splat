@@ -76,6 +76,11 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return true;
     }
 
+    /**
+     * Delete image file of some banner
+     * @param id banner id
+     * @return true - all successfully
+     */
     private boolean deleteOldBannerImage(Integer id) {
         String bannerImage = dao.getBannerImage(id);
         File dirFile = new File(bannerImage);
@@ -95,6 +100,12 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return dao.findAll();
     }
 
+    /**
+     * Save image on hard drive and fill imgSrc in banner
+     * @param banner model banner
+     * @param image created image
+     * @return true - all successfully
+     */
     private boolean saveNewBannerImage(Banner banner, MultipartFile image) {
         String rootPath = pathRootDir;//System.getenv("CATALINA_HOME");
 
@@ -120,6 +131,11 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return true;
     }
 
+    /**
+     * Add to dirFile two depth levels
+     * @param dirFile place where would be saved image
+     * @return dirFile
+     */
     private File getTreeDirFile(File dirFile) {
         int random;
         String dirTree;
@@ -132,6 +148,11 @@ public class BannerServiceImpl extends GenericServiceImpl<Banner, Integer, Banne
         return dirFile;
     }
 
+    /**
+     * Get file extension for clean metadata
+     * @param file file
+     * @return Received file
+     */
     private static String getFileExtension(File file) {
         String fileName = file.getName();
         // если в имени файла есть точка и она не является первым символом в названии файла

@@ -55,8 +55,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer, UserDao> 
     }
 
     /**
-     * clean audit if banners and user deleted
-     * @param id
+     * Cean audit if banners and user deleted
+     * @param id user id
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override

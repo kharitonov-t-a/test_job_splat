@@ -6,37 +6,43 @@ import java.util.List;
 public interface GenericService<Model, PK extends Serializable> {
 
     /**
-     * @param id
-     * @return
+     * Get item by id
+     * @param id item id
+     * @return exists item
      */
     Model findById(PK id);
 
     /**
-     * @param model
-     * @return
+     * Create new item
+     * @param model model item without id
+     * @return created item
      */
     Model create(Model model);
 
     /**
-     * @param model
-     * @return
+     * Update exists item
+     * @param model model item with filled id
+     * @return updated item
      */
     Model update(Model model);
 
     /**
-     * @param id
+     * Delete item
+     * @param id item id
      */
     void delete(PK id);
 
     /**
-     * @param id
-     * @param newActivityState
-     * @return
+     * Change activity item id
+     * @param id item id
+     * @param newActivityState new item state (true or false)
+     * @return true if item changed activity successfully
      */
     boolean switchActivity(PK id, boolean newActivityState);
 
     /**
-     * @return
+     * Find all items
+     * @return item list
      */
     List<Model> findAll();
 }
