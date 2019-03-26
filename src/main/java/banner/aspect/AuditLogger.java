@@ -34,30 +34,45 @@ public class AuditLogger {
 
     private Logger logger = Logger.getLogger(AuditLogger.class.getName());
 
+    /**
+     * pointcut for annotation AuditCreate (for tracking BannerServiceImpl.createBanner)
+     */
     @Pointcut("@annotation(banner.annotation.AuditCreate)")
     public void createMethods() {
     }
 
+    /**
+     * pointcut for annotation AuditUpdate (for tracking BannerServiceImpl.updateBanner)
+     */
     @Pointcut("@annotation(banner.annotation.AuditUpdate)")
     public void updateMethods() {
     }
 
+    /**
+     * pointcut for annotation AuditDelete (for tracking BannerServiceImpl.deleteBanner)
+     */
     @Pointcut("@annotation(banner.annotation.AuditDelete)")
     public void deleteMethods() {
     }
 
+    /**
+     * pointcut for annotation AuditSort (for tracking BannerServiceImpl.updateSorting)
+     */
     @Pointcut("@annotation(banner.annotation.AuditSort)")
     public void sortMethods() {
     }
 
+    /**
+     * pointcut for annotation AuditSwitchActivity (for tracking BannerServiceImpl.switchActivity)
+     */
     @Pointcut("@annotation(banner.annotation.AuditSwitchActivity)")
     public void switchActivityMethods() {
     }
 
     /**
      * Create new item of Audit table after create new banner
-     * @param jp
-     * @param result
+     * @param jp getting information of method (args)
+     * @param result tracked method return that
      */
     @AfterReturning(pointcut = "createMethods()", returning = "result")
     public void createMethodCall(JoinPoint jp, Object result) {
@@ -69,8 +84,8 @@ public class AuditLogger {
 
     /**
      * Create new item of Audit table after update exists banner
-     * @param jp
-     * @param result
+     * @param jp getting information of method (args)
+     * @param result tracked method return that
      */
     @AfterReturning(pointcut = "updateMethods()", returning = "result")
     public void updateMethodCall(JoinPoint jp, Object result) {
@@ -82,9 +97,9 @@ public class AuditLogger {
 
 
     /**
-     * Fill item audit for create report about create or update banner
-     * @param audit
-     * @param result
+     * Set common fields in item Audit from created banner
+     * @param audit item Audit
+     * @param result created banner
      */
     private void createUpdateAuditCompile(Audit audit, Object result){
         audit.setIdUser(getUserId());
@@ -95,8 +110,8 @@ public class AuditLogger {
 
     /**
      * Create new item of Audit table after delete exists banner
-     * @param jp
-     * @return
+     * @param jp getting information of method (args or result)
+     * @return result of traceable method
      * @throws Throwable
      */
     @Around("deleteMethods()")
@@ -120,7 +135,7 @@ public class AuditLogger {
 
     /**
      * Create new item of Audit table after switch activity of exist banner
-     * @param jp
+     * @param jp getting information of method (args)
      */
     @AfterReturning(pointcut = "switchActivityMethods()")
     public void switchActivityMethodCall(JoinPoint jp) {
@@ -135,8 +150,8 @@ public class AuditLogger {
 
     /**
      * Create few new item of Audit table after change banners priority
-     * @param jp
-     * @param result
+     * @param jp getting information of method (args)
+     * @param result tracked method return that
      */
     @AfterReturning(pointcut = "sortMethods()", returning = "result")
     public void sortMethodCall(JoinPoint jp, Object result) {
@@ -156,7 +171,7 @@ public class AuditLogger {
 
     /**
      * Get current user for create new item in Audit table
-     * @return
+     * @return id of current logged user
      */
     private Integer getUserId(){
         String userName;
@@ -172,7 +187,7 @@ public class AuditLogger {
 
     /**
      * Create new item of Audit table
-     * @param audit
+     * @param audit new item Audit for record in DB
      */
     private void auditAction(Audit audit){
         auditService.create(audit);

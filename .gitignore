@@ -4,6 +4,7 @@
 target
 node_modules
 dist
+node
 out
 
 # Compiled class file
