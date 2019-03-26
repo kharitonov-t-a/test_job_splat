@@ -20,7 +20,8 @@ public class AuditRestController {
     AuditService auditService;
 
     /**
-     * @return
+     * List all banners changes
+     * @return list audit instances
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list")
@@ -29,8 +30,9 @@ public class AuditRestController {
     }
 
     /**
-     * @param id
-     * @return
+     * List banners changes by user id
+     * @param id user id
+     * @return list audit instances
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list/user/{id}")
@@ -39,8 +41,9 @@ public class AuditRestController {
     }
 
     /**
-     * @param name
-     * @return
+     * List banners changes by user name
+     * @param name user name
+     * @return list audit instances
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list/username/{name}")
@@ -49,8 +52,9 @@ public class AuditRestController {
     }
 
     /**
-     * @param id
-     * @return
+     * List banners changes by user name
+     * @param id banner id
+     * @return list audit instances
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list/banner/{id}")

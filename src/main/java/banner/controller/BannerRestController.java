@@ -34,7 +34,8 @@ public class BannerRestController {
     }
 
     /**
-     * @return
+     * Get all banners
+     * @return list banner instances
      */
     @GetMapping("list")
     public List<Banner> list() {
@@ -42,8 +43,9 @@ public class BannerRestController {
     }
 
     /**
+     * Get banner by id
      * @param id
-     * @return
+     * @return banner instance
      */
     @GetMapping("preview/{id}")
     public Banner findById(@PathVariable Integer id) {
@@ -51,10 +53,11 @@ public class BannerRestController {
     }
 
     /**
-     * @param banner
-     * @param bindingResult
-     * @param image
-     * @return
+     * Create new banner
+     * @param banner model banner
+     * @param bindingResult validate result
+     * @param image for create new banner (MultipartFile)
+     * @return created banner instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PostMapping
@@ -70,11 +73,12 @@ public class BannerRestController {
     }
 
     /**
-     * @param id
-     * @param banner
-     * @param bindingResult
-     * @param image
-     * @return
+     * Update exists banner
+     * @param id banner id
+     * @param banner new banner fields
+     * @param bindingResult validate result
+     * @param image new image banner (not required)
+     * @return updated banner instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("{id}")
@@ -91,8 +95,9 @@ public class BannerRestController {
     }
 
     /**
-     * @param bannerList
-     * @return
+     * Update priorities of banner list
+     * @param bannerList list banner instances
+     * @return empty ResponseEntity
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping
@@ -103,8 +108,9 @@ public class BannerRestController {
     }
 
     /**
-     * @param id
-     * @return
+     * Delete exists banner
+     * @param id banner id
+     * @return empty ResponseEntity
      */
     @RolesAllowed(value={"ROLE_ADMIN"})
     @DeleteMapping("{id}")
@@ -114,13 +120,14 @@ public class BannerRestController {
     }
 
     /**
-     * @param id
-     * @param newActivityState
-     * @return
+     * Change activity exists banner
+     * @param id banner id
+     * @param newActivityState false or true
+     * @return true if banner disabled successfully
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("delete/{id}")
-    public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
+    public boolean switchActivity(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
         return bannerService.switchActivity(id, newActivityState);
     }
 

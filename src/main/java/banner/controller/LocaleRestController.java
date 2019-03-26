@@ -33,7 +33,8 @@ public class LocaleRestController {
     }
 
     /**
-     * @return
+     * Get all locales
+     * @return list locale instances
      */
     @GetMapping("list")
     public List<?> list() {
@@ -41,9 +42,10 @@ public class LocaleRestController {
     }
 
     /**
-     * @param locale
-     * @param bindingResult
-     * @return
+     * Create new locale
+     * @param locale model locale
+     * @param bindingResult validate result
+     * @return locale instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PostMapping
@@ -59,10 +61,11 @@ public class LocaleRestController {
     }
 
     /**
-     * @param id
-     * @param locale
-     * @param bindingResult
-     * @return
+     * Update exists locale
+     * @param id locale id
+     * @param locale new locale fields
+     * @param bindingResult validate result
+     * @return updated locale instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("{id}")
@@ -79,8 +82,9 @@ public class LocaleRestController {
     }
 
     /**
-     * @param id
-     * @return
+     * Delete exists locale
+     * @param id locale id
+     * @return empty ResponseEntity
      */
     @RolesAllowed(value={"ROLE_ADMIN"})
     @DeleteMapping("{id}")
@@ -90,13 +94,14 @@ public class LocaleRestController {
     }
 
     /**
-     * @param id
-     * @param newActivityState
-     * @return
+     * Change activity exists locale
+     * @param id locale id
+     * @param newActivityState new state false or true
+     * @return true if locale disabled successfully
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("delete/{id}")
-    public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
+    public boolean switchActivity(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
         return localeService.switchActivity(id, newActivityState);
     }
 }

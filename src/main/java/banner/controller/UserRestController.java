@@ -35,7 +35,8 @@ public class UserRestController {
     }
 
     /**
-     * @return
+     * Get all users
+     * @return list user instances
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("list")
@@ -44,9 +45,10 @@ public class UserRestController {
     }
 
     /**
-     * @param user
-     * @param bindingResult
-     * @return
+     * Create new user
+     * @param user model user
+     * @param bindingResult validate result
+     * @return user instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PostMapping
@@ -62,10 +64,11 @@ public class UserRestController {
     }
 
     /**
-     * @param id
-     * @param user
-     * @param bindingResult
-     * @return
+     * Update exists user
+     * @param id user id
+     * @param user new user fields
+     * @param bindingResult validate result
+     * @return updated user instance
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("{id}")
@@ -82,8 +85,9 @@ public class UserRestController {
     }
 
     /**
-     * @param id
-     * @return
+     * Delete exists user
+     * @param id user id
+     * @return empty ResponseEntity
      */
     @RolesAllowed(value={"ROLE_ADMIN"})
     @DeleteMapping("{id}")
@@ -93,19 +97,21 @@ public class UserRestController {
     }
 
     /**
-     * @param id
-     * @param newActivityState
-     * @return
+     * Change activity exists user
+     * @param id user id
+     * @param newActivityState new state false or true
+     * @return true if locale disabled successfully
      */
     @RolesAllowed(value={"ROLE_ADMIN", "ROLE_MANAGER"})
     @PutMapping("delete/{id}")
-    public boolean disable(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
+    public boolean switchActivity(@PathVariable Integer id, @RequestParam(value = "newActivityState") boolean newActivityState){
         return userService.switchActivity(id, newActivityState);
     }
 
     /**
-     * @param userDetails
-     * @return
+     * Get information about current logged in user
+     * @param userDetails information about user (name, role, etc.)
+     * @return information about user (name, role, etc.)
      */
     @GetMapping
     public UserDetails getUserDetails(@AuthenticationPrincipal UserDetails userDetails) {

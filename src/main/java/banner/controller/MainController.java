@@ -39,8 +39,10 @@ public class MainController {
     private String contextPath;
 
     /**
-     * @param request
-     * @return
+     * Get images from hard disk by path from path_root_dir<br>
+     * We take into consider on windows and linux paths
+     * @param request http servlet request
+     * @return image in bytes
      * @throws IOException
      */
     @GetMapping("/image/**")
@@ -61,9 +63,10 @@ public class MainController {
     }
 
     /**
+     * Getting all requests except get static js files
      * @param model
-     * @param userDetails
-     * @return
+     * @param userDetails information about logged in user
+     * @return index.html
      */
     @GetMapping({"/error", "/", "/**/{path:[^\\.]+}"})
     public String banners(Model model, @AuthenticationPrincipal UserDetails userDetails) {
