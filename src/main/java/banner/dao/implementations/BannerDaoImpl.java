@@ -19,13 +19,6 @@ public class BannerDaoImpl extends GenericDaoImpl<Banner, Integer, GenericMapper
                 "WHERE Locale.activity = 1 ORDER BY priority";
     }
 
-    @Override protected String getSELECT_BY_ID_SQL() { return "SELECT * FROM Banner WHERE id = ?"; }
-
-    @Override protected String getUPDATE_ACTIVITY_SQL() { return "UPDATE Banner SET activity = ? WHERE id = ?"; }
-
-    @Override protected String getTOTAL_DELETE_SQL() { return "DELETE FROM Banner WHERE id = ?"; }
-
-
     private final String INSERT_SQL =
             " INSERT INTO Banner(imgSrc, width, height, targetUrl, langId, priority, activity) " +
                 " VALUES(?,?,?,?,?,?,?)";

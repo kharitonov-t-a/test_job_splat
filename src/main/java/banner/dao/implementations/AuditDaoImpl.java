@@ -19,14 +19,6 @@ import java.util.List;
 @Repository
 public class AuditDaoImpl extends GenericDaoImpl<Audit, Integer, GenericMapper<Audit>> implements AuditDao {
 
-    @Override protected String getSELECT_ALL_SQL() { return "SELECT * FROM Audit ORDER BY id"; }
-
-    @Override protected String getSELECT_BY_ID_SQL() { return "SELECT * FROM Audit WHERE id = ?"; }
-
-    @Override protected String getTOTAL_DELETE_SQL() { return "DELETE FROM Audit WHERE id = ?"; }
-
-    @Override protected String getUPDATE_ACTIVITY_SQL() { return null; }
-
     private final String INSERT_SQL =
             "INSERT INTO Audit(idBanner, idUser, crud, description, date)" +
                     " values(?,?,?,?,?)";
@@ -86,6 +78,7 @@ public class AuditDaoImpl extends GenericDaoImpl<Audit, Integer, GenericMapper<A
         return audit;
     }
 
+    @Override protected String getUPDATE_ACTIVITY_SQL() { return null; }
     @Override
     public boolean switchActivity(Integer id, boolean activity) {
         return false;

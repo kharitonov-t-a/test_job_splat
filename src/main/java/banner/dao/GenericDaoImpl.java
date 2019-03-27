@@ -10,24 +10,39 @@ import org.springframework.jdbc.core.RowMapper;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
 public abstract class GenericDaoImpl <T, PK extends Serializable, Mapper extends GenericMapper<T>> implements GenericDao<T, PK> {//implements RowMapper<T>
 
+    private String nameEntity;
+//    @SuppressWarnings("unchecked")
+    public GenericDaoImpl(){
+        Class<T> genericType = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.nameEntity = genericType.getSimpleName();
+    }
 
-    /** SELECT * FROM T //ORDER BY priority// */
-    protected abstract String getSELECT_ALL_SQL();
+    /** SELECT * FROM T ORDER BY id */
+    protected String getSELECT_ALL_SQL(){
+        return "SELECT * FROM " + this.nameEntity + " ORDER BY id";
+    }
 
     /** SELECT * FROM T WHERE id = ? */
-    protected abstract String getSELECT_BY_ID_SQL();
+    protected String getSELECT_BY_ID_SQL(){
+        return "SELECT * FROM " + this.nameEntity + " WHERE id = ?";
+    }
 
     /** DELETE FROM T WHERE id = ? */
-    protected abstract String getTOTAL_DELETE_SQL();
+    protected String getTOTAL_DELETE_SQL(){
+        return "DELETE FROM " + this.nameEntity + " WHERE id = ?";
+    }
 
     /** UPDATE T SET activity = ? WHERE id = ? */
-    protected abstract String getUPDATE_ACTIVITY_SQL();
+    protected String getUPDATE_ACTIVITY_SQL(){
+        return "UPDATE " + this.nameEntity + " SET activity = ? WHERE id = ?";
+    }
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;

@@ -14,14 +14,6 @@ import java.sql.*;
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<User, Integer, GenericMapper<User>> implements UserDao {
 
-    @Override protected String getSELECT_ALL_SQL() { return "SELECT * FROM User ORDER BY id"; }
-
-    @Override protected String getSELECT_BY_ID_SQL() { return "SELECT * FROM User WHERE id = ?"; }
-
-    @Override protected String getTOTAL_DELETE_SQL() { return "DELETE FROM User WHERE id = ?"; }
-
-    @Override protected String getUPDATE_ACTIVITY_SQL() { return "UPDATE User SET activity = ? WHERE id = ?"; }
-
     private final String INSERT_SQL =
             "INSERT INTO User(username, password, role, activity) values(?,?,?,?)";
 

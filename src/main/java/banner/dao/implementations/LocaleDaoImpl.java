@@ -15,14 +15,6 @@ import java.sql.Statement;
 @Repository
 public class LocaleDaoImpl extends GenericDaoImpl<Locale, Integer, GenericMapper<Locale>> implements LocaleDao {
 
-    @Override protected String getSELECT_ALL_SQL() { return "SELECT * FROM Locale ORDER BY id"; }
-
-    @Override protected String getSELECT_BY_ID_SQL() { return "SELECT * FROM Locale WHERE id = ?"; }
-
-    @Override protected String getUPDATE_ACTIVITY_SQL() { return "UPDATE Locale SET activity = ? WHERE id = ?"; }
-
-    @Override protected String getTOTAL_DELETE_SQL() { return "DELETE FROM Locale WHERE id = ?"; }
-
     private final String INSERT_SQL =
             "INSERT INTO Locale(name, activity) VALUES(?,?)";
 
